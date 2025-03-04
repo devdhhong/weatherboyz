@@ -86,7 +86,7 @@
       </ul>
     </li>
     <li class="settingItem copyRight">
-      <p>© 2025 @tbz_weatherboyz. All rights reserved. {{ import.meta.env.VITE_APP_VERSION  }}</p>
+      <p>© 2025 @tbz_weatherboyz. All rights reserved. {{ version }}</p>
     </li>
   </div>
 </template>
@@ -109,6 +109,8 @@ let isDownLanguageTab = ref(true);
 let isDownShareTab = ref(true);
 let isDownQnaTab = ref(true); 
 let isDownLicenseTab = ref(false);
+
+let version = import.meta.env.VITE_APP_VERSION;
 
 const { locale } = useI18n(); // i18n에서 locale을 가져옴
 
