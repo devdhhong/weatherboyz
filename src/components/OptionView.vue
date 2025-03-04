@@ -117,19 +117,21 @@ onBeforeMount(() => {
 
 //옵션 변경
 function changeSetting() {
-  UTIL.setLocalStorageItem("language", setLanguage);
-  UTIL.setLocalStorageItem("theme", setTheme);
-  UTIL.setLocalStorageItem("display", setDisplay);
-  UTIL.setLocalStorageItem("member", setMember);
+  UTIL.setLocalStorageItem('language', setLanguage);
+  UTIL.setLocalStorageItem('display', setDisplay);
+  UTIL.setLocalStorageItem('member', setMember);
+  UTIL.setLocalStorageItem('theme', setTheme);
 
   // 설정 초기화
-  document.documentElement.classList.remove('dark-mode');
-  document.documentElement.classList.remove('light-mode');
-  document.documentElement.classList.remove('ko-mode');
-  document.documentElement.classList.remove('en-mode');
+  document.documentElement.classList.remove('dark-mode','light-mode'); //display
+  document.documentElement.classList.remove('ko-mode', 'en-mode'); //language
+  document.documentElement.classList.remove('default-mode', 'baby-mode'); //theme
+  document.documentElement.classList.remove('TBZ-mode', 'SY-mode', 'JC-mode', 'YH-mode', 'HJ-mode', 'JY-mode', 'KV-mode', 'NW-mode', 'QQ-mode', 'HN-mode', 'SW-mode', 'ER-mode'); //member
 
   document.documentElement.classList.add(setDisplay + '-mode');
   document.documentElement.classList.add(setLanguage + '-mode');
+  document.documentElement.classList.add(setMember + '-mode');
+  document.documentElement.classList.add(setTheme + '-mode');
 
   locale.value = setLanguage; // 언어 변경
 }

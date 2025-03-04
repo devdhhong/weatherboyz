@@ -242,15 +242,12 @@ const getMainMsg = function () {
     msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ 🍊 ☀️ 🦄";
   }
 
-  return msg;
+  // return msg;
 };
 
 // 날씨 메인 이미지 경로 조회
-const getWeatherMain = function (code: number) {
+const getWeatherMain = function (code: number, member: string) {
   let theme = getLocalStorageItem("theme") || "";
-  let member = getLocalStorageItem("member") || "";
-  // let status = "";
-  let tbz = ["SY", "JC", "YH", "HJ", "JY", "KV", "NW", "QQ", "HN", "SW", "ER"];
 
   // //맑음
   // if ([0, 1].indexOf(code) > -1) {
@@ -277,15 +274,7 @@ const getWeatherMain = function (code: number) {
   //   status = "CLOUD";
   // }
 
-  //단체 테마 선택 시 멤버 랜덤
-  if (tbz.indexOf(member) == -1) {
-    member = tbz[Math.floor(Math.random() * 11)];
-  }
-
-  // return "https://via.placeholder.com/800x1000/000000/ffffff?text=temp";
   return "/images/THEME/" + theme + "/" + member + ".jpg";
-  // return "/images/" + status + "/" + theme + ".png";
-  // return "/images/TBZ/KEVIN.png";
 }
 
 // 오늘의 노래 조회

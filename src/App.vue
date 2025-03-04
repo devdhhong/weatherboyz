@@ -48,7 +48,7 @@ function setInit() {
   document.documentElement.style.setProperty('--viewport-height', getViewportHeight() + 'px');
 
   let setLanguage = UTIL.getLocalStorageItem('language') || "ko"; //ko or en
-  let setDisplay = UTIL.getLocalStorageItem('display') || "dark"; //Light or Dark
+  let setDisplay = UTIL.getLocalStorageItem('display') || "light"; //Light or Dark
   let setMember = UTIL.getLocalStorageItem('member') || "TBZ";
   let setTheme = UTIL.getLocalStorageItem('theme') || "default";
 
@@ -58,12 +58,15 @@ function setInit() {
   UTIL.setLocalStorageItem('theme', setTheme);
 
   // 설정 초기화
-  document.documentElement.classList.remove('dark-mode');
-  document.documentElement.classList.remove('light-mode');
-  document.documentElement.classList.remove('ko-mode');
-  document.documentElement.classList.remove('en-mode');
+  document.documentElement.classList.remove('dark-mode','light-mode'); //display
+  document.documentElement.classList.remove('ko-mode', 'en-mode'); //language
+  document.documentElement.classList.remove('default-mode', 'baby-mode'); //theme
+  document.documentElement.classList.remove('TBZ-mode', 'SY-mode', 'JC-mode', 'YH-mode', 'HJ-mode', 'JY-mode', 'KV-mode', 'NW-mode', 'QQ-mode', 'HN-mode', 'SW-mode', 'ER-mode'); //member
+
   document.documentElement.classList.add(setDisplay + '-mode');
   document.documentElement.classList.add(setLanguage + '-mode');
+  document.documentElement.classList.add(setMember + '-mode');
+  document.documentElement.classList.add(setTheme + '-mode');
 }
 
 // Android 인터페이스로 메세지 받기

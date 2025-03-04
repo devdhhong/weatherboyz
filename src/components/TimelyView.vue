@@ -73,11 +73,11 @@ function getWeatherIcon(code: number, time: any){
     overflow-x: auto;
     white-space: nowrap;
     padding-top: 3%;
+    
 
     .timelyCard {
       text-align: center;
-      flex: 0 0 25%;
-      /* 기본으로 보이는 아이템 수를 설정 */
+      flex: 0 0 25%; //기본으로 보이는 아이템 수를 설정
 
       //날짜
       .date {

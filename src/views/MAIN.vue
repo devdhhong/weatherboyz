@@ -7,7 +7,6 @@
           <CurrentView :isFetchedData="isFetchedData"/>             
           <ContentsView :isFetchedData="isFetchedData"/>             
           <TimelyView :isFetchedData="isFetchedData"/>             
-          <div>{{  isFetchedData }}</div>
         </div>
       </div>
     </ion-content>
