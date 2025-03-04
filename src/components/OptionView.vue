@@ -110,7 +110,7 @@ let isDownShareTab = ref(true);
 let isDownQnaTab = ref(true); 
 let isDownLicenseTab = ref(false);
 
-let version = import.meta.env.VITE_APP_VERSION;
+let version = import.meta.env;
 
 const { locale } = useI18n(); // i18n에서 locale을 가져옴
 
