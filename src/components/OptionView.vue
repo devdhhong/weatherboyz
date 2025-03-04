@@ -86,7 +86,7 @@
       </ul>
     </li>
     <li class="settingItem copyRight">
-      <p>© 2024 @tbz_weatherboyz. All rights reserved.</p>
+      <p>© 2025 @tbz_weatherboyz. All rights reserved. {{ import.meta.env.VITE_APP_VERSION  }}</p>
     </li>
   </div>
 </template>
