@@ -242,7 +242,7 @@ const getMainMsg = function () {
     msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ 🍊 ☀️ 🦄";
   }
 
-  // return msg;
+  return msg;
 };
 
 // 날씨 메인 이미지 경로 조회
