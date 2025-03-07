@@ -83,10 +83,13 @@
         <li>
           <a href="http://osm.org/copyright">Data © OpenStreetMap contributors, ODbL 1.0.</a>
         </li>
+				<li>
+					<a>version : {{ version }}</a>
+				</li>
       </ul>
     </li>
     <li class="settingItem copyRight">
-      <p>© 2025 @tbz_weatherboyz. All rights reserved. {{ version }}</p>
+      <p>© 2025 @tbz_weatherboyz. All rights reserved.</p>
     </li>
   </div>
 </template>
