@@ -3,7 +3,7 @@
     <div class="contentsBox">
       <img :src="imgPath" alt="">
       <div class="bubbleArea bubbleArea1">
-        <div class="msg">날씨좋다</div>
+        <div class="msg">🦄</div>
       </div>
       <div class="bubbleArea bubbleArea2">
         <div class="msg">☀️</div>
@@ -46,6 +46,8 @@ function initData(){
 
     weather = JSON.parse(UTIL.getLocalStorageItem('weather'));
     imgPath = UTIL.getWeatherMain(weather.current.weather_code, member);
+
+		console.log(weather);
   }
 }
 
@@ -306,7 +308,392 @@ function initData(){
   }
 }
 
+//주연
+.JY-mode {
+  //라이트 모드
+  &.light-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-2);
+      opacity: 80%;
+    }
 
+    .msg {
+      color: var(--text-color-1);
+    }
+  }
 
+  //다크 모드
+  &.dark-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-1);
+      opacity: 60%;
+    }
+
+    .msg {
+      color: var(--text-color-2);
+    }
+  }
+  //기본 테마
+  &.default-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 74%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 35%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+
+  //베이비 테마
+  &.baby-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 70%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 25%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+}
+
+//케빈
+.KV-mode {
+  //라이트 모드
+  &.light-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-2);
+      opacity: 80%;
+    }
+
+    .msg {
+      color: var(--text-color-1);
+    }
+  }
+
+  //다크 모드
+  &.dark-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-1);
+      opacity: 60%;
+    }
+
+    .msg {
+      color: var(--text-color-2);
+    }
+  }
+  //기본 테마
+  &.default-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 74%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 35%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+
+  //베이비 테마
+  &.baby-mode {
+    .bubbleArea1 {
+      left: 24%; 
+      bottom: 42%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+
+			// div {
+			// 	transform: scale(-1, -1); //좌우 반전 상하 반전
+			// }
+    }
+
+    .bubbleArea2 {
+      left: 39%; 
+      bottom: 26%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+}
+
+//뉴
+.NW-mode {
+  //라이트 모드
+  &.light-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-2);
+      opacity: 80%;
+    }
+
+    .msg {
+      color: var(--text-color-1);
+    }
+  }
+
+  //다크 모드
+  &.dark-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-1);
+      opacity: 60%;
+    }
+
+    .msg {
+      color: var(--text-color-2);
+    }
+  }
+  //기본 테마
+  &.default-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 74%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 35%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+
+  //베이비 테마
+  &.baby-mode {
+    .bubbleArea1 {
+      left: 18%; 
+      bottom: 42%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+
+    .bubbleArea2 {
+      left: 58%; 
+      bottom: 45%;
+      transform: scale(1, -1); //좌우 반전 상하 반전
+    }
+  }
+}
+
+//큐
+.QQ-mode {
+  //라이트 모드
+  &.light-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-2);
+      opacity: 80%;
+    }
+
+    .msg {
+      color: var(--text-color-1);
+    }
+  }
+
+  //다크 모드
+  &.dark-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-1);
+      opacity: 60%;
+    }
+
+    .msg {
+      color: var(--text-color-2);
+    }
+  }
+  //기본 테마
+  &.default-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 74%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 35%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+
+  //베이비 테마
+  &.baby-mode {
+    .bubbleArea1 {
+      left: 15%; 
+      bottom: 44%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+
+    .bubbleArea2 {
+      left: 53%; 
+      bottom: 74%;
+      transform: scale(1, 1); //좌우 반전 상하 반전
+    }
+  }
+}
+
+//학년
+.HN-mode {
+  //라이트 모드
+  &.light-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-2);
+      opacity: 80%;
+    }
+
+    .msg {
+      color: var(--text-color-1);
+    }
+  }
+
+  //다크 모드
+  &.dark-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-1);
+      opacity: 60%;
+    }
+
+    .msg {
+      color: var(--text-color-2);
+    }
+  }
+  //기본 테마
+  &.default-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 74%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 35%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+
+  //베이비 테마
+  &.baby-mode {
+    .bubbleArea1 {
+      left: 19%; 
+      bottom: 74%;
+      transform: scale(-1, 1); //좌우 반전 상하 반전
+    }
+
+    .bubbleArea2 {
+      left: 63%; 
+      bottom: 58%;
+      transform: scale(1, 1); //좌우 반전 상하 반전
+    }
+  }
+}
+
+//선우
+.SW-mode {
+  //라이트 모드
+  &.light-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-2);
+      opacity: 80%;
+    }
+
+    .msg {
+      color: var(--text-color-1);
+    }
+  }
+
+  //다크 모드
+  &.dark-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-1);
+      opacity: 60%;
+    }
+
+    .msg {
+      color: var(--text-color-2);
+    }
+  }
+  //기본 테마
+  &.default-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 74%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 35%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+
+  //베이비 테마
+  &.baby-mode {
+    .bubbleArea1 {
+      left: 17%; 
+      bottom: 25%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+
+    .bubbleArea2 {
+      left: 63%; 
+      bottom: 72%;
+      transform: scale(1, 1); //좌우 반전 상하 반전
+    }
+  }
+}
+
+//에릭
+.ER-mode {
+  //라이트 모드
+  &.light-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-2);
+      opacity: 80%;
+    }
+
+    .msg {
+      color: var(--text-color-1);
+    }
+  }
+
+  //다크 모드
+  &.dark-mode {
+    .bubbleArea {
+      background-image: var(--bubble-style-1);
+      opacity: 60%;
+    }
+
+    .msg {
+      color: var(--text-color-2);
+    }
+  }
+  //기본 테마
+  &.default-mode {
+    .bubbleArea1 {
+      left: 67%; 
+      bottom: 74%;
+    }
+
+    .bubbleArea2 {
+      left: 16%; 
+      bottom: 35%;
+      transform: scale(-1, -1); //좌우 반전 상하 반전
+    }
+  }
+
+  //베이비 테마
+  &.baby-mode {
+    .bubbleArea1 {
+      left: 23%; 
+      bottom: 49%;
+      transform: scale(-1, 1); //좌우 반전 상하 반전
+    }
+
+    .bubbleArea2 {
+      left: 64%; 
+      bottom: 67%;
+      transform: scale(1, 1); //좌우 반전 상하 반전
+    }
+  }
+}
 
 </style>
