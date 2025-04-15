@@ -322,9 +322,10 @@ const getTodayMusic = function () {
   if (MUSIC_LIST[mmdd]) {
     return MUSIC_LIST[mmdd][0];
   }
-  else {
-    let index = (Number(dd) - 1) % MUSIC_LIST[season].length;
-    return MUSIC_LIST[season][index];
+	else {
+		let list = MUSIC_LIST[season] || [];
+    let index = (Number(dd) - 1) % list.length;
+    return list[index];
   }
 };
 
