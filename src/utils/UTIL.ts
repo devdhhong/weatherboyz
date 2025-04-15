@@ -239,7 +239,19 @@ const getMainMsg = function () {
   //기타
   else {
     // msg = "🕯️";
-    msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ 🍊 ☀️ 🦄";
+		const targetDate = moment("2025-03-17", "YYYY-MM-DD");
+		const diffDay = targetDate.diff(moment(), "days");
+
+		if(Number(diffDay) > 0){
+			msg = "⭐ 정규 3집 Unexpected 컴백 D-" + diffDay + " ⭐";
+		}
+		else if(Number(diffDay) == 0){
+			msg = "⭐ 정규 3집 Unexpected 컴백 D-DAY ⭐";
+		} 
+		else{
+			msg = "⭐ 정규 3집 Unexpected 컴백 D+" + diffDay + " ⭐";
+		}
+    // msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ 🍊 ☀️ 🦄";
   }
 
   return msg;

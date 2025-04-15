@@ -38,11 +38,25 @@
     240719_지버리쉬
  */
 
-const getCoverImgPath = function(yymmdd){
+interface MusicItem {
+	musicTitle: string;
+	coverImgPath: string;
+	songId: string;
+}
+
+// 계절별 음악 데이터를 포함하는 객체 타입 정의
+interface SeasonalMusic {
+	spring: MusicItem[];
+	summer?: MusicItem[];
+	autumn?: MusicItem[];
+	winter?: MusicItem[];
+}
+		
+const getCoverImgPath = function(yymmdd: string){
     return "/images/ALBUM_COVER/" + yymmdd + ".png";
 }
 
-const MUSIC_LIST = {
+const MUSIC_LIST: SeasonalMusic = {
     //3,4,5월
     "spring": [
         {

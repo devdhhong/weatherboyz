@@ -106,7 +106,52 @@ function getViewportHeight() {
 @import "./scss/theme.scss";
 
 html {
-  background-color: var(--background-color-2);
+  // background-color: #aa3030;
+}
+
+.ion-page {
+	background-color: #a07777;
+
+	overflow-x: hidden; /* 기본적으로 가로 스크롤 방지 */
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+
+	/* PC 및 태블릿에서 컨텐츠를 480px로 고정 */
+	
+	// /* 특정 크기 이하(375px 이하)에서 가로 스크롤 생성 */
+	// @media (max-width: 375px) {
+	// body {
+	// 		overflow-x: auto;
+	// }
+
+	// .ion-page {
+	// 		min-width: 375px;
+	// }
+	// }
+}
+
+@media (min-width: 540px) {
+	.ion-page {
+		max-width: 540px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
+	#MainView {
+		background-color: #dfdfdf;
+	}
+
+}	
+
+/* ✅ 특정 크기 이하(375px 이하)에서 가로 스크롤 생성 */
+@media (max-width: 375px) {
+    html, body {
+        overflow-x: auto;
+    }
+
+    .ion-page {
+        min-width: 375px;
+    }
 }
 
 #MainView,
