@@ -46,10 +46,11 @@ interface MusicItem {
 
 // 계절별 음악 데이터를 포함하는 객체 타입 정의
 interface SeasonalMusic {
-	spring: MusicItem[];
+	spring?: MusicItem[];
 	summer?: MusicItem[];
 	autumn?: MusicItem[];
 	winter?: MusicItem[];
+	[key: string]: MusicItem[] | undefined;  // ← 요게 핵심!
 }
 		
 const getCoverImgPath = function(yymmdd: string){
