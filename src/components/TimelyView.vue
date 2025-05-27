@@ -2,7 +2,7 @@
   <div id="TimelyView">
     <div class="scroll-area">
       <div class="timelyCard" v-for="(weather, index) in weatherTime" :key="index">
-        <p class="date">{{ getCurrentTime(weather) }}{{timelyHeight}}</p>
+        <p class="date">{{ getCurrentTime(weather) }}</p>
         <img :src="getWeatherIcon(weatherCode[index], moment(weather).format('HHmm'))" alt="" />
         <p class="temperature">{{ Math.round(weatherTemp[index]) }}°</p>
       </div>
@@ -29,7 +29,7 @@ function isMobile() {
   
   // 화면 크기도 체크
   const isSmallScreen = window.innerWidth <= 768;
-  
+  alert(window.innerWidth)
   return (isAndroid || isIOS || isMobileDevice) && isSmallScreen;
 }
 
