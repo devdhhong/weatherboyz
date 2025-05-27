@@ -129,7 +129,7 @@ function getViewportHeight() {
   position: relative;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 768px) {
   .app-container {
     padding: 0;
   }

@@ -115,4 +115,17 @@ function getWeatherIcon(code: number, time: any){
     }
   }
 }
+
+@media screen and (max-width: 344px) {
+  #TimelyView {
+    .scroll-area {
+      .timelyCard {
+        //온도
+        .temperature {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}
 </style>
