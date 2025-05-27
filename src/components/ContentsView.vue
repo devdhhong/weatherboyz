@@ -60,7 +60,7 @@ function initData(){
 
 #ContentsView {
   width: 100%;
-  height: 47%;
+  height: $contents_height;
   position: fixed;
   top: $header_height + $current_height + $message_height;
 
@@ -69,8 +69,8 @@ function initData(){
     height: 100%;
 
     img {
-      padding-bottom: 8%;
-      height: 90%;
+      // padding-bottom: 8%;
+      height: 70%;
     }
   }
 

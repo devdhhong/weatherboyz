@@ -109,24 +109,37 @@ function getViewportHeight() {
 @import "./scss/common.scss";
 @import "./scss/theme.scss";
 
+#app {
+  width: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
+  background-color: var(--background-color-2);
+  position: relative;
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
 .app-container {
   width: 100%;
   height: 100vh;
+  height: -webkit-fill-available;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: var(--background-color-2);
 }
 
 .mobile-frame {
   width: 100%;
+  max-width: 414px;
   height: 100%;
-  max-width: 425px;
-  background: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  border-radius: 20px;
+  height: -webkit-fill-available;
+  margin: 0 auto;
   position: relative;
+  background-color: var(--background-color-2);
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
 }
 
 @media screen and (max-width: 768px) {
@@ -135,20 +148,21 @@ function getViewportHeight() {
   }
   
   .mobile-frame {
-    max-width: 100%;
-    height: 100%;
+    max-width: none;
     border-radius: 0;
     box-shadow: none;
+    background-color: var(--background-color-2);
   }
 }
 
 ion-app {
   width: 100%;
   height: 100%;
+  height: -webkit-fill-available;
   position: absolute;
   top: 0;
   left: 0;
-	background-color: var(--background-color-2);
+  background-color: var(--background-color-2);
 }
 
 #MainView,
