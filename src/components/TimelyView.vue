@@ -2,7 +2,7 @@
   <div id="TimelyView">
     <div class="scroll-area">
       <div class="timelyCard" v-for="(weather, index) in weatherTime" :key="index">
-        <p class="date">{{ getCurrentTime(weather) }}</p>
+        <p class="date">{{ getCurrentTime(weather) }}{{timelyHeight}}</p>
         <img :src="getWeatherIcon(weatherCode[index], moment(weather).format('HHmm'))" alt="" />
         <p class="temperature">{{ Math.round(weatherTemp[index]) }}°</p>
       </div>
@@ -13,12 +13,17 @@
 <script setup lang="ts">
 import * as UTIL from "@/utils/UTIL.js";
 import moment from "moment";
-import { onBeforeMount, watch } from "vue";
+import { onBeforeMount, watch, ref } from "vue";
 
-let weather: Weather ;
+let weather: Weather;
 let weatherTime = {};
 let weatherCode = {};
 let weatherTemp = {};
+const timelyHeight = ref(isMobile() ? '22%' : '15%');
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
 
 let props = defineProps(["isFetchedData"]);
 
@@ -60,7 +65,7 @@ function getWeatherIcon(code: number, time: any){
 
 #TimelyView {
   width: 100%;
-  height: $timely_height;
+  height: v-bind(timelyHeight);
   background-color: var(--background-color-3);
   position: fixed;
   bottom: 0;
