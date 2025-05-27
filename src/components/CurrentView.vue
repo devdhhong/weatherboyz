@@ -16,7 +16,7 @@
       <div class="songCover">
         <img :src="todayMusicData?.coverImgPath" alt=""/>
       </div>
-      <div>{{ todayMusicData?.musicTitle }}</div>
+      <div class="songTitle">{{ todayMusicData?.musicTitle }}</div>
     </div>
   </div>
   <div id="MessageView">
@@ -176,11 +176,19 @@ function openYoutubeMusic() {
     }
 
     //노래명
-    div:nth-child(3) {
+    .songTitle {
       @include text-style-4;
       color: var(--text-color-1);
       width: 100%;
-      height: 10%;
+      height: auto;
+      min-height: 10%;
+      word-wrap: break-word;
+      text-align: center;
+      padding: 0 5%;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   }
 }

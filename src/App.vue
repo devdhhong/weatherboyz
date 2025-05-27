@@ -1,7 +1,11 @@
 <template>
-  <ion-app>
-    <router-view/>
-  </ion-app>
+  <div class="app-container">
+    <div class="mobile-frame">
+      <ion-app>
+        <router-view/>
+      </ion-app>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -105,58 +109,40 @@ function getViewportHeight() {
 @import "./scss/common.scss";
 @import "./scss/theme.scss";
 
-html {
-  // background-color: #aa3030;
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
 }
 
-.ion-page {
-	background-color: #a07777;
-
-	overflow-x: hidden; /* 기본적으로 가로 스크롤 방지 */
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-
-	/* PC 및 태블릿에서 컨텐츠를 480px로 고정 */
-	
-	// /* 특정 크기 이하(375px 이하)에서 가로 스크롤 생성 */
-	// @media (max-width: 375px) {
-	// body {
-	// 		overflow-x: auto;
-	// }
-
-	// .ion-page {
-	// 		min-width: 375px;
-	// }
-	// }
+.mobile-frame {
+  width: calc(100vh * (9/19.5)); /* 세로 높이에 비례하여 가로 넓이 계산 */
+  max-width: 414px; /* 최대 너비 제한 */
+  height: 100vh; /* 화면 높이의 100% */
+  max-height: 896px; /* 최대 높이 제한 */
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-radius: 20px;
+  margin: 0 auto;
+  position: relative;
 }
 
-@media (min-width: 540px) {
-	.ion-page {
-		max-width: 540px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	}
-
-	#MainView {
-		background-color: #dfdfdf;
-	}
-
-}	
-
-/* ✅ 특정 크기 이하(375px 이하)에서 가로 스크롤 생성 */
-@media (max-width: 375px) {
-    html, body {
-        overflow-x: auto;
-    }
-
-    .ion-page {
-        min-width: 375px;
-    }
+ion-app {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #MainView,
 #SettingView,
 #OOTDView {
-  height: var(--viewport-height); // CSS 변수 사용
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 </style>
