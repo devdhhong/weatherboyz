@@ -148,6 +148,7 @@ ion-app {
   position: absolute;
   top: 0;
   left: 0;
+	background-color: var(--background-color-2);
 }
 
 #MainView,
