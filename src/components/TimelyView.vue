@@ -29,7 +29,6 @@ function isMobile() {
   
   // 화면 크기도 체크
   const isSmallScreen = window.innerWidth <= 768;
-  alert(window.innerWidth)
   return (isAndroid || isIOS || isMobileDevice) && isSmallScreen;
 }
 
@@ -111,19 +110,6 @@ function getWeatherIcon(code: number, time: any){
       .temperature {
         @include text-style-3;
         color: var(--text-color-1);
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 344px) {
-  #TimelyView {
-    .scroll-area {
-      .timelyCard {
-        //온도
-        .temperature {
-          font-size: 0.8rem;
-        }
       }
     }
   }

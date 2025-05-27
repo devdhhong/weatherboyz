@@ -193,6 +193,18 @@ function openYoutubeMusic() {
   }
 }
 
+@media screen and (max-width: 344px) {
+  #CurrentView {
+    .infoView:nth-child(1) {
+      .temperature {
+        p {
+          font-size: 1.6rem !important;
+        }
+      }
+    }
+  }
+}
+
 // 이벤트 메세지
 #MessageView {
   @include center;
