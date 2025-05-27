@@ -121,7 +121,7 @@ function getViewportHeight() {
 .mobile-frame {
   width: 100%;
   height: 100%;
-  max-width: 414px;
+  max-width: 425px;
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -129,7 +129,7 @@ function getViewportHeight() {
   position: relative;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 425px) {
   .app-container {
     padding: 0;
   }
