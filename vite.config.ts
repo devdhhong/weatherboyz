@@ -4,6 +4,7 @@ import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,15 +22,21 @@ export default defineConfig({
     //     }
     //   }
     // }),
-    legacy()
+    legacy({
+      targets: ['defaults', 'not IE 11']
+    })
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
   test: {
     globals: true,
     environment: 'jsdom'
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 8100
   }
 })

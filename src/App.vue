@@ -110,24 +110,36 @@ function getViewportHeight() {
 @import "./scss/theme.scss";
 
 .app-container {
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background-color: #f0f0f0;
 }
 
 .mobile-frame {
-  width: calc(100vh * (9/19.5)); /* 세로 높이에 비례하여 가로 넓이 계산 */
-  max-width: 414px; /* 최대 너비 제한 */
-  height: 100vh; /* 화면 높이의 100% */
-  max-height: 896px; /* 최대 높이 제한 */
+  width: 100%;
+  height: 100%;
+  max-width: 414px;
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   border-radius: 20px;
-  margin: 0 auto;
   position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .app-container {
+    padding: 0;
+  }
+  
+  .mobile-frame {
+    max-width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 
 ion-app {
