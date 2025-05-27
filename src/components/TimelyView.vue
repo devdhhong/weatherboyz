@@ -64,21 +64,24 @@ function getWeatherIcon(code: number, time: any){
   background-color: var(--background-color-3);
   position: fixed;
   bottom: 0;
+  left: 0;
   border-radius: 20px 20px 0 0;
-  padding-bottom: max(env(safe-area-inset-bottom), 20px);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 100;
 
   .scroll-area {
     width: 100%;
-    height: calc(100% - max(env(safe-area-inset-bottom), 20px));
+    height: 100%;
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
     padding-top: 3%;
-    
+    -webkit-overflow-scrolling: touch;
 
     .timelyCard {
       text-align: center;
-      flex: 0 0 25%; //기본으로 보이는 아이템 수를 설정
+      flex: 0 0 25%;
+      min-width: 80px;
 
       //날짜
       .date {
