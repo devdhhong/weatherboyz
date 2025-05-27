@@ -22,7 +22,15 @@ let weatherTemp = {};
 const timelyHeight = ref(isMobile() ? '22%' : '15%');
 
 function isMobile() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isAndroid = /android/i.test(userAgent);
+  const isIOS = /iphone|ipad|ipod/i.test(userAgent);
+  const isMobileDevice = /mobile/i.test(userAgent);
+  
+  // 화면 크기도 체크
+  const isSmallScreen = window.innerWidth <= 768;
+  
+  return (isAndroid || isIOS || isMobileDevice) && isSmallScreen;
 }
 
 let props = defineProps(["isFetchedData"]);
