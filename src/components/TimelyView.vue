@@ -65,10 +65,11 @@ function getWeatherIcon(code: number, time: any){
   position: fixed;
   bottom: 0;
   border-radius: 20px 20px 0 0;
-  padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
+  padding-bottom: max(env(safe-area-inset-bottom), 20px);
 
   .scroll-area {
     width: 100%;
+    height: calc(100% - max(env(safe-area-inset-bottom), 20px));
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
