@@ -16,7 +16,7 @@
       <div class="songCover">
         <img :src="todayMusicData?.coverImgPath" alt=""/>
       </div>
-      <div class="songTitle">{{ todayMusicData?.musicTitle }}</div>
+      <!-- <div class="songTitle">{{ todayMusicData?.musicTitle }}</div> -->
     </div>
   </div>
   <div id="MessageView">
@@ -167,7 +167,8 @@ function openYoutubeMusic() {
     div:nth-child(2) {
       width: 100%;
       height: 80%;
-      padding: 5% 0;
+      padding: 5% 0%;
+			margin-top: 10%;
 
       img {
         height: 100%;
