@@ -19,7 +19,8 @@ let weather: Weather;
 let weatherTime = {};
 let weatherCode = {};
 let weatherTemp = {};
-const timelyHeight = ref(isMobile() ? '22%' : '15%');
+const timelyHeight = ref(isMobile() ? '15%' : '10%');
+// const timelyHeight = ref(isMobile() ? '22%' : '15%');
 
 function isMobile() {
   const userAgent = navigator.userAgent.toLowerCase();
