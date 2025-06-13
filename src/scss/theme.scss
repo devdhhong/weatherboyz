@@ -1,0 +1,34 @@
+//라이트 테마
+:root {
+    --border-color-1: #0F1035;
+    --border-color-2: #C4C4C4;
+    --background-color-1: #0F1035;
+    --background-color-2: #ffffff;
+    --background-color-3: rgb(222, 239, 255);
+    --background-color-4: rgb(239, 247, 255);
+    --text-color-1: #0F1035;
+    --text-color-2: #ffffff;
+		--shadow-color-1: rgba(97, 97, 97, 0.2);
+		--shadow-color-2: rgba(0, 0, 0, 0.13);
+}
+
+//다크 테마
+.dark-mode {
+	--border-color-1: #ffffff;
+	--border-color-2: #C4C4C4;
+	--background-color-1: #ffffff;
+	--background-color-2: #0F1035;
+	--background-color-3: rgb(184, 193, 201);
+	--background-color-4: rgb(202, 208, 212);
+	--text-color-1: #ffffff;
+	--text-color-2: #0F1035;
+	--shadow-color-1: rgb(89, 97, 105);
+	--shadow-color-2: rgba(0, 0, 0, 0.541);
+}
+
+html {
+--bubble-style-1: url("../../public/images/bubble_round_black.png");
+--bubble-style-2: url("../../public/images/bubble_round_white.png");
+--bubble-style-3: url("../../public/images/bubble_square_black.png");
+--bubble-style-4: url("../../public/images/bubble_square_white.png");
+}

@@ -1,0 +1,29 @@
+{
+  "테마": "THEME",
+  "화면": "DISPLAY",
+  "언어": "LANGUAGE",
+  "설정": "SETTING",
+  "라이트 모드": "light mode",
+  "다크 모드": "dark mode",
+  "공유 하기": "share",
+  "문의 사항": "qna",
+
+  "랜덤": "random",
+  "상연": "sangyeon",
+  "제이콥": "jacob",
+  "영훈": "younghoon",
+  "현재": "hyunjae",
+  "주연": "juyeon",
+  "케빈": "kevin",
+  "뉴": "new",
+  "큐": "q",
+  "학년": "haknyeon",
+  "선우": "sunwoo",
+  "에릭": "eric",
+
+  "체감온도": "체감온도",
+  "미세먼지": "미세먼지",
+  "초미세먼지": "초미세먼지",
+  "오늘의 노래": "TODAY",
+  "도": "°C"
+}

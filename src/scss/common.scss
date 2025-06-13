@@ -1,0 +1,223 @@
+//-----------------------------------------------
+// GOOGLE FONT LINK
+//-----------------------------------------------
+// #Noto Sans Korean
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+// #Poppins
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+// #Be Vietnam Pro
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+
+@mixin left() {
+  display: flex;
+  align-items: center;
+}
+
+@mixin center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin center-sb() {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin center-se() {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+@mixin c-center() {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+@mixin c-center-c() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+@mixin c-center-sb() {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+@mixin c-center-se() {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+// 텍스트
+@mixin text-style-1() { //헤더
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+@mixin text-style-2() { 
+  margin-left: 3%;
+  font-size: 2.2rem;
+  font-weight: 1000;
+}
+
+@mixin text-style-3() {
+  font-size: 1.0rem;
+  font-weight: 600;
+}
+
+@mixin text-style-4() {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 170%;
+}
+
+@mixin text-style-5() {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+@mixin text-style-99() {
+  font-size: 10px;
+  font-weight: 300;
+}
+
+//-----------------------------------------------
+// 변수
+//-----------------------------------------------
+// 높이
+$header_height: 10%;
+$current_height: 22%;
+$message_height: 6%;
+$contents_height: 40%;
+$timely_height: 0%;
+
+$option_height: 90%;
+$lucky_height: 20%;
+$fashion_height: 70%;
+
+//아이콘
+.fa-solid {
+  color : var(--background-color-2)
+}
+
+.fa-solid.reverse {
+  color : var(--background-color-1)
+}
+
+
+//깜박임 효과
+.blinking {
+  animation: blink 2s infinite; /* 애니메이션 적용 */
+}
+
+@keyframes blink {
+  0%, 50%, 100% {
+    opacity: 1; /* 가시적 상태 */
+  }
+  25%, 75% {
+    opacity: 0; /* 비가시적 상태 */
+  }
+}
+
+//슬라이드 효과
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up-enter-active {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+//스크롤
+.scroll-area {
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// 라디오 버튼
+label {
+  @include text-style-4;
+  color: var(--text-color-1);
+  margin-left: 3%;
+}
+
+input[type="radio"] {
+  appearance: none;
+  border: max(2px, 0.1em) solid gray;
+  border-radius: 50%;
+  width: 1.25em;
+  height: 1.25em;
+  transition: border 0.5s ease-in-out;
+  color: var(--text-color-1);
+
+  &:checked {
+    border: 0.3em solid var(--text-color-1);
+  }
+
+  [type="radio"]:hover {
+    box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+    cursor: pointer;
+  }
+
+  [type="radio"]:hover + span {
+    cursor: pointer;
+  }
+
+  [type="radio"]:disabled {
+    background-color: lightgray;
+    box-shadow: none;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+// 셀렉트 박스
+select {
+  @include text-style-4;
+  height: 33px;
+  background-color: var(--background-color-3);
+  color: var(--text-color-1);
+  width: 30%;
+  margin-top: 16px;
+  border-radius: 10px;
+  padding-left: 1%;
+}
+
+// 공통 disabled 스타일
+input, button {
+  &:disabled {
+    background-color: #f5f5f5 !important;  // 연한 회색 배경
+    color: #999 !important;                // 회색 텍스트
+    border-color: #e0e0e0 !important;      // 연한 회색 테두리
+    cursor: not-allowed !important;
+    opacity: 0.7 !important;
+    pointer-events: none !important;       // 클릭 이벤트 방지
+
+    &::placeholder {
+      color: #bbb !important;             // placeholder 텍스트도 회색으로
+    }
+  }
+}
