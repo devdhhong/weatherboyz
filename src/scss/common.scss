@@ -106,13 +106,12 @@ $option_height: 90%;
 $lucky_height: 20%;
 $fashion_height: 70%;
 
-//아이콘
-.fa-solid {
-  color : var(--background-color-2)
+.fa-solid, .fa-brands {
+  color: var(--background-color-2);
 }
 
-.fa-solid.reverse {
-  color : var(--background-color-1)
+.fa-solid.reverse, .fa-brands.reverse {
+  color: var(--background-color-1);
 }
 
 

@@ -58,8 +58,8 @@
       <div class="title" @click="isDownShareTab = !isDownShareTab">{{ $t('공유 하기') }}<i class="fa-solid" :class="{ 'fa-caret-up' : !isDownShareTab, 'fa-caret-down' : isDownShareTab  }"></i></div>
       <ul class="" v-show="isDownShareTab">
         <li>
-          <div class=""><i id="btnShareX" class="fa-solid fa-brands fa-xmark reverse" @click="btnShareX"></i></div>
-          <div class=""><i id="btnShare" class="fa-solid fa-arrow-up-from-bracket reverse" @click="btnShare"></i></div>
+          <div class=""><i id="btnShareX" class="fa-brands fa-x-twitter reverse" @click="btnShareX"></i></div>
+          <div class=""><i id="btnShare" class="fa-solid fa-arrow-up-from-bracket reverse" :class="{ 'disabled': isSharing }" @click="btnShare"></i></div>
         </li>
       </ul>
     </li>
@@ -100,20 +100,21 @@ import * as UTIL from "@/utils/UTIL.js";
 import { onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n"; // i18n 인스턴스 가져오기
 
-let setLanguage = UTIL.getLocalStorageItem('language') || "ko"; //ko or en
-let setMember = UTIL.getLocalStorageItem('member') || "TBZ";
-let setTheme = UTIL.getLocalStorageItem('theme') || "default";
-let setDisplay = UTIL.getLocalStorageItem('display') || "dark"; //Light or Dark
+const setLanguage = UTIL.getLocalStorageItem('language') || "ko"; //ko or en
+const setMember = UTIL.getLocalStorageItem('member') || "TBZ";
+const setTheme = UTIL.getLocalStorageItem('theme') || "default";
+const setDisplay = UTIL.getLocalStorageItem('display') || "dark"; //Light or Dark
 
-let isDownMemberTab = ref(true); // 반응형 상태로 선언
-let isDownThemeTab = ref(true); 
-let isDownDisplayTab = ref(true);
-let isDownLanguageTab = ref(true);
-let isDownShareTab = ref(true);
-let isDownQnaTab = ref(true); 
-let isDownLicenseTab = ref(false);
+const isDownMemberTab = ref(true); // 반응형 상태로 선언
+const isDownThemeTab = ref(true); 
+const isDownDisplayTab = ref(true);
+const isDownLanguageTab = ref(true);
+const isDownShareTab = ref(true);
+const isDownQnaTab = ref(true); 
+const isDownLicenseTab = ref(false);
 
-let version = import.meta.env.VITE_DEPLOY_VERSION || "버전 정보 없음";
+const version = import.meta.env.VITE_DEPLOY_VERSION || "버전 정보 없음";
+const isSharing = ref(false); // 공유 진행 중 상태
 
 const { locale } = useI18n(); // i18n에서 locale을 가져옴
 
@@ -142,59 +143,61 @@ function changeSetting() {
 }
 
 //공유하기 버튼
-function btnShare() {
-  let isAppYn = UTIL.getLocalStorageItem("isAppYn");
-  let isAosYn = UTIL.getLocalStorageItem("isAosYn");
-
-  //안드로이드
-  if (isAppYn == "Y" && isAosYn == "Y") {
-    window.Android.btnShare("weatherboyz! @tbz_weatherboyz");
+async function btnShare() {
+  if (isSharing.value) { // 이미 공유 중이면 함수 종료
+    return;
   }
-  //웹
-  else {
-    //Web Share API는 HTTPS 환경에서만 동작
-    const btnShare = document.getElementById('btnShare');
 
-    btnShare?.addEventListener('click', function () {
+  isSharing.value = true; // 공유 시작
+
+  const isAppYn = UTIL.getLocalStorageItem("isAppYn");
+  const isAosYn = UTIL.getLocalStorageItem("isAosYn");
+
+  try {
+    //안드로이드
+    if (isAppYn == "Y" && isAosYn == "Y") {
+      window.Android.btnShare("weatherboyz! @tbz_weatherboyz");
+    }
+    //웹
+    else {
       if (navigator.share) {
-        navigator.share({
+        await navigator.share({
           title: 'weatherboyz!',
           text: 'https://weatherboyz.netlify.app/',
           url: "https://weatherboyz.netlify.app/",
         });
+      } else {
+        // Web Share API를 지원하지 않는 경우
+        alert('공유하기가 지원되지 않는 브라우저입니다.');
       }
-    });
+    }
+  } catch (error) {
+    console.error('공유하기 실패:', error);
+  } finally {
+    isSharing.value = false; // 공유 완료 (성공/실패 무관)
   }
 }
 
 //트위터 공유하기
 function btnShareX() {
-  const btnShareX = document.getElementById('btnShareX');
+  const text = encodeURIComponent('weatherboyz!\n');
+  const url = encodeURIComponent('https://weatherboyz.netlify.app/' + '\n\n');
+  const hashtags = encodeURIComponent('더보이즈,THEBOYZ'); // 해시태그 추가 가능
+  const via = 'tbz_weatherboyz'; // 트위터 사용자 이름 (@ 없이)
 
-  btnShareX?.addEventListener('click', function () {
-    const text = encodeURIComponent('weatherboyz!\n');
-    const url = encodeURIComponent('https://weatherboyz.netlify.app/' + '\n\n');
-    const hashtags = encodeURIComponent('더보이즈,THEBOYZ'); // 해시태그 추가 가능
-    const via = 'tbz_weatherboyz'; // 트위터 사용자 이름 (@ 없이)
+  const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}&via=${via}`;
 
-    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}&via=${via}`;
-
-    // 트위터 공유 URL로 이동
-    window.open(twitterShareUrl, '_blank');
-  });
+  // 트위터 공유 URL로 이동
+  window.open(twitterShareUrl, '_blank');
 }
 
 //트위터 열기
 function btnOpenX() {
-  const btnOpenX = document.getElementById('btnOpenX');
+  // 연결하고 싶은 트위터 계정
+  const twitterProfileUrl = "https://twitter.com/tbz_weatherboyz";
 
-  btnOpenX?.addEventListener('click', function () {
-    // 연결하고 싶은 트위터 계정
-    const twitterProfileUrl = "https://twitter.com/tbz_weatherboyz";
-
-    // 새 창에서 트위터 프로필로 이동
-    window.open(twitterProfileUrl, '_blank');
-  });
+  // 새 창에서 트위터 프로필로 이동
+  window.open(twitterProfileUrl, '_blank');
 }
 
 </script>

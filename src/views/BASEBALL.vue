@@ -4,8 +4,6 @@
       <div id="container">
         <div id="LUCKYView">
           <HeaderView :title="title" />
-          <FashionView></FashionView>
-          <LuckyView></LuckyView>
         </div>
       </div>
     </ion-content>
@@ -14,10 +12,8 @@
 
 <script setup lang="ts">
 import HeaderView from "@/components/HeaderView.vue";
-import LuckyView from "@/components/LuckyView.vue";
-import FashionView from "@/components/FashionView.vue";
 
-let title = "OOTBZ";
+let title = "숫자 야구";
 </script>
 
 <style lang="scss" scoped></style>
