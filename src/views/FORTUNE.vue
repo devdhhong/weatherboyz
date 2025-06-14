@@ -628,7 +628,6 @@ label {
     color: var(--text-color-1);
     text-align: center;
     margin-bottom: 24px;
-    font-weight: 600;
   }
 
   .result-container {
