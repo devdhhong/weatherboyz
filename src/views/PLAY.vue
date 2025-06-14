@@ -5,8 +5,8 @@
         <div id="PLAYView">
           <HeaderView :title="title" />
           <div class="button-container">
-            <ion-button class="custom-button" @click="btnFortune">🍀 오늘의 운세 🍀</ion-button>
-            <ion-button class="custom-button" @click="btnBaseball">⚾ 숫자 야구 ⚾</ion-button>
+            <button class="custom-button" @click="btnFortune">🍀 오늘의 운세 🍀</button>
+            <button class="custom-button" @click="btnBaseball">⚾ 숫자 야구 ⚾</button>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
 import router from "@/router";
 import HeaderView from "@/components/HeaderView.vue";
 
-const title = "PLAY test";
+const title = "PLAY";
 
 function btnFortune() {
   router.push("/FORTUNE");

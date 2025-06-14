@@ -43,7 +43,6 @@
         <p>{{ props.title }}</p>
       </div>
       <div class="btnClose" @click="btnClose">
-        <!-- <ion-back-button defaultHref="/"><i class="fa-solid fa-xmark fa-xl"></i></ion-back-button> -->
         <i class="fa-solid fa-xmark fa-xl reverse"></i>
       </div>
     </div>
@@ -58,7 +57,6 @@
         <p>{{ props.title }}</p>
       </div>
       <div class="btnClose" @click="btnClose">
-        <!-- <ion-back-button defaultHref="/"><i class="fa-solid fa-xmark fa-xl"></i></ion-back-button> -->
         <i class="fa-solid fa-xmark fa-xl reverse"></i>
       </div>
     </div>
