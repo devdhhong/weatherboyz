@@ -50,12 +50,12 @@ function btnBaseball() {
 }
 
 .custom-button {
+  @include text-style-4;
   width: 100%;
   background: var(--background-color-1);
   color: var(--text-color-2);
   border-radius: 8px;
-  height: 55px;
-  font-weight: 500;
+  height: 70px;
 	box-shadow: 5px 5px 10px var(--shadow-color-1);
 }
 </style>
