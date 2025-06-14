@@ -18,7 +18,7 @@
 import router from "@/router";
 import HeaderView from "@/components/HeaderView.vue";
 
-let title = "PLAY";
+const title = "PLAY";
 
 function btnFortune() {
   router.push("/FORTUNE");
