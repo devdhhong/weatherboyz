@@ -6,7 +6,7 @@
           <HeaderView :title="title" />
           
           <!-- 모든 주요 콘텐츠를 감싸는 래퍼 -->
-          <div class="main-content-wrapper">
+          <div class="main-content-wrapper scroll-area">
             <!-- 새로운 가로 버튼 영역 (모드 선택) -->
             <div class="top-buttons-container">
               <button class="mode-button">?</button>
@@ -14,122 +14,51 @@
               <button class="mode-button">?</button>
               <button class="mode-button">?</button>
             </div>
-
             
             <!-- 히스토리 제목 -->
-            <!-- <h2 class="history-title">히스토리</h2> -->
+            <h2 class="result-title" v-if="gameResult == 'S'">🥳 성공 🥳{{ answer }}</h2>
+            <h2 class="result-title" v-if="gameTurn >= 11 && gameResult != 'S'">🥺 실패 🥺{{ answer }}</h2>
 
             <!-- 히스토리 영역 래퍼 (제목과 스크롤 가능한 목록 포함) -->
             <div class="history-section-wrapper">
+              <!-- 게임 시작 버튼 -->
+              <button class="game-start-button" @click="btnGameStart" v-if="!isStartGame">
+                <span>게임 시작 ⚾️</span>
+              </button>
+
               <!-- 입력한 숫자 버튼 목록 컨테이너 (스크롤 가능) -->
-              <div class="entered-number-buttons-list-container">
-                <!-- 각 히스토리 항목(입력된 숫자 셋트)은 이 안에 추가될 것 -->
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">1회</span>
+              <div class="entered-number-buttons-list-container" v-if="isStartGame">
+                <!-- 기존 히스토리 항목들 임시 숨김 처리 -->
+                <div class="entered-number-buttons-row"  v-for="(number, index) in enteredNumberList" :key="index">
+                  <span class="turn-label">{{ index+1 }}회</span>
                   <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
+                    <button class="entered-number-button" :class="{ checked : number.split('/')[0] != '?' }">{{ number.split("/")[0] }}</button>
+                    <button class="entered-number-button" :class="{ checked : number.split('/')[1] != '?' }">{{ number.split("/")[1] }}</button>
+                    <button class="entered-number-button" :class="{ checked : number.split('/')[2] != '?' }">{{ number.split("/")[2] }}</button>
+                    <button class="entered-number-button" :class="{ checked : number.split('/')[3] != '?' }">{{ number.split("/")[3] }}</button>
                   </div>
-                  <span class="result-label">1S1B</span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">2회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">3회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">4회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">5회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">6회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">7회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">8회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
-                </div>
-                <div class="entered-number-buttons-row">
-                  <span class="turn-label">9회</span>
-                  <div class="entered-number-buttons-group">
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                    <button class="entered-number-button">?</button>
-                  </div>
-                  <span class="result-label"></span>
+                  <span class="result-label">{{ Number(gameTurn) > index ? markingAnswer(number) : "" }}</span>
                 </div>
               </div>
             </div>
 
             
             <!-- 숫자 입력 및 입력 버튼 영역 -->
-            <div class="number-input-container">
-              <input type="number" placeholder="숫자를 입력해주세요" class="custom-input number-input">
-              <button class="custom-button input-button">입력</button>
+            <div class="number-input-container" v-if="isStartGame">
+              <input type="text" placeholder="1~11 숫자를 입력해주세요 :3" class="custom-input number-input" v-model="enteredNumber">
+              <button class="custom-button input-button" @click="btnEnter">입력</button>
             </div>
             
-            <!-- 게임 리셋 버튼 추가 -->
-            <button class="custom-button reset-button">게임 리셋</button>
-
-            <div class="game-start-container" style="display: none;">
-              <img src="https://pbs.twimg.com/media/EXOOgxwUEAA6lsb.jpg:large" alt="게임 시작 이미지" class="game-intro-image" />
-              <button class="custom-button start-button">시작하기 ⚾️</button>
+            <!-- 공유 버튼 컨테이너 -->
+            <div class="share-buttons-container">
+              <button class="share-button">
+                <i class="fa-solid fa-circle-question reverse fa-sm"></i>
+                <div>게임방법</div>
+              </button>
+              <button class="share-button" @click="btnGameRestart" v-if="isStartGame">
+                <i class="fa-solid fa-rotate-right reverse fa-sm"></i>
+                <div>다시시작</div>
+              </button>
             </div>
           </div>
         </div>
@@ -139,9 +68,105 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, nextTick } from "vue";
 import HeaderView from "@/components/HeaderView.vue";
 
 const title = "숫자 야구";
+const answer = ref('');
+const enteredNumber = ref('');
+const enteredNumberList = ref<string[]>([]);
+const isStartGame = ref(false);
+const gameTurn = ref(0);
+const gameResult = ref("");
+
+onMounted(() => {
+  console.log(getRandomNumbers());
+
+  
+});
+
+function btnEnter(){
+  //앞뒤 공백제거
+  enteredNumber.value = enteredNumber.value.trim();
+
+  //유효성 검증
+  if(!isValidNumberPattern(enteredNumber.value)){
+    alert("올바른 형태로 입력해주세요. 예) 9/8/11/3")
+    return;
+  }
+  else if(enteredNumber.value == answer.value){
+    gameResult.value = "S";
+  }
+  else {
+    //이력에 추가    
+    enteredNumberList.value[gameTurn.value] = enteredNumber.value;
+
+    gameTurn.value++;
+    
+    //인풋창 초기화
+    enteredNumber.value = "";
+  }
+  
+}
+
+//게임시작 버튼
+function btnGameStart(){
+  //숫자 뽑기
+  answer.value = getRandomNumbers();
+
+  //이력 초기화
+  enteredNumberList.value = Array.from({ length: 11 }, () => "?/?/?/?"); 
+
+  isStartGame.value = true;
+}
+
+//게임 다시시작 버튼
+function btnGameRestart(){
+  alert("게임을 다시 시작합니다!")
+  isStartGame.value = false;
+}
+
+//랜덤 숫자 뽑기
+function getRandomNumbers(): string {
+  const pool = Array.from({ length: 11 }, (_, i) => i + 1); // [1, 2, ..., 11]
+  const result: number[] = [];
+
+  while (result.length < 4) {
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    const number = pool.splice(randomIndex, 1)[0]; // 꺼내고 제거
+    result.push(number);
+  }
+
+  return result.join("/");
+}
+
+//입력값 체크 (숫자/숫자/숫자/숫자 형태로만 입력가능/숫자는 1~11만 입력 가능)
+function isValidNumberPattern(input: string): boolean {
+  const regex = /^(?:1[0-1]|[1-9])\/(?:1[0-1]|[1-9])\/(?:1[0-1]|[1-9])\/(?:1[0-1]|[1-9])$/;
+  return regex.test(input);
+}
+
+//입력한 값 채점
+function markingAnswer(input: string): string{
+  const guessList = input.split("/");
+  const answerList = answer.value.split("/");
+
+
+  let strike = 0;
+  let ball = 0;
+
+  for (let i = 0; i < 4; i++) {
+    if (guessList[i] === answerList[i]) {
+      strike++;
+    } else if (answerList.includes(guessList[i])) {
+      ball++;
+    }
+  }
+
+  return `${strike}S${ball}B`;
+}
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -199,18 +224,22 @@ const title = "숫자 야구";
 // 히스토리 섹션 래퍼 (제목과 스크롤 가능한 목록을 포함)
 .history-section-wrapper {
   @include c-center;
-  width: 100%; // main-content-wrapper 안에서 100%
+  width: 100%;
   background: var(--background-color-4);
-  border-radius: 16px; // 12px에서 16px로 변경
+  border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 25px;
   margin: 20px 0;
+  // 버튼과 리스트를 세로로 배치하기 위한 스타일 추가
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 // 히스토리 제목 스타일
-.history-title {
+.result-title {
   @include text-style-1;
-  color: var(--text-color-1);
+  color: var(--alert-color-1);
   text-align: center;
 }
 
@@ -238,9 +267,7 @@ const title = "숫자 야구";
 
 // 히스토리 항목의 각 줄 (3개 버튼 포함)
 .entered-number-buttons-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include center-sb;
   width: 100%;
   gap: 10px;
 }
@@ -283,6 +310,11 @@ const title = "숫자 야구";
   box-shadow: 2px 2px 5px var(--shadow-color-1);
   cursor: default;
   transition: all 0.3s ease;
+
+  &.checked {
+    background: var(--background-color-1);
+    color: var(--text-color-2);
+  }
 }
 
 .game-start-container {
@@ -361,23 +393,59 @@ const title = "숫자 야구";
   box-sizing: border-box;
 }
 
-// 게임 리셋 버튼 스타일
-.reset-button {
-  @include text-style-5;
-  width: 25%;
-  background: var(--alert-color-3); // 다른 배경색 사용
+// 공유 버튼 컨테이너 스타일
+.share-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.share-button {
+  @include center;
   color: var(--text-color-1);
-  border-radius: 8px;
-  border: none;
-  height: 30px; // 입력 버튼보다 약간 작게
-  box-shadow: 3px 3px 6px var(--shadow-color-1);
+  width: 85px;
+  height: 35px;
+  border-radius: 8px; // 원형으로 변경
+  background: var(--alert-color-3);
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-bottom: 20px; // 하단 여백 추가
+  gap: 5px;
+  
+  div {
+    @include text-style-5;
+  }
 
   &:active {
     transform: translateY(0);
-    background: var(--background-color-4); // 클릭 시 색상 변경
+  }
+}
+
+// 게임 시작 버튼 스타일
+.game-start-button {
+  @include center;
+  background: var(--background-color-1);
+  color: var(--text-color-2);
+  border-radius: 12px;
+  border: none;
+  padding: 16px 32px;
+  margin: 36px 0px;
+  min-width: 150px;
+  height: 60px;
+  box-shadow: 0 4px 12px var(--shadow-color-1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: center; // 버튼을 중앙에 배치
+
+  span {
+    @include text-style-3;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px var(--shadow-color-1);
   }
 }
 
