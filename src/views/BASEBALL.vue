@@ -42,7 +42,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S1B</span>
+                  <span class="result-label"></span>
                 </div>
                 <div class="entered-number-buttons-row">
                   <span class="turn-label">3회</span>
@@ -52,7 +52,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S1B</span>
+                  <span class="result-label"></span>
                 </div>
                 <div class="entered-number-buttons-row">
                   <span class="turn-label">4회</span>
@@ -62,7 +62,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S1B</span>
+                  <span class="result-label"></span>
                 </div>
                 <div class="entered-number-buttons-row">
                   <span class="turn-label">5회</span>
@@ -72,7 +72,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S1B</span>
+                  <span class="result-label"></span>
                 </div>
                 <div class="entered-number-buttons-row">
                   <span class="turn-label">6회</span>
@@ -82,7 +82,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S1B</span>
+                  <span class="result-label"></span>
                 </div>
                 <div class="entered-number-buttons-row">
                   <span class="turn-label">7회</span>
@@ -92,7 +92,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S1B</span>
+                  <span class="result-label"></span>
                 </div>
                 <div class="entered-number-buttons-row">
                   <span class="turn-label">8회</span>
@@ -102,7 +102,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S 1B</span>
+                  <span class="result-label"></span>
                 </div>
                 <div class="entered-number-buttons-row">
                   <span class="turn-label">9회</span>
@@ -112,7 +112,7 @@
                     <button class="entered-number-button">?</button>
                     <button class="entered-number-button">?</button>
                   </div>
-                  <span class="result-label">1S 1B</span>
+                  <span class="result-label"></span>
                 </div>
               </div>
             </div>
@@ -278,8 +278,8 @@ const title = "숫자 야구";
   color: var(--text-color-1);
   border-radius: 5px;
   border: 1px solid var(--border-color-1);
-  width: 30px;
-  height: 45px;
+  width: 35px;
+  height: 50px;
   box-shadow: 2px 2px 5px var(--shadow-color-1);
   cursor: default;
   transition: all 0.3s ease;
