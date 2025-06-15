@@ -17,7 +17,7 @@
 
             
             <!-- 히스토리 제목 -->
-            <h2 class="history-title">히스토리</h2>
+            <!-- <h2 class="history-title">히스토리</h2> -->
 
             <!-- 히스토리 영역 래퍼 (제목과 스크롤 가능한 목록 포함) -->
             <div class="history-section-wrapper">
@@ -117,11 +117,15 @@
               </div>
             </div>
 
+            
             <!-- 숫자 입력 및 입력 버튼 영역 -->
             <div class="number-input-container">
               <input type="number" placeholder="숫자를 입력해주세요" class="custom-input number-input">
               <button class="custom-button input-button">입력</button>
             </div>
+            
+            <!-- 게임 리셋 버튼 추가 -->
+            <button class="custom-button reset-button">게임 리셋</button>
 
             <div class="game-start-container" style="display: none;">
               <img src="https://pbs.twimg.com/media/EXOOgxwUEAA6lsb.jpg:large" alt="게임 시작 이미지" class="game-intro-image" />
@@ -157,12 +161,10 @@ const title = "숫자 야구";
 
 // 모든 주요 콘텐츠를 감싸는 래퍼 스타일
 .main-content-wrapper {
+  @include c-center;
   width: 100%;
-  padding: 0 16px; // 좌우 여백 (fortune.vue의 .fortune-result와 유사)
+  padding: 0 24px; // 좌우 여백 (fortune.vue의 .fortune-result와 유사)
   flex-grow: 1; // 남은 세로 공간을 채움
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 
@@ -196,15 +198,13 @@ const title = "숫자 야구";
 
 // 히스토리 섹션 래퍼 (제목과 스크롤 가능한 목록을 포함)
 .history-section-wrapper {
+  @include c-center;
   width: 100%; // main-content-wrapper 안에서 100%
   background: var(--background-color-4);
   border-radius: 16px; // 12px에서 16px로 변경
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 25px;
   margin: 20px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 // 히스토리 제목 스타일
@@ -264,7 +264,7 @@ const title = "숫자 야구";
 }
 
 .result-label {
-  color: #ff0004;
+  color: var(--alert-color-2);
   font-weight: bold;
   min-width: 60px;
   text-align: center;
@@ -329,21 +329,24 @@ const title = "숫자 야구";
 .number-input-container {
   display: flex;
   width: 100%;
-  padding: 10px 0; // 좌우 패딩 제거
+  padding: 10px 0;
   gap: 10px;
   margin-bottom: 20px;
   align-items: center;
+  min-height: 55px;
 }
 
 .number-input {
   @include text-style-4;
-  flex: 3;
+  width: calc(75% - 5px);
   height: 55px;
   padding: 0 16px;
   border: 1px solid var(--border-color-1);
   border-radius: 8px;
   background: var(--background-color-2);
   color: var(--text-color-1);
+  min-width: 0;
+  box-sizing: border-box;
 
   &::placeholder {
     color: var(--text-color-1);
@@ -352,11 +355,30 @@ const title = "숫자 야구";
 }
 
 .input-button {
-  flex: 1;
+  width: calc(25% - 5px);
   height: 55px;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-:root {
-  --color-red: #ff4d4f;
+// 게임 리셋 버튼 스타일
+.reset-button {
+  @include text-style-5;
+  width: 25%;
+  background: var(--alert-color-3); // 다른 배경색 사용
+  color: var(--text-color-1);
+  border-radius: 8px;
+  border: none;
+  height: 30px; // 입력 버튼보다 약간 작게
+  box-shadow: 3px 3px 6px var(--shadow-color-1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px; // 하단 여백 추가
+
+  &:active {
+    transform: translateY(0);
+    background: var(--background-color-4); // 클릭 시 색상 변경
+  }
 }
+
 </style>

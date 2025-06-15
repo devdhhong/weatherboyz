@@ -110,7 +110,7 @@ const isAM = ref(true);
 const isLoading = ref(false);
 const fortuneResultCnt = ref(0);
 const isRememberInfo = ref(false); //다음에 기억하기
-const showResult = ref(false);
+const showResult = ref(true);
 let fortuneInfo = {
 	name: "",
 	birthdate: "",
@@ -621,7 +621,7 @@ label {
 .fortune-result {
   margin-top: 24px;
   margin-bottom: 48px;
-  padding: 0 16px;
+  padding: 0 24px;
 
   .fortune-result-title {
     @include text-style-1;
