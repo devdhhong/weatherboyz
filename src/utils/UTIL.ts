@@ -333,7 +333,7 @@ const getTodayMusic = function () {
 const getReverseGeocode = async function () {
   try {
     // axios.get()는 Promise를 반환
-    const response = await axios.get(`${CONST.NOMINATIM_BASE_URL}reverse`, {
+    const response = await axios.get(`/nominatim/reverse`, {
       params: {
         latitude: getLocalStorageItem('latitude'),
         longitude: getLocalStorageItem('longitude'),
@@ -341,13 +341,29 @@ const getReverseGeocode = async function () {
         lon: getLocalStorageItem('longitude'),
         format: "json",
         // addressdetails: 1,
-      }
+      },
+      timeout: 10000 // 10초 타임아웃
     });
 
     setLocalStorageItem("address", response.data); // 성공적으로 받아온 데이터 저장
 
-  } catch (error) {
-    console.error('Error occurred while fetching air quality:', error);
+  } catch (error: any) {
+    console.error('Error occurred while fetching reverse geocode:', error);
+    
+    // CORS 에러인 경우 기본 주소 정보 설정
+    if (error.code === 'ERR_NETWORK' || error.message?.includes('CORS')) {
+      console.warn('CORS error detected, using fallback address data');
+      const fallbackAddress = {
+        display_name: "서울특별시",
+        address: {
+          city: "서울특별시",
+          country: "대한민국"
+        }
+      };
+      setLocalStorageItem("address", fallbackAddress);
+      return; // 에러를 throw하지 않고 기본값 사용
+    }
+    
     throw error; // 상위 호출부로 에러 전달
   }
 };

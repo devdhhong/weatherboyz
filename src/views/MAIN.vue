@@ -34,19 +34,37 @@ onBeforeMount(() => {
 async function fetchData() {
   try {
     // 역지오코딩
-    await UTIL.getReverseGeocode();
+    try {
+      await UTIL.getReverseGeocode();
+    } 
+		catch (error) {
+      console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
+    }
 
     // 날씨정보 조회
-    await UTIL.getWeather();
+    try {
+      await UTIL.getWeather();
+    } 
+		catch (error) {
+      console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
+    }
 
     // 대기정보 조회
-    await UTIL.getAirQuality();
+    try {
+      await UTIL.getAirQuality();
+    } 
+		catch (error) {
+      console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
+    }
 
     // 데이터 패치 여부
     isFetchedData.value = true;
 
-  } catch (error) {
-    console.error('Error occurred:', error);
+  } 
+	catch (error) {
+    console.error('에러 발생했닿... ', error);
+    // 최소한의 데이터라도 표시하기 위해 true로 설정
+    isFetchedData.value = true;
   }
 }
 

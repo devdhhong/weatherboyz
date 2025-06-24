@@ -100,10 +100,10 @@ import * as UTIL from "@/utils/UTIL.js";
 import { onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n"; // i18n 인스턴스 가져오기
 
-const setLanguage = UTIL.getLocalStorageItem('language') || "ko"; //ko or en
-const setMember = UTIL.getLocalStorageItem('member') || "TBZ";
-const setTheme = UTIL.getLocalStorageItem('theme') || "default";
-const setDisplay = UTIL.getLocalStorageItem('display') || "dark"; //Light or Dark
+const setLanguage = ref(UTIL.getLocalStorageItem('language') || "ko"); //ko or en
+const setMember = ref(UTIL.getLocalStorageItem('member') || "TBZ");
+const setTheme = ref(UTIL.getLocalStorageItem('theme') || "default");
+const setDisplay = ref(UTIL.getLocalStorageItem('display') || "dark"); //Light or Dark
 
 const isDownMemberTab = ref(true); // 반응형 상태로 선언
 const isDownThemeTab = ref(true); 
@@ -123,10 +123,10 @@ onBeforeMount(() => {
 
 //옵션 변경
 function changeSetting() {
-  UTIL.setLocalStorageItem('language', setLanguage);
-  UTIL.setLocalStorageItem('display', setDisplay);
-  UTIL.setLocalStorageItem('member', setMember);
-  UTIL.setLocalStorageItem('theme', setTheme);
+  UTIL.setLocalStorageItem('language', setLanguage.value);
+  UTIL.setLocalStorageItem('display', setDisplay.value);
+  UTIL.setLocalStorageItem('member', setMember.value);
+  UTIL.setLocalStorageItem('theme', setTheme.value);
 
   // 설정 초기화
   document.documentElement.classList.remove('dark-mode','light-mode'); //display
@@ -134,12 +134,12 @@ function changeSetting() {
   document.documentElement.classList.remove('default-mode', 'baby-mode'); //theme
   document.documentElement.classList.remove('TBZ-mode', 'SY-mode', 'JC-mode', 'YH-mode', 'HJ-mode', 'JY-mode', 'KV-mode', 'NW-mode', 'QQ-mode', 'HN-mode', 'SW-mode', 'ER-mode'); //member
 
-  document.documentElement.classList.add(setDisplay + '-mode');
-  document.documentElement.classList.add(setLanguage + '-mode');
-  document.documentElement.classList.add(setMember + '-mode');
-  document.documentElement.classList.add(setTheme + '-mode');
+  document.documentElement.classList.add(setDisplay.value + '-mode');
+  document.documentElement.classList.add(setLanguage.value + '-mode');
+  document.documentElement.classList.add(setMember.value + '-mode');
+  document.documentElement.classList.add(setTheme.value + '-mode');
 
-  locale.value = setLanguage; // 언어 변경
+  locale.value = setLanguage.value; // 언어 변경
 }
 
 //공유하기 버튼

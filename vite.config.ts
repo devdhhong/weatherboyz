@@ -10,18 +10,6 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
   plugins: [
     vue(),
-    // vue({
-    //   template: {
-    //     compilerOptions: {
-    //       // 'ion-'으로 시작하는 태그들을 커스텀 엘리먼트로 인식하도록 설정
-    //     //   isCustomElement: (tag) => {
-    //     //     console.log(tag);
-    //     //     return tag.startsWith('ion-');
-    //     //   }
-    //       isCustomElement: (tag) => tag.startsWith('ion-')
-    //     }
-    //   }
-    // }),
     legacy({
       targets: ['defaults', 'not IE 11']
     })
@@ -37,6 +25,14 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
-    port: 8100
+    port: 8100,
+		//프록시를 추가하여 CORS 문제를 해결
+    proxy: {
+      '/nominatim': {
+        target: "https://nominatim.openstreetmap.org",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/nominatim/, '')
+      }
+    }
   }
 })

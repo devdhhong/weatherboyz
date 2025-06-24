@@ -46,8 +46,6 @@ function initData(){
 
     weather = JSON.parse(UTIL.getLocalStorageItem('weather'));
     imgPath = UTIL.getWeatherMain(weather.current.weather_code, member);
-
-		console.log(weather);
   }
 }
 

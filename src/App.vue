@@ -16,37 +16,95 @@ import * as UTIL from "@/utils/UTIL.js";
 
 let isHideModal = UTIL.getLocalStorageItem('isHideModal') == "true";
 
-setInit();
+setInit();console.error("⭐💢🔴🟠🟡❤️🌀위치 정보를 제공안함");
 
 function setInit() {
-  // 디바이스 정보
-  if (window?.Android) {
-    UTIL.setLocalStorageItem("isAppYn", "Y");
-    UTIL.setLocalStorageItem("isAosYn", "N");
+	// 디바이스 정보
+	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+	const isApp = !!window.BMCManager || (window.webkit ? (window.webkit.messageHandlers ? (window.webkit.messageHandlers.BMCManager ? true : false) : false) : false);
+	const isAndroid = /android/i.test(userAgent);
+	const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+	const isMobile = userAgent && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
-    window.Android.receiveLocation = function (latitude: Number, longitude: Number) {
-    // window.receiveLocation = function (latitude, longitude) {
-      //위치 정보 저장
-      if (latitude && longitude) {
-        UTIL.setLocalStorageItem("latitude", latitude);
-        UTIL.setLocalStorageItem("longitude", longitude);
-      }
-      else {
-        UTIL.setLocalStorageItem("latitude", 37.5276364);
-        UTIL.setLocalStorageItem("longitude", 127.0344407);
-      }
+	UTIL.setLocalStorageItem("isApp", isApp);
+	UTIL.setLocalStorageItem("isAppYn", isAndroid);
+	UTIL.setLocalStorageItem("isAppYn", isIOS);
+	UTIL.setLocalStorageItem("isAppYn", isMobile);
+	
+	//웹
+	if(!isApp){
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					const lat = position.coords.latitude;
+					const lon = position.coords.longitude;
+					console.log("위도:", lat, "경도:", lon);
+				},
+				(error) => {
+					//완주고등학교
+					UTIL.setLocalStorageItem("latitude", 35.9412417);
+					UTIL.setLocalStorageItem("longitude", 127.1672728);
+				}
+			);
+		} 
+		else {
+			console.error("⭐⭐⭐⭐⭐ 위치 정보를 제공안함");
+			//완주고등학교
+			UTIL.setLocalStorageItem("latitude", 35.9412417);
+			UTIL.setLocalStorageItem("longitude", 127.1672728);
+		}
+	}
+	//앱
+	else{
+		if (isAndroid) {
+			window.Android.receiveLocation = function (latitude: Number, longitude: Number) {
+			// window.receiveLocation = function (latitude, longitude) {
+				//위치 정보 저장
+				if (latitude && longitude) {
+					UTIL.setLocalStorageItem("latitude", latitude);
+					UTIL.setLocalStorageItem("longitude", longitude);
+				}
+				else {
+					UTIL.setLocalStorageItem("latitude", 37.5276364);
+					UTIL.setLocalStorageItem("longitude", 127.0344407);
+				}
 
-      writeLog("Lat: " + latitude + "Lon: " + longitude); // Vue 인스턴스의 메서드를 호출
-    };
-  }
-  //테스트용
-  else {
-    UTIL.setLocalStorageItem("isAppYn", "N");
-    UTIL.setLocalStorageItem("isAosYn", "N");
+				writeLog("Lat: " + latitude + "Lon: " + longitude); // Vue 인스턴스의 메서드를 호출
+			};
+		}
+		else if (isIOS) {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+					(position) => {
+						const lat = position.coords.latitude;
+						const lon = position.coords.longitude;
+						console.log("위도:", lat, "경도:", lon);
+					},
+					(error) => {
+						//완주고등학교
+						UTIL.setLocalStorageItem("latitude", 35.9412417);
+						UTIL.setLocalStorageItem("longitude", 127.1672728);
+					}
+				);
+			} 
+			else {
+				console.error("⭐⭐⭐⭐⭐ 위치 정보를 제공안함");
+				//완주고등학교
+				UTIL.setLocalStorageItem("latitude", 35.9412417);
+				UTIL.setLocalStorageItem("longitude", 127.1672728);
+			}
+		}
+	}
 
-    UTIL.setLocalStorageItem("latitude", 37.5276364);
-    UTIL.setLocalStorageItem("longitude", 127.0344407);
-  }
+  // //테스트용
+  // else {
+	// 	console.warn('테스트 주소값 노출 중');
+  //   UTIL.setLocalStorageItem("isAppYn", "N");
+  //   UTIL.setLocalStorageItem("isAosYn", "N");
+
+  //   UTIL.setLocalStorageItem("latitude", 37.5276364);
+  //   UTIL.setLocalStorageItem("longitude", 127.0344407);
+  // }
 
   // 뷰포트 높이를 CSS 변수에 할당
   document.documentElement.style.setProperty('--viewport-height', getViewportHeight() + 'px');

@@ -46,7 +46,7 @@ watch(() => props.isFetchedData, (newValue) => {
     //데이터 모두 받은 후에 파싱 처리
     if (newValue) {
       initData();
-   }
+   	}
   }
 );
 

@@ -150,7 +150,7 @@ onMounted(() => {
 	}
 
 	isUnknown.value = fortuneInfo.birthtime == "";
-	isAM.value = fortuneInfo.birthtimeType == "AM";
+	isAM.value = fortuneInfo.birthtimeType != "PM";
 
 });
 
