@@ -51,6 +51,7 @@ declare global {
 
   type Address = {
     borough: string,
+    county: string
   };
 }
 

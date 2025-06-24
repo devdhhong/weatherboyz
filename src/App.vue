@@ -39,6 +39,7 @@ function setInit() {
 					const lat = position.coords.latitude;
 					const lon = position.coords.longitude;
 					console.log("위도:", lat, "경도:", lon);
+					console.log(position);
 				},
 				(error) => {
           console.log(error);

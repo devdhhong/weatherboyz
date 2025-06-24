@@ -67,7 +67,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeMount, onMounted, watch } from "vue";
 import router from "@/router";
-import { useIonRouter } from '@ionic/vue';
 import * as UTIL from "@/utils/UTIL.js";
 
 let props = defineProps(["title", "isFetchedData"]);
