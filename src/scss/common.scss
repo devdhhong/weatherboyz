@@ -114,6 +114,9 @@ $fashion_height: 70%;
   color: var(--background-color-1);
 }
 
+.nodata {
+  @include center;
+}
 
 //깜박임 효과
 .blinking {

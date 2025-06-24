@@ -1,17 +1,25 @@
 <template>
   <div id="CurrentView">
-    <div class="infoView">
-        <div class="temperature">
-          <img :src="weatherIcon" alt="" />
-          <p>{{ temperature }}{{ $t('도') }}</p>
-        </div>
-        <div class="weatherInfo">
-          <div class="feelTemp">{{ $t('체감온도') }} : {{ apparent_temperature }}도</div>
-          <div class="fineDust">{{ $t('미세먼지') }}: {{ pm10 }}</div>
-          <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ pm2_5 }}</div>
-        </div>
+    <!-- 스켈레톤 UI -->
+    <div class="infoView nodata" v-if="!props.isFetchedData">
+      <img src="../../public/images/loading_small.gif" alt="">
     </div>
-    <div class="infoView" @click="openYoutubeMusic">
+    <div class="infoView nodata" v-if="!props.isFetchedData">
+      <img src="../../public/images/loading_small.gif" alt="">
+    </div>
+
+    <div class="infoView" v-if="props.isFetchedData">
+      <div class="temperature">
+        <img :src="weatherIcon" alt="" />
+        <p>{{ temperature }}{{ $t('도') }}</p>
+      </div>
+      <div class="weatherInfo">
+        <div class="feelTemp">{{ $t('체감온도') }} : {{ apparent_temperature }}도</div>
+        <div class="fineDust">{{ $t('미세먼지') }}: {{ pm10 }}</div>
+        <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ pm2_5 }}</div>
+      </div>
+    </div>
+    <div class="infoView" v-if="props.isFetchedData" @click="openYoutubeMusic">
       <div>{{ $t('오늘의 노래') }} 🎹</div>
       <div class="songCover">
         <img :src="todayMusicData?.coverImgPath" alt=""/>
@@ -25,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, watch } from "vue";
+import { watch } from "vue";
 import * as UTIL from "@/utils/UTIL.js";
 import { onMounted } from "vue";
 import moment from "moment";
@@ -40,7 +48,7 @@ let todayMusicData: Music;
 let airQuality: AirQuality;
 let weather: Weather;
 
-let props = defineProps(["isFetchedData"]);
+const props = defineProps(["isFetchedData"]);
 
 watch(() => props.isFetchedData, (newValue) => {
     //데이터 모두 받은 후에 파싱 처리
@@ -78,11 +86,11 @@ function initData(){
 
 
 function openYoutubeMusic() {
-  let isAppYn = localStorage.getItem("isAppYn");
-  let isAosYn = localStorage.getItem("isAosYn");
+  const isAPP = localStorage.getItem("isAPP");
+  const isAOS = localStorage.getItem("isAOS");
 
   //안드로이드
-  if (isAppYn == "Y" && isAosYn == "Y") {
+  if (isAPP && isAOS) {
     window.Android.openOtherApp("youtube-music://song?id=" + todayMusicData.songId, "market://details?id=com.google.android.apps.youtube.music");
   }
   //웹
