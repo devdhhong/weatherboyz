@@ -17,7 +17,7 @@
             
             <!-- 히스토리 제목 -->
             <h2 class="result-title" v-if="gameResult == 'S'">🥳 성공 🥳{{ answer }}</h2>
-            <h2 class="result-title" v-if="gameTurn >= 11 && gameResult != 'S'">🥺 실패 🥺{{ answer }}</h2>
+            <h2 class="result-title" v-if="gameTurn >= 10 && gameResult != 'S'">🥺 실패 🥺{{ answer }}</h2>
 
             <!-- 히스토리 영역 래퍼 (제목과 스크롤 가능한 목록 포함) -->
             <div class="history-section-wrapper">
@@ -45,13 +45,13 @@
             
             <!-- 숫자 입력 및 입력 버튼 영역 -->
             <div class="number-input-container" v-if="isStartGame">
-              <input type="text" placeholder="1~11 숫자를 입력해주세요 :3" class="custom-input number-input" v-model="enteredNumber">
+              <input type="text" placeholder="0~9 숫자를 입력해주세요 :3" class="custom-input number-input" v-model="enteredNumber">
               <button class="custom-button input-button" @click="btnEnter">입력</button>
             </div>
             
             <!-- 공유 버튼 컨테이너 -->
             <div class="share-buttons-container">
-              <button class="share-button">
+              <button class="share-button" @click="btnGameRule">
                 <i class="fa-solid fa-circle-question reverse fa-sm"></i>
                 <div>게임방법</div>
               </button>
@@ -60,6 +60,18 @@
                 <div>다시시작</div>
               </button>
             </div>
+
+            <!-- 게임 방법 -->
+             <div class="game-rule-area" v-if="isRuleVisible">
+                <!-- <h3>⚾️ 게임 방법 ⚾️</h3> -->
+                <p>
+                  1. 0~9 사이의 중복되지 않는 4개의 숫자를 맞춰보세요.<br>
+                  2. 숫자는 맞지만 위치가 다르면 볼(B)입니다.<br>
+                  3. 숫자와 위치가 모두 맞으면 스트라이크(S)입니다.<br>
+                  4. 4S를 기록하면 게임에서 승리합니다!<br>
+                  5. 총 10번의 기회가 주어집니다.<br>
+                </p>
+             </div>
           </div>
         </div>
       </div>
@@ -68,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from "vue";
+import { onMounted, ref } from "vue";
 import HeaderView from "@/components/HeaderView.vue";
 
 const title = "숫자 야구";
@@ -78,11 +90,10 @@ const enteredNumberList = ref<string[]>([]);
 const isStartGame = ref(false);
 const gameTurn = ref(0);
 const gameResult = ref("");
+const isRuleVisible = ref(false);
 
 onMounted(() => {
   console.log(getRandomNumbers());
-
-  
 });
 
 function btnEnter(){
@@ -91,7 +102,7 @@ function btnEnter(){
 
   //유효성 검증
   if(!isValidNumberPattern(enteredNumber.value)){
-    alert("올바른 형태로 입력해주세요. 예) 9/8/11/3")
+    alert("올바른 형태로 입력해주세요. 예) 1/2/0/6")
     return;
   }
   else if(enteredNumber.value == answer.value){
@@ -115,20 +126,20 @@ function btnGameStart(){
   answer.value = getRandomNumbers();
 
   //이력 초기화
-  enteredNumberList.value = Array.from({ length: 11 }, () => "?/?/?/?"); 
+  enteredNumberList.value = Array.from({ length: 10 }, () => "?/?/?/?"); 
 
   isStartGame.value = true;
 }
 
 //게임 다시시작 버튼
 function btnGameRestart(){
-  alert("게임을 다시 시작합니다!")
+  alert("게임을 다시 시작합니다!");
   isStartGame.value = false;
 }
 
 //랜덤 숫자 뽑기
 function getRandomNumbers(): string {
-  const pool = Array.from({ length: 11 }, (_, i) => i + 1); // [1, 2, ..., 11]
+  const pool = Array.from({ length: 10 }, (_, i) => i + 1); // [1, 2, ..., 11]
   const result: number[] = [];
 
   while (result.length < 4) {
@@ -140,9 +151,9 @@ function getRandomNumbers(): string {
   return result.join("/");
 }
 
-//입력값 체크 (숫자/숫자/숫자/숫자 형태로만 입력가능/숫자는 1~11만 입력 가능)
+//입력값 체크 (숫자/숫자/숫자/숫자 형태로만 입력가능/숫자는 0~9만 입력 가능)
 function isValidNumberPattern(input: string): boolean {
-  const regex = /^(?:1[0-1]|[1-9])\/(?:1[0-1]|[1-9])\/(?:1[0-1]|[1-9])\/(?:1[0-1]|[1-9])$/;
+  const regex = /^[0-9]\/[0-9]\/[0-9]\/[0-9]$/;
   return regex.test(input);
 }
 
@@ -166,6 +177,10 @@ function markingAnswer(input: string): string{
   return `${strike}S${ball}B`;
 }
 
+//게임방법
+function btnGameRule(){
+  isRuleVisible.value = !isRuleVisible.value;
+}
 
 </script>
 
@@ -446,6 +461,28 @@ function markingAnswer(input: string): string{
   &:active {
     transform: translateY(0);
     box-shadow: 0 2px 8px var(--shadow-color-1);
+  }
+}
+
+.game-rule-area {
+  width: 100%;
+  background: var(--alert-color-4);
+  border-radius: 16px;
+  padding: 20px;
+  color: var(--text-color-1);
+
+  h3 {
+    @include text-style-3;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  p {
+    @include text-style-5;
+    white-space: pre-wrap;
+    text-align: left;
+    line-height: 1.8;
   }
 }
 

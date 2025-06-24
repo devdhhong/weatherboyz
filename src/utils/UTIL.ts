@@ -345,6 +345,7 @@ const getReverseGeocode = async function () {
       timeout: 10000 // 10초 타임아웃
     });
 
+    console.log(response);
     setLocalStorageItem("address", response.data); // 성공적으로 받아온 데이터 저장
 
   } catch (error: any) {

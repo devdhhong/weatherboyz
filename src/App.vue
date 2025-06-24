@@ -36,24 +36,26 @@ function setInit() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
+          console.log(position);
 					const lat = position.coords.latitude;
 					const lon = position.coords.longitude;
-					console.log("위도:", lat, "경도:", lon);
-					console.log(position);
+
+          UTIL.setLocalStorageItem("latitude", lat);
+					UTIL.setLocalStorageItem("longitude", lon);
 				},
 				(error) => {
-          console.log(error);
 					//완주고등학교
-					UTIL.setLocalStorageItem("latitude", 35.9412417);
-					UTIL.setLocalStorageItem("longitude", 127.1672728);
+					UTIL.setLocalStorageItem("latitude", "35.9412417");
+					UTIL.setLocalStorageItem("longitude", "127.1672728");
 				}
 			);
 		} 
 		else {
 			console.error("⭐⭐⭐⭐⭐ 위치 정보를 제공안함");
+
 			//완주고등학교
-			UTIL.setLocalStorageItem("latitude", 35.9412417);
-			UTIL.setLocalStorageItem("longitude", 127.1672728);
+      UTIL.setLocalStorageItem("latitude", "35.9412417");
+      UTIL.setLocalStorageItem("longitude", "127.1672728");
 		}
 	}
 	//앱
@@ -68,8 +70,8 @@ function setInit() {
 				}
 				else {
           //완주고등학교
-          UTIL.setLocalStorageItem("latitude", 35.9412417);
-					UTIL.setLocalStorageItem("longitude", 127.1672728);
+          UTIL.setLocalStorageItem("latitude", "35.9412417");
+					UTIL.setLocalStorageItem("longitude", "127.1672728");
 				}
 
 				writeLog("Lat: " + latitude + "Lon: " + longitude); // Vue 인스턴스의 메서드를 호출
@@ -81,20 +83,22 @@ function setInit() {
 					(position) => {
 						const lat = position.coords.latitude;
 						const lon = position.coords.longitude;
-						console.log("위도:", lat, "경도:", lon);
+
+            UTIL.setLocalStorageItem("latitude", lat);
+            UTIL.setLocalStorageItem("longitude", lon);
 					},
 					(error) => {
 						//완주고등학교
-						UTIL.setLocalStorageItem("latitude", 35.9412417);
-						UTIL.setLocalStorageItem("longitude", 127.1672728);
+						UTIL.setLocalStorageItem("latitude", "35.9412417");
+					  UTIL.setLocalStorageItem("longitude", "127.1672728");
 					}
 				);
 			} 
 			else {
 				console.error("⭐⭐⭐⭐⭐ 위치 정보를 제공안함");
 				//완주고등학교
-				UTIL.setLocalStorageItem("latitude", 35.9412417);
-				UTIL.setLocalStorageItem("longitude", 127.1672728);
+        UTIL.setLocalStorageItem("latitude", "35.9412417");
+        UTIL.setLocalStorageItem("longitude", "127.1672728");
 			}
 		}
 	}
