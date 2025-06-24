@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     Android?: any; // window에 포함될 전역 변수 declare
+    opera?: any; // window에 포함될 전역 변수 declare
     BMCManager?: any; // window에 포함될 전역 변수 declare
     webkit?: any; // window에 포함될 전역 변수 declare
     MSStream?: any;

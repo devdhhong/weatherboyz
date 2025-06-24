@@ -12,7 +12,7 @@
 				<i class="fa-solid fa-puzzle-piece fa-xl reverse"></i>
       </div>
       <div class="title">
-        <p>{{ address?.borough }}</p>
+        <p>{{ address?.borough || address?.county }}</p>
       </div>
       <div class="btnRight" @click="btnSetting">
         <i class="fa-solid fa-gear fa-lg reverse"></i>

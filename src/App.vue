@@ -16,7 +16,7 @@ import * as UTIL from "@/utils/UTIL.js";
 
 let isHideModal = UTIL.getLocalStorageItem('isHideModal') == "true";
 
-setInit();console.error("⭐💢🔴🟠🟡❤️🌀위치 정보를 제공안함");
+setInit();
 
 function setInit() {
 	// 디바이스 정보
@@ -41,6 +41,7 @@ function setInit() {
 					console.log("위도:", lat, "경도:", lon);
 				},
 				(error) => {
+          console.log(error);
 					//완주고등학교
 					UTIL.setLocalStorageItem("latitude", 35.9412417);
 					UTIL.setLocalStorageItem("longitude", 127.1672728);
@@ -65,8 +66,9 @@ function setInit() {
 					UTIL.setLocalStorageItem("longitude", longitude);
 				}
 				else {
-					UTIL.setLocalStorageItem("latitude", 37.5276364);
-					UTIL.setLocalStorageItem("longitude", 127.0344407);
+          //완주고등학교
+          UTIL.setLocalStorageItem("latitude", 35.9412417);
+					UTIL.setLocalStorageItem("longitude", 127.1672728);
 				}
 
 				writeLog("Lat: " + latitude + "Lon: " + longitude); // Vue 인스턴스의 메서드를 호출
@@ -109,10 +111,10 @@ function setInit() {
   // 뷰포트 높이를 CSS 변수에 할당
   document.documentElement.style.setProperty('--viewport-height', getViewportHeight() + 'px');
 
-  let setLanguage = UTIL.getLocalStorageItem('language') || "ko"; //ko or en
-  let setDisplay = UTIL.getLocalStorageItem('display') || "light"; //Light or Dark
-  let setMember = UTIL.getLocalStorageItem('member') || "TBZ";
-  let setTheme = UTIL.getLocalStorageItem('theme') || "default";
+  const setLanguage = UTIL.getLocalStorageItem('language') || "ko"; //ko or en
+  const setDisplay = UTIL.getLocalStorageItem('display') || "light"; //Light or Dark
+  const setMember = UTIL.getLocalStorageItem('member') || "TBZ";
+  const setTheme = UTIL.getLocalStorageItem('theme') || "default";
 
   UTIL.setLocalStorageItem('language', setLanguage);
   UTIL.setLocalStorageItem('display', setDisplay);
