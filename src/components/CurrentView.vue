@@ -24,11 +24,12 @@
       <div class="songCover">
         <img :src="todayMusicData?.coverImgPath" alt=""/>
       </div>
-      <!-- <div class="songTitle">{{ todayMusicData?.musicTitle }}</div> -->
+      <div class="songTitle">{{ todayMusicData?.musicTitle }}</div>
     </div>
   </div>
   <div id="MessageView">
-    <p class="blinking">{{ mainMsg }}</p>
+    <p>{{ mainMsg }}</p>
+    <!-- <p class="blinking">{{ mainMsg }}</p> -->
   </div>
 </template>
 
@@ -95,7 +96,8 @@ function openYoutubeMusic() {
   }
   //웹
   else {
-    const url = "https://music.youtube.com/watch?v=" + todayMusicData.songId;
+    // const url = "https://music.youtube.com/watch?v=" + todayMusicData.songId;
+    const url = "https://music.youtube.com/playlist?list=PLvcGsnP29NrLGuHHAxggx9LY-5yRmSoBd&si=voyNvLpjjiN_H1Id"
     window.open(url, '_blank');
   }
 }

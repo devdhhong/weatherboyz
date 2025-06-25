@@ -19,10 +19,10 @@ const setLocalStorageItem = function(key: string, value: any) {
 
 // 날씨 아이콘 이미지 경로 조회
 const getWeatherIcon = function (code: number, time: string) {
-  let weather = JSON.parse(getLocalStorageItem("weather"));
-  let sunrise = Number(moment(weather.daily.sunrise[0]).format("HHmm")); //일출시간
-  let sunset = Number(moment(weather.daily.sunset[0]).format("HHmm")); //일몰시간
-  let hhmm = Number(time); //현재시간
+  const weather = JSON.parse(getLocalStorageItem("weather"));
+  const sunrise = Number(moment(weather.daily.sunrise[0]).format("HHmm")); //일출시간
+  const sunset = Number(moment(weather.daily.sunset[0]).format("HHmm")); //일몰시간
+  const hhmm = Number(time); //현재시간
   
   let url = ""; //아이콘 이미지 경로
   const pad = 0; //시간 허용 범위
@@ -108,22 +108,22 @@ const getAirQualityStatus = function (degree1: number, degree2: number) {
 //메인화면 메세지 조회
 const getMainMsg = function () {
   let msg = "";
-  let MMDD = moment().format("MMDD");
-  let hhmm = moment().format("hhmm");
-  let hhmm24 = moment().format("HHmm");
+  const MMDD = moment().format("MMDD");
+  const hhmm = moment().format("hhmm");
+  // const hhmm24 = moment().format("HHmm");
 
-  let birthday = ["1104", "0530", "0808", "0917", "0115", "0223", "0426", "1105", "0309", "0412", "1222", "1206", "0403"];
-  let weather = JSON.parse(getLocalStorageItem("weather"));
-  let airQuality = JSON.parse(getLocalStorageItem("airQuality"));
+  const birthday = ["1104", "0530", "0808", "0917", "0115", "0223", "0426", "1105", "0309", "0412", "1222", "1206", "0403"];
+  const weather = JSON.parse(getLocalStorageItem("weather"));
+  const airQuality = JSON.parse(getLocalStorageItem("airQuality"));
 
   //평균량
-  let rain_6hours = (weather.hourly.rain.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
-  let showers_6hours = (weather.hourly.showers.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
-  let snowfall_6hours = (weather.hourly.snowfall.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
-  let temp_6hours = (weather.hourly.temperature.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
+  const rain_6hours = (weather.hourly.rain.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
+  const showers_6hours = (weather.hourly.showers.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
+  const snowfall_6hours = (weather.hourly.snowfall.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
+  const temp_6hours = (weather.hourly.temperature.slice(0, 6).reduce((acc: number, num: number) => acc + num, 0)) / 6;
 
-  let pm10 = airQuality.current.pm10;
-  let pm2_5 = airQuality.current.pm2_5;
+  const pm10 = airQuality.current.pm10;
+  const pm2_5 = airQuality.current.pm2_5;
 
   //날짜 관련
   //시간
@@ -233,19 +233,19 @@ const getMainMsg = function () {
   //기타
   else {
     // msg = "🕯️";
-		const targetDate = moment("2025-03-17", "YYYY-MM-DD");
-		const diffDay = targetDate.diff(moment(), "days");
+		// const targetDate = moment("2025-03-17", "YYYY-MM-DD");
+		// const diffDay = targetDate.diff(moment(), "days");
 
-		if(Number(diffDay) > 0){
-			msg = "⭐ 정규 3집 Unexpected 컴백 D-" + diffDay + " ⭐";
-		}
-		else if(Number(diffDay) == 0){
-			msg = "⭐ 정규 3집 Unexpected 컴백 D-DAY ⭐";
-		} 
-		else{
-			msg = "⭐ 정규 3집 Unexpected 컴백 D+" + diffDay + " ⭐";
-		}
-    // msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ 🍊 ☀️ 🦄";
+		// if(Number(diffDay) > 0){
+		// 	msg = "⭐ 정규 3집 Unexpected 컴백 D-" + diffDay + " ⭐";
+		// }
+		// else if(Number(diffDay) == 0){
+		// 	msg = "⭐ 정규 3집 Unexpected 컴백 D-DAY ⭐";
+		// } 
+		// else{
+		// 	msg = "⭐ 정규 3집 Unexpected 컴백 D+" + diffDay + " ⭐";
+		// }
+    msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ ☀️ 🦄";
   }
 
   return msg;
@@ -285,14 +285,9 @@ const getWeatherMain = function (code: number, member: string) {
 
 // 오늘의 노래 조회
 const getTodayMusic = function () {
-  let mmdd = moment().format("MMDD");
-  let mm = moment().format("MM");
-  let dd = moment().format("DD");
-
-  // let minTemp = weather.daily.temperature_2m_min;
-  // let maxTemp = weather.daily.temperature_2m_max;
-  // let dailyTemp = [...minTemp, ...maxTemp];
-  // let avgDailyTemp = dailyTemp.reduce((acc, cur) => acc + cur, 0) / (minTemp.length + maxTemp.length);
+  const mmdd = moment().format("MMDD");
+  const mm = moment().format("MM");
+  const dd = moment().format("DD");
 
   let season = "";
   //봄 (3,4,5)
@@ -317,8 +312,8 @@ const getTodayMusic = function () {
     return MUSIC_LIST[mmdd][0];
   }
 	else {
-		let list = MUSIC_LIST[season] || [];
-    let index = (Number(dd) - 1) % list.length;
+		const list = MUSIC_LIST[season] || [];
+    const index = (Number(dd) - 1) % list.length;
     return list[index];
   }
 };
