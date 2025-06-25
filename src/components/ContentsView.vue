@@ -20,7 +20,8 @@ let weather: Weather;
 let imgPath = "";
 let member = "";
 
-let props = defineProps(["isFetchedData"]);
+const props = defineProps(["isFetchedData"]);
+
 watch(() => props.isFetchedData, (newValue) => {
     //데이터 모두 받은 후에 파싱 처리
     if (newValue) {
@@ -34,7 +35,7 @@ onBeforeMount(() => {
 });
 
 function initData(){
-  let TBZ = ["SY", "JC", "YH", "HJ", "JY", "KV", "NW", "QQ", "HN", "SW", "ER"];
+  const TBZ = ["SY", "JC", "YH", "HJ", "JY", "KV", "NW", "QQ", "SW", "ER"];
 
   if(UTIL.getLocalStorageItem('weather') && UTIL.getLocalStorageItem("member")){
     member = UTIL.getLocalStorageItem("member");
@@ -524,61 +525,6 @@ function initData(){
     .bubbleArea2 {
       left: 53%; 
       bottom: 74%;
-      transform: scale(1, 1); //좌우 반전 상하 반전
-    }
-  }
-}
-
-//학년
-.HN-mode {
-  //라이트 모드
-  &.light-mode {
-    .bubbleArea {
-      background-image: var(--bubble-style-2);
-      opacity: 80%;
-    }
-
-    .msg {
-      color: var(--text-color-1);
-    }
-  }
-
-  //다크 모드
-  &.dark-mode {
-    .bubbleArea {
-      background-image: var(--bubble-style-1);
-      opacity: 60%;
-    }
-
-    .msg {
-      color: var(--text-color-2);
-    }
-  }
-  //기본 테마
-  &.default-mode {
-    .bubbleArea1 {
-      left: 67%; 
-      bottom: 74%;
-    }
-
-    .bubbleArea2 {
-      left: 16%; 
-      bottom: 35%;
-      transform: scale(-1, -1); //좌우 반전 상하 반전
-    }
-  }
-
-  //베이비 테마
-  &.baby-mode {
-    .bubbleArea1 {
-      left: 19%; 
-      bottom: 74%;
-      transform: scale(-1, 1); //좌우 반전 상하 반전
-    }
-
-    .bubbleArea2 {
-      left: 63%; 
-      bottom: 58%;
       transform: scale(1, 1); //좌우 반전 상하 반전
     }
   }

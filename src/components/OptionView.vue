@@ -12,7 +12,6 @@
         <option value="KV">{{ $t('케빈') }} 🌙</option>
         <option value="NW">{{ $t('뉴') }} 🐧</option>
         <option value="QQ">{{ $t('큐') }} 🐿️</option>
-        <option value="HN">{{ $t('학년') }} 🍊</option>
         <option value="SW">{{ $t('선우') }} ☀️</option>
         <option value="ER">{{ $t('에릭') }} 🦄</option>
       </select>

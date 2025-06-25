@@ -86,11 +86,11 @@ function initData(){
 
 
 function openYoutubeMusic() {
-  const isAPP = localStorage.getItem("isAPP");
-  const isAOS = localStorage.getItem("isAOS");
+  const isAppYn = localStorage.getItem("isAppYn");
+  const isAosYn = localStorage.getItem("isAosYn");
 
   //안드로이드
-  if (isAPP && isAOS) {
+  if (isAppYn == "Y" && isAosYn == "Y") {
     window.Android.openOtherApp("youtube-music://song?id=" + todayMusicData.songId, "market://details?id=com.google.android.apps.youtube.music");
   }
   //웹

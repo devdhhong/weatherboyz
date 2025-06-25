@@ -152,9 +152,6 @@ const getMainMsg = function () {
     else if (hhmm == "1105") {
       msg = "🐿️ 창민시 🐿️";
     }
-    else if (hhmm == "0309") {
-      msg = " 🍊 학년시 🍊";
-    }
     else if (hhmm == "0412") {
       msg = "☀️ 선우시 ☀️";
     }
@@ -187,9 +184,6 @@ const getMainMsg = function () {
     }
     else if (MMDD == "1105") {
       msg = "🎉 🎂 🥳 HAPPY 큐 BIRTHDAY 🥳 🎂 🎉";
-    }
-    else if (MMDD == "0309") {
-      msg = "🎉 🎂 🥳 HAPPY 학년 BIRTHDAY 🥳 🎂 🎉";
     }
     else if (MMDD == "0412") {
       msg = "🎉 🎂 🥳 HAPPY 선우 BIRTHDAY 🥳 🎂 🎉";

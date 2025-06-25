@@ -10,29 +10,28 @@
 
 <script setup lang="ts">
 import { IonApp } from '@ionic/vue';
-import router from "@/router"; // 라우터 가져오기
 import * as UTIL from "@/utils/UTIL.js";
 // import ToastView from '@/components/ToastView.vue';
 
-let isHideModal = UTIL.getLocalStorageItem('isHideModal') == "true";
+// const isHideModal = UTIL.getLocalStorageItem('isHideModal') == "true";
 
 setInit();
 
 function setInit() {
 	// 디바이스 정보
 	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-	const isApp = !!window.BMCManager || (window.webkit ? (window.webkit.messageHandlers ? (window.webkit.messageHandlers.BMCManager ? true : false) : false) : false);
-	const isAndroid = /android/i.test(userAgent);
+	const isAPP = !!window.BMCManager || (window.webkit ? (window.webkit.messageHandlers ? (window.webkit.messageHandlers.BMCManager ? true : false) : false) : false);
+	const isAOS = /android/i.test(userAgent);
 	const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 	const isMobile = userAgent && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
-	UTIL.setLocalStorageItem("isApp", isApp);
-	UTIL.setLocalStorageItem("isAppYn", isAndroid);
-	UTIL.setLocalStorageItem("isAppYn", isIOS);
-	UTIL.setLocalStorageItem("isAppYn", isMobile);
+	UTIL.setLocalStorageItem("isAppYn", isAPP ? "Y" : "N");
+	UTIL.setLocalStorageItem("isAosYn", isAOS ? "Y" : "N");
+	UTIL.setLocalStorageItem("isIosYn", isIOS ? "Y" : "N");
+	UTIL.setLocalStorageItem("isMobileYn", isMobile ? "Y" : "N");
 	
 	//웹
-	if(!isApp){
+	if(!isAPP){
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
@@ -44,6 +43,8 @@ function setInit() {
 					UTIL.setLocalStorageItem("longitude", lon);
 				},
 				(error) => {
+          console.log(error);
+
 					//완주고등학교
 					UTIL.setLocalStorageItem("latitude", "35.9412417");
 					UTIL.setLocalStorageItem("longitude", "127.1672728");
@@ -51,7 +52,7 @@ function setInit() {
 			);
 		} 
 		else {
-			console.error("⭐⭐⭐⭐⭐ 위치 정보를 제공안함");
+			console.error("⭐⭐⭐⭐⭐ 위치 정보 제공안함");
 
 			//완주고등학교
       UTIL.setLocalStorageItem("latitude", "35.9412417");
@@ -60,7 +61,7 @@ function setInit() {
 	}
 	//앱
 	else{
-		if (isAndroid) {
+		if (isAOS) {
 			window.Android.receiveLocation = function (latitude: Number, longitude: Number) {
 			// window.receiveLocation = function (latitude, longitude) {
 				//위치 정보 저장
@@ -88,10 +89,12 @@ function setInit() {
             UTIL.setLocalStorageItem("longitude", lon);
 					},
 					(error) => {
+            console.log(error);
+
 						//완주고등학교
 						UTIL.setLocalStorageItem("latitude", "35.9412417");
-					  UTIL.setLocalStorageItem("longitude", "127.1672728");
-					}
+            UTIL.setLocalStorageItem("longitude", "127.1672728");
+          }
 				);
 			} 
 			else {
@@ -156,11 +159,11 @@ function writeLog(message : string) {
  */
 // 뷰포트 높이 계산
 function getViewportHeight() {
-  var viewportHeight = window.innerHeight;
+  let viewportHeight = window.innerHeight;
 
   if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-    let layoutRatio = window.outerHeight / window.innerHeight;
-    let taskBarHeight = window.outerHeight - viewportHeight;
+    const layoutRatio = window.outerHeight / window.innerHeight;
+    const taskBarHeight = window.outerHeight - viewportHeight;
     viewportHeight = window.innerHeight * layoutRatio - taskBarHeight;
   }
 
