@@ -9,15 +9,20 @@
           <div class="main-content-wrapper scroll-area">
             <!-- 새로운 가로 버튼 영역 (모드 선택) -->
             <div class="top-buttons-container">
-              <button class="mode-button">?</button>
-              <button class="mode-button">?</button>
-              <button class="mode-button">?</button>
-              <button class="mode-button">?</button>
+              <div class="mode-button-wrapper" v-for="(card, index) in cards" :key="index" @click="flipCard(index)" :class="{ 'flipped': card.isFlipped }">
+                <div class="mode-button-card">
+                  <div class="mode-button front">?</div>
+                  <div class="mode-button back">{{ card.value }}</div>
+                </div>
+              </div>
             </div>
             
             <!-- 히스토리 제목 -->
-            <h2 class="result-title" v-if="gameResult == 'S'">🥳 성공 🥳{{ answer }}</h2>
-            <h2 class="result-title" v-if="gameTurn >= 10 && gameResult != 'S'">🥺 실패 🥺{{ answer }}</h2>
+            <h2 class="result-title" v-if="gameResult == 'S'">🥳 정답 🥳</h2>
+            <p class="result-desc" v-if="gameResult == 'S'">축하합니다! 축하합니다!</p>
+
+            <h2 class="result-title" v-if="gameTurn >= 10 && gameResult != 'S'">🥺 실패 🥺</h2>
+            <p class="result-desc" v-if="gameTurn >= 10 && gameResult != 'S'">카드를 뒤집어서 정답을 확인해보세요!</p>
 
             <!-- 히스토리 영역 래퍼 (제목과 스크롤 가능한 목록 포함) -->
             <div class="history-section-wrapper">
@@ -44,7 +49,7 @@
 
             
             <!-- 숫자 입력 및 입력 버튼 영역 -->
-            <div class="number-input-container" v-if="isStartGame">
+            <div class="number-input-container" v-if="isStartGame && !isDoneGame">
               <input type="text" placeholder="0~9 숫자를 입력해주세요 :3" class="custom-input number-input" v-model="enteredNumber">
               <button class="custom-button input-button" @click="btnEnter">입력</button>
             </div>
@@ -88,12 +93,21 @@ const answer = ref('');
 const enteredNumber = ref('');
 const enteredNumberList = ref<string[]>([]);
 const isStartGame = ref(false);
+const isDoneGame = ref(false);
 const gameTurn = ref(0);
 const gameResult = ref("");
 const isRuleVisible = ref(false);
 
+// 카드 플립 애니메이션을 위한 데이터
+const cards = ref([
+  { isFlipped: false, value: '' },
+  { isFlipped: false, value: '' },
+  { isFlipped: false, value: '' },
+  { isFlipped: false, value: '' },
+]);
+
 onMounted(() => {
-  console.log(getRandomNumbers());
+
 });
 
 function btnEnter(){
@@ -105,8 +119,20 @@ function btnEnter(){
     alert("올바른 형태로 입력해주세요. 예) 1/2/0/6")
     return;
   }
+  //성공
   else if(enteredNumber.value == answer.value){
+    //이력에 추가    
+    enteredNumberList.value[gameTurn.value] = enteredNumber.value;
+
+    gameTurn.value++;
+    
+    //인풋창 초기화
+    enteredNumber.value = "";
+
+    alert("성공!!!");
+
     gameResult.value = "S";
+    isDoneGame.value = true;
   }
   else {
     //이력에 추가    
@@ -116,6 +142,14 @@ function btnEnter(){
     
     //인풋창 초기화
     enteredNumber.value = "";
+
+    //실패
+    if(gameTurn.value == 10){
+      alert("실패!!!");
+
+      gameResult.value = "F";
+      isDoneGame.value = true;
+    }
   }
   
 }
@@ -129,22 +163,37 @@ function btnGameStart(){
   enteredNumberList.value = Array.from({ length: 10 }, () => "?/?/?/?"); 
 
   isStartGame.value = true;
+
+  console.log(answer.value);
 }
 
 //게임 다시시작 버튼
 function btnGameRestart(){
   alert("게임을 다시 시작합니다!");
+
+  //초기화
+  gameTurn.value = 0;
   isStartGame.value = false;
+  isDoneGame.value = false;
+  gameResult.value = "";
+  cards.value = [
+    { isFlipped: false, value: '' },
+    { isFlipped: false, value: '' },
+    { isFlipped: false, value: '' },
+    { isFlipped: false, value: '' },
+  ];
+
 }
 
 //랜덤 숫자 뽑기
 function getRandomNumbers(): string {
-  const pool = Array.from({ length: 10 }, (_, i) => i + 1); // [1, 2, ..., 11]
+  const pool = Array.from({ length: 10 }, (_, i) => i); // [0, 1, ...9]
   const result: number[] = [];
 
   while (result.length < 4) {
     const randomIndex = Math.floor(Math.random() * pool.length);
     const number = pool.splice(randomIndex, 1)[0]; // 꺼내고 제거
+    cards.value[result.length].value = String(number);
     result.push(number);
   }
 
@@ -162,14 +211,16 @@ function markingAnswer(input: string): string{
   const guessList = input.split("/");
   const answerList = answer.value.split("/");
 
-
   let strike = 0;
   let ball = 0;
 
   for (let i = 0; i < 4; i++) {
+    //스트라이크
     if (guessList[i] === answerList[i]) {
       strike++;
-    } else if (answerList.includes(guessList[i])) {
+    } 
+    //볼
+    else if (answerList.includes(guessList[i])) {
       ball++;
     }
   }
@@ -180,6 +231,16 @@ function markingAnswer(input: string): string{
 //게임방법
 function btnGameRule(){
   isRuleVisible.value = !isRuleVisible.value;
+}
+
+//카드 뒤집기
+function flipCard(index: number) {
+  //게임이 끝나기 전까지는 못뒤집도록 함
+  if(!isDoneGame.value){
+    return;
+  }
+
+  cards.value[index].isFlipped = !cards.value[index].isFlipped;
 }
 
 </script>
@@ -216,24 +277,45 @@ function btnGameRule(){
   width: 100%;
   padding: 48px 0 20px 0; // 좌우 패딩 제거
   gap: 10px;
+  perspective: 1000px; /* 3D 효과를 위한 원근감 */
+}
+
+.mode-button-wrapper {
+  cursor: pointer;
+}
+
+.mode-button-card {
+  width: 50px;
+  height: 70px;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.mode-button-wrapper.flipped .mode-button-card {
+  transform: rotateY(180deg);
 }
 
 .mode-button {
   @include text-style-3;
   @include center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  backface-visibility: hidden; /* 뒷면은 보이지 않게 처리 */
+  box-shadow: 2px 2px 5px var(--shadow-color-1);
+}
+
+.mode-button.front {
   background: var(--background-color-1);
   color: var(--text-color-2);
-  border-radius: 8px;
-  border: none;
-  width: 50px;
-  height: 70px;
-  box-shadow: 2px 2px 5px var(--shadow-color-1);
-  cursor: pointer;
-  transition: all 0.3s ease;
+}
 
-  &:active {
-    transform: translateY(0);
-  }
+.mode-button.back {
+  background: var(--background-color-4);
+  color: var(--text-color-1);
+  transform: rotateY(180deg);
 }
 
 // 히스토리 섹션 래퍼 (제목과 스크롤 가능한 목록을 포함)
@@ -254,6 +336,13 @@ function btnGameRule(){
 // 히스토리 제목 스타일
 .result-title {
   @include text-style-1;
+  color: var(--alert-color-1);
+  text-align: center;
+}
+
+// 히스토리 설명 스타일
+.result-desc {
+  @include text-style-4;
   color: var(--alert-color-1);
   text-align: center;
 }
