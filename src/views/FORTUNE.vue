@@ -432,8 +432,8 @@ function btnShareX() {
 
 <style lang="scss" scoped>
 // @import "../scss/reset.scss";
-@import "../scss/common.scss";
-@import "../scss/theme.scss";
+@use "../scss/common.scss" as *;
+@use "../scss/theme.scss" as *;
 
 #FORTUNEView {
   width: 100%;

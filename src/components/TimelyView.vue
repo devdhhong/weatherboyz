@@ -63,9 +63,9 @@ function getWeatherIcon(code: number, time: any){
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/reset.scss";
-@import "../scss/common.scss";
-@import "../scss/theme.scss";
+@use "../scss/common.scss" as *;
+@use "../scss/reset.scss" as *;
+@use "../scss/theme.scss" as *;
 
 #TimelyView {
   width: 100%;

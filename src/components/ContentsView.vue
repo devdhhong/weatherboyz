@@ -53,9 +53,9 @@ function initData(){
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/common.scss";
-@import "../scss/reset.scss";
-@import "../scss/theme.scss";
+@use "../scss/common.scss" as *;
+@use "../scss/reset.scss" as *;
+@use "../scss/theme.scss" as *;
 
 #ContentsView {
   width: 100%;

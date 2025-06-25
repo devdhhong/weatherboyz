@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/common.scss";
+@use "../scss/common.scss" as *;
 // @import "../scss/reset.scss";
 // @import "../scss/theme.scss";
 

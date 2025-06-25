@@ -173,9 +173,9 @@ function getViewportHeight() {
 </script>
 
 <style lang="scss">
-@import "./scss/reset.scss";
-@import "./scss/common.scss";
-@import "./scss/theme.scss";
+@use "./scss/common.scss" as *;
+@use "./scss/reset.scss" as *;
+@use "./scss/theme.scss" as *;
 
 #app {
   width: 100%;

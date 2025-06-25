@@ -185,8 +185,8 @@ function btnGameRule(){
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/common.scss";
-@import "@/scss/theme.scss";
+@use "../scss/common.scss" as *;
+@use "../scss/theme.scss" as *;
 
 #BASEBALLView {
   width: 100%;
@@ -428,6 +428,7 @@ function btnGameRule(){
   cursor: pointer;
   transition: all 0.3s ease;
   gap: 5px;
+  box-shadow: 0 4px 12px var(--shadow-color-1);
   
   div {
     @include text-style-5;
@@ -470,6 +471,7 @@ function btnGameRule(){
   border-radius: 16px;
   padding: 20px;
   color: var(--text-color-1);
+  box-shadow: 0 4px 12px var(--shadow-color-1);
 
   h3 {
     @include text-style-3;
