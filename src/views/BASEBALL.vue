@@ -88,7 +88,7 @@
 import { onMounted, ref } from "vue";
 import HeaderView from "@/components/HeaderView.vue";
 
-const title = "숫자 야구";
+const title = "야구보이즈";
 const answer = ref('');
 const enteredNumber = ref('');
 const enteredNumberList = ref<string[]>([]);
@@ -352,7 +352,7 @@ function flipCard(index: number) {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 200px;
+  max-height: 270px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   gap: 10px;

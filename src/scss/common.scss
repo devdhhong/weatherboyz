@@ -118,6 +118,14 @@ $fashion_height: 70%;
   @include center;
 }
 
+.loading {
+  @include center;
+
+  img {
+    width: 50%;
+  }
+}
+
 //깜박임 효과
 .blinking {
   animation: blink 2s infinite; /* 애니메이션 적용 */

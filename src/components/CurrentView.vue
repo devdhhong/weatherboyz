@@ -1,11 +1,11 @@
 <template>
   <div id="CurrentView">
     <!-- 스켈레톤 UI -->
-    <div class="infoView nodata" v-if="!props.isFetchedData">
-      <img src="../../public/images/loading_small.gif" alt="">
+    <div class="infoView loading" v-if="!props.isFetchedData">
+      <img src="../../public/images/loading_circle_small.gif" alt="">
     </div>
-    <div class="infoView nodata" v-if="!props.isFetchedData">
-      <img src="../../public/images/loading_small.gif" alt="">
+    <div class="infoView loading" v-if="!props.isFetchedData">
+      <img src="../../public/images/loading_circle_small.gif" alt="">
     </div>
 
     <div class="infoView" v-if="props.isFetchedData">
