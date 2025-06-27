@@ -409,10 +409,8 @@ const getSpotifyToken = async function () {
   });
 
   const data = await result.json();
-	console.log(data);
-  return data.access_token;
+	setLocalStorageItem("access_token", data.access_token); 
 };
-
 
 export {
   getLocalStorageItem,

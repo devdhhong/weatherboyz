@@ -101,6 +101,29 @@ function openYoutubeMusic() {
   }
 }
 
+async function getSpotifyAlbumCover(query: string): Promise<string | null> {
+	//저장된 토큰이 없다면, 재발급
+	//TODO 추후에 1시간에 한번 발급하도록 수정하여 불필요한 호출 방지할 것
+	if(!UTIL.getLocalStorageItem('access_token')){
+		await UTIL.getSpotifyToken();
+	}
+
+  const res = await fetch(
+    `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=1`,
+    {
+      headers: {
+        Authorization: `Bearer ${UTIL.getLocalStorageItem('access_token')}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  const image = data.tracks?.items?.[0]?.album?.images?.[0]?.url;
+  return image || null;
+}
+
+
+
 </script>
 
 <style lang="scss" scoped>
