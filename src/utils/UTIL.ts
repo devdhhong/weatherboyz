@@ -283,41 +283,6 @@ const getWeatherMain = function (code: number, member: string) {
   return "/images/THEME/" + theme + "/" + member + ".jpg";
 }
 
-// 오늘의 노래 조회
-const getTodayMusic = function () {
-  const mmdd = moment().format("MMDD");
-  const mm = moment().format("MM");
-  const dd = moment().format("DD");
-
-  let season = "";
-  //봄 (3,4,5)
-  if ([3, 4, 5].indexOf(Number(mm)) > -1) {
-    season = "spring";
-  }
-  //여름(6,7,8)
-  else if ([6, 7, 8].indexOf(Number(mm)) > -1) {
-    season = "summer";
-  }
-  //가을(9,10,11)
-  else if ([9, 10, 11].indexOf(Number(mm)) > -1) {
-    season = "autumn";
-  }
-  //겨울(10,11,12)
-  else {
-    season = "winter";
-  }
-
-  //특정 일자 
-  if (MUSIC_LIST[mmdd]) {
-    return MUSIC_LIST[mmdd][0];
-  }
-	else {
-		const list = MUSIC_LIST[season] || [];
-    const index = (Number(dd) - 1) % list.length;
-    return list[index];
-  }
-};
-
 // 역지오코딩
 const getReverseGeocode = async function () {
 	window.kakao.maps.load(() => {
@@ -328,7 +293,14 @@ const getReverseGeocode = async function () {
 
 		geocoder.coord2Address(lon, lat, (result, status) => {
 			if (status === kakao.maps.services.Status.OK) {
-				setLocalStorageItem("address", result[0].road_address); 
+        //도로명주소  
+        if(result[0].road_address){
+          setLocalStorageItem("address", result[0].road_address); 
+        }
+        //구주소
+        else{
+          setLocalStorageItem("address", result[0].address); 
+        }
 			} 
 			else {
 				//실패할 경우 가데이터 노출
@@ -419,7 +391,6 @@ export {
   getAirQualityStatus,
   getMainMsg,
   getWeatherMain,
-  getTodayMusic,
   getReverseGeocode,
   getWeather,
   getAirQuality,
