@@ -232,20 +232,19 @@ const getMainMsg = function () {
   }
   //기타
   else {
-    // msg = "🕯️";
-		// const targetDate = moment("2025-03-17", "YYYY-MM-DD");
-		// const diffDay = targetDate.diff(moment(), "days");
+		const targetDate = moment("2025-08-08", "YYYY-MM-DD");
+		const diffDay = targetDate.diff(moment(), "days");
 
-		// if(Number(diffDay) > 0){
-		// 	msg = "⭐ 정규 3집 Unexpected 컴백 D-" + diffDay + " ⭐";
-		// }
-		// else if(Number(diffDay) == 0){
-		// 	msg = "⭐ 정규 3집 Unexpected 컴백 D-DAY ⭐";
-		// } 
-		// else{
-		// 	msg = "⭐ 정규 3집 Unexpected 컴백 D+" + diffDay + " ⭐";
-		// }
-    msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ ☀️ 🦄";
+		if(Number(diffDay) > 0){
+			msg = "🔥 〈THE BLAZE〉 WORLD TOUR in SEOUL D-" + diffDay + " 🔥";
+		}
+		else if(Number(diffDay) == 0){
+			msg = "🔥 〈THE BLAZE〉 WORLD TOUR in SEOUL D-DAY" + diffDay + " 🔥";
+		} 
+		else{
+			msg = "🔥 〈THE BLAZE〉 WORLD TOUR in SEOUL D+" + diffDay + " 🔥";
+		}
+    // msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ ☀️ 🦄";
   }
 
   return msg;

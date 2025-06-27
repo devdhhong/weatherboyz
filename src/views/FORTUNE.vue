@@ -695,8 +695,8 @@ label {
   gap: 15px; // 아이콘 사이 간격
 
   .share-icon-circle {
-    width: 35px;   // 원의 크기
-    height: 35px;  // 원의 크기
+    width: 40px;   // 원의 크기
+    height: 40px;  // 원의 크기
     border-radius: 50%; // 원형으로 만듦
     background-color: var(--background-color-1); // 원의 배경색
     display: flex;
