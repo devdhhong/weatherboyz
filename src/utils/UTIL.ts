@@ -320,42 +320,36 @@ const getTodayMusic = function () {
 
 // 역지오코딩
 const getReverseGeocode = async function () {
-  try {
-    // axios.get()는 Promise를 반환
-    const response = await axios.get(`/nominatim/reverse`, {
-      params: {
-        latitude: getLocalStorageItem('latitude'),
-        longitude: getLocalStorageItem('longitude'),
-        lat: getLocalStorageItem('latitude'),
-        lon: getLocalStorageItem('longitude'),
-        format: "json",
-        // addressdetails: 1,
-      },
-      timeout: 10000 // 10초 타임아웃
-    });
+	window.kakao.maps.load(() => {
+		const geocoder = new kakao.maps.services.Geocoder();
 
-    console.log(response);
-    setLocalStorageItem("address", response.data); // 성공적으로 받아온 데이터 저장
+		const lon = getLocalStorageItem('longitude')
+		const lat = getLocalStorageItem('latitude');
 
-  } catch (error: any) {
-    console.error('Error occurred while fetching reverse geocode:', error);
-    
-    // CORS 에러인 경우 기본 주소 정보 설정
-    if (error.code === 'ERR_NETWORK' || error.message?.includes('CORS')) {
-      console.warn('CORS error detected, using fallback address data');
-      const fallbackAddress = {
-        display_name: "서울특별시",
-        address: {
-          city: "서울특별시",
-          country: "대한민국"
-        }
-      };
-      setLocalStorageItem("address", fallbackAddress);
-      return; // 에러를 throw하지 않고 기본값 사용
-    }
-    
-    throw error; // 상위 호출부로 에러 전달
-  }
+		geocoder.coord2Address(lon, lat, (result, status) => {
+			if (status === kakao.maps.services.Status.OK) {
+				setLocalStorageItem("address", result[0].road_address); 
+			} 
+			else {
+				//실패할 경우 가데이터 노출
+				const fakeData = {
+					"address_name": "",
+					"region_1depth_name": "",
+					"region_2depth_name": "위치조회 실패",
+					// "region_2depth_name": "중구",
+					"region_3depth_name": "",
+					"road_name": "",
+					"underground_yn": "",
+					"main_building_no": "",
+					"sub_building_no": "",
+					"building_name": "",
+					"zone_no": ""
+				}
+				setLocalStorageItem("address", fakeData); 
+			}
+		});
+	});
+
 };
 
 // 날씨정보 조회
@@ -402,6 +396,24 @@ const getAirQuality = async function () {
   }
 };
 
+// 스포티파이 토큰 발급
+const getSpotifyToken = async function () {
+  const result = await fetch(`${CONST.SPOTIFY_TOKEN_URL}`, {
+    method: "POST",
+    headers: {
+      Authorization:
+        "Basic " + btoa(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`),
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: "grant_type=client_credentials",
+  });
+
+  const data = await result.json();
+	console.log(data);
+  return data.access_token;
+};
+
+
 export {
   getLocalStorageItem,
   setLocalStorageItem,
@@ -412,5 +424,6 @@ export {
   getTodayMusic,
   getReverseGeocode,
   getWeather,
-  getAirQuality
+  getAirQuality,
+	getSpotifyToken
 };

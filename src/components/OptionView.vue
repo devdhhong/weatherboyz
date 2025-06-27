@@ -3,17 +3,17 @@
     <li class="settingItem">
       <div class="title" @click="isDownMemberTab = !isDownMemberTab">{{ $t('멤버') }} {{ $t('설정') }}<i class="fa-solid" :class="{ 'fa-caret-up' : !isDownMemberTab, 'fa-caret-down' : isDownMemberTab  }"></i></div>
       <select name="" class="" v-model="setMember" @change="changeSetting" v-show="isDownMemberTab">
-        <option value="TBZ">{{ $t('랜덤') }} 📢</option>
-        <option value="SY">{{ $t('상연') }} 🐶</option>
-        <option value="JC">{{ $t('제이콥') }} 🍐</option>
-        <option value="YH">{{ $t('영훈') }} 🍞</option>
-        <option value="HJ">{{ $t('현재') }} 🎁</option>
-        <option value="JY">{{ $t('주연') }} 🐱</option>
-        <option value="KV">{{ $t('케빈') }} 🌙</option>
-        <option value="NW">{{ $t('뉴') }} 🐧</option>
-        <option value="QQ">{{ $t('큐') }} 🐿️</option>
-        <option value="SW">{{ $t('선우') }} ☀️</option>
-        <option value="ER">{{ $t('에릭') }} 🦄</option>
+        <option value="tbz">{{ $t('랜덤') }} 📢</option>
+        <option value="sy">{{ $t('상연') }} 🐶</option>
+        <option value="jc">{{ $t('제이콥') }} 🍐</option>
+        <option value="yh">{{ $t('영훈') }} 🍞</option>
+        <option value="hj">{{ $t('현재') }} 🎁</option>
+        <option value="jy">{{ $t('주연') }} 🐱</option>
+        <option value="kv">{{ $t('케빈') }} 🌙</option>
+        <option value="nw">{{ $t('뉴') }} 🐧</option>
+        <option value="q">{{ $t('큐') }} 🐿️</option>
+        <option value="sw">{{ $t('선우') }} ☀️</option>
+        <option value="er">{{ $t('에릭') }} 🦄</option>
       </select>
     </li>
     <li class="settingItem">
@@ -100,7 +100,7 @@ import { onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n"; // i18n 인스턴스 가져오기
 
 const setLanguage = ref(UTIL.getLocalStorageItem('language') || "ko"); //ko or en
-const setMember = ref(UTIL.getLocalStorageItem('member') || "TBZ");
+const setMember = ref(UTIL.getLocalStorageItem('member') || "tbz");
 const setTheme = ref(UTIL.getLocalStorageItem('theme') || "default");
 const setDisplay = ref(UTIL.getLocalStorageItem('display') || "dark"); //Light or Dark
 
@@ -131,7 +131,7 @@ function changeSetting() {
   document.documentElement.classList.remove('dark-mode','light-mode'); //display
   document.documentElement.classList.remove('ko-mode', 'en-mode'); //language
   document.documentElement.classList.remove('default-mode', 'baby-mode'); //theme
-  document.documentElement.classList.remove('TBZ-mode', 'SY-mode', 'JC-mode', 'YH-mode', 'HJ-mode', 'JY-mode', 'KV-mode', 'NW-mode', 'QQ-mode', 'HN-mode', 'SW-mode', 'ER-mode'); //member
+  document.documentElement.classList.remove('tbz-mode', 'sy-mode', 'jc-mode', 'yh-mode', 'hj-mode', 'jy-mode', 'kv-mode', 'nw-mode', 'q-mode', 'sw-mode', 'er-mode'); //member
 
   document.documentElement.classList.add(setDisplay.value + '-mode');
   document.documentElement.classList.add(setLanguage.value + '-mode');

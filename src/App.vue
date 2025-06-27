@@ -9,13 +9,25 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import { IonApp } from '@ionic/vue';
 import * as UTIL from "@/utils/UTIL.js";
 // import ToastView from '@/components/ToastView.vue';
-
 // const isHideModal = UTIL.getLocalStorageItem('isHideModal') == "true";
 
-setInit();
+onMounted(() => {
+  //초기화
+	setInit();
+
+	//카카오 SDK 로드
+  if (window.kakao && window.kakao.maps) return;
+
+  const script = document.createElement('script');
+  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_API_KEY}&libraries=services&autoload=false`;
+  script.async = true;
+  script.onload = () => console.log('✅ Kakao SDK loaded ✅');
+  document.head.appendChild(script);
+});
 
 function setInit() {
 	// 디바이스 정보

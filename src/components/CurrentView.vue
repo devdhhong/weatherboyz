@@ -1,14 +1,14 @@
 <template>
   <div id="CurrentView">
     <!-- 스켈레톤 UI -->
-    <div class="infoView loading" v-if="!props.isFetchedData">
+    <div class="infoView loading" v-if="!(props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality)">
       <img src="../../public/images/loading_circle_small.gif" alt="">
     </div>
-    <div class="infoView loading" v-if="!props.isFetchedData">
+    <div class="infoView loading" v-if="!props.isGetSpotifyToken">
       <img src="../../public/images/loading_circle_small.gif" alt="">
     </div>
 
-    <div class="infoView" v-if="props.isFetchedData">
+    <div class="infoView" v-if="props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality">
       <div class="temperature">
         <img :src="weatherIcon" alt="" />
         <p>{{ temperature }}{{ $t('도') }}</p>
@@ -19,12 +19,12 @@
         <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ pm2_5 }}</div>
       </div>
     </div>
-    <div class="infoView" v-if="props.isFetchedData" @click="openYoutubeMusic">
+    <div class="infoView" v-if="props.isGetSpotifyToken" @click="openYoutubeMusic">
       <div>{{ $t('오늘의 노래') }} 🎹</div>
       <div class="songCover">
         <img :src="todayMusicData?.coverImgPath" alt=""/>
       </div>
-      <div class="songTitle">{{ todayMusicData?.musicTitle }}</div>
+      <!-- <div class="songTitle">{{ todayMusicData?.musicTitle }}</div> -->
     </div>
   </div>
   <div id="MessageView">
@@ -49,9 +49,9 @@ let todayMusicData: Music;
 let airQuality: AirQuality;
 let weather: Weather;
 
-const props = defineProps(["isFetchedData"]);
+const props = defineProps(["isGetReverseGeocode", "isGetWeather", "isGetAirQuality", "isGetSpotifyToken"]);
 
-watch(() => props.isFetchedData, (newValue) => {
+watch(() => props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality && props.isGetSpotifyToken, (newValue) => {
     //데이터 모두 받은 후에 파싱 처리
     if (newValue) {
       initData();
@@ -60,7 +60,6 @@ watch(() => props.isFetchedData, (newValue) => {
 );
 
 onMounted(() => {
-  // onBeforeMount(() => {
   initData();
 });
 

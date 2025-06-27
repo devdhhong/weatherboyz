@@ -19,9 +19,7 @@ let weather: Weather;
 let weatherTime = {};
 let weatherCode = {};
 let weatherTemp = {};
-// const timelyHeight = ref(isMobile() ? '15%' : '10%');
 const timelyHeight = ref(isSmallScreen() ? '15%' : '15%');
-// const timelyHeight = ref(isMobile() ? '22%' : '15%');
 
 function isSmallScreen() {
   // 화면 크기 체크
@@ -29,9 +27,9 @@ function isSmallScreen() {
   return UTIL.getLocalStorageItem('isMobile') && isSmallScreen;
 }
 
-let props = defineProps(["isFetchedData"]);
+let props = defineProps(["isGetWeather"]);
 
-watch(() => props.isFetchedData, (newValue) => {
+watch(() => props.isGetWeather, (newValue) => {
     //데이터 모두 받은 후에 파싱 처리
     if (newValue) {
       initData();
