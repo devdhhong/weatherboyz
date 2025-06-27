@@ -43,18 +43,21 @@
           </div>
 					
 					<div class="button-container">
-            <button class="custom-button" v-if="fortuneResultCnt < 3" @click="btnGetFortune" :disabled="isLoading">운세 확인하기 {{ fortuneResultCnt }}/3</button>
-            <button class="custom-button" v-else :disabled="isLoading">내일 다시 확인하기</button>
+						<button class="custom-button loading" v-if="isLoading" disabled>
+							<div class="">
+								<img class="type01" src="/images/loading_circle_small.gif" alt="">
+							</div>
+						</button>
+            <button class="custom-button" v-else-if="fortuneResultCnt < 3" @click="btnGetFortune" :disabled="isLoading">운세 확인하기 {{ fortuneResultCnt }}/3</button>
+						<button class="custom-button" v-else :disabled="isLoading">내일 다시 확인하기</button>
           </div>
 
           <!-- 결과지 영역 -->
           <div class="fortune-result" v-if="showResult">
-            <h2 class="fortune-result-title" ref="fortuneResultTitleRef">결과보기</h2>
+            <h2 class="fortune-result-title" ref="resultRef">결과보기</h2>
             <div class="result-container">
               <div class="result-image">
-                <!-- <img src="https://img.freepik.com/free-vector/thermometers-hot-cold_78370-2406.jpg?semt=ais_items_boosted&w=740" alt="운세 결과 이미지" /> -->
-                <img src="../../public/images/FORTUNE/YH01.png" alt="운세 결과 이미지" />
-                <!-- <img :src="resultImage" alt="운세 결과 이미지" /> -->
+                <img :src="IMAGE_PATH_FORTUNE + 'fortune_' + CONST.MEMBER_NM_ENG_LONG[resultInfo[1]] + '.jpg'" alt="운세 결과 이미지" />
               </div>
               <div class="result-text">
                 <h3 class="result-title">🍀 덕질 운세 🍀</h3>
@@ -82,8 +85,6 @@
               </div>
             </div>
           </div>
-          
-
         </div>
       </div>
     </ion-content>
@@ -95,6 +96,7 @@ import { onMounted, ref, nextTick } from "vue";
 import HeaderView from "@/components/HeaderView.vue";
 import * as UTIL from "@/utils/UTIL.js";
 import moment from "moment";
+import * as CONST from "@/utils/CONST";
 
 const title = "오늘의 운세";
 const name = ref("");
@@ -110,16 +112,18 @@ const isAM = ref(true);
 const isLoading = ref(false);
 const fortuneResultCnt = ref(0);
 const isRememberInfo = ref(false); //다음에 기억하기
-const showResult = ref(true);
+const showResult = ref(false);
+const resultInfo = ref<string[]>([]);
+const resultRef = ref<HTMLElement | null>(null);
+const isSharing = ref(false); // 공유 진행 중 상태
 let fortuneInfo = {
 	name: "",
 	birthdate: "",
 	birthtime: "",
 	birthtimeType: "",
 };
-const resultInfo = ref<string[]>([]);
-const fortuneResultTitleRef = ref<HTMLElement | null>(null);
-const isSharing = ref(false); // 공유 진행 중 상태
+
+const IMAGE_PATH_FORTUNE = "/images/FORTUNE/"; //타로카드 이미지 경로
 
 onMounted(() => {
   const fortuneResultDate = UTIL.getLocalStorageItem('fortuneResultDate') || "";
@@ -172,7 +176,7 @@ const btnGetFortune = async function() {
 
 	//이름 체크
 	if(!name.value.trim().length){
-		nameError.value = "이름 또는 닉네임을 입력해주세요 ㅠㅠㅠ";
+		nameError.value = "이름 또는 닉네임을 입력해주세요 ㅠㅠ";
 		return;
 	}
 	//생년월일 체크
@@ -205,44 +209,44 @@ const btnGetFortune = async function() {
   const timeTypeInfo = isAM.value ? "오전" : "오후";
 
   const memberInfo = `
-  1. 상연: 1996년 11월 4일 (양력) 2. 제이콥: 1997년 5월 30일 (양력) 3. 영훈: 1997년 8월 8일 (양력)  
-  4. 현재: 1997년 9월 13일 (양력) 5. 주연: 1998년 1월 15일 (양력) 6. 케빈: 1998년 2월 23일 (양력) 
-  7. 뉴: 1998년 4월 26일 (양력) 8. 큐: 1998년 11월 5일 (양력) 9. 선우: 2000년 4월 12일 (양력) 
-  10. 에릭: 2000년 12월 22일 (양력)`;
+		1. 상연: 1996년 11월 4일 (양력) 2. 제이콥: 1997년 5월 30일 (양력) 3. 영훈: 1997년 8월 8일 (양력)  
+		4. 현재: 1997년 9월 13일 (양력) 5. 주연: 1998년 1월 15일 (양력) 6. 케빈: 1998년 2월 23일 (양력) 
+		7. 뉴: 1998년 4월 26일 (양력) 8. 큐: 1998년 11월 5일 (양력) 9. 선우: 2000년 4월 12일 (양력) 
+		10. 에릭: 2000년 12월 22일 (양력)`;
 
 	const prompt = `
-  [내 정보]
-	이름: ${name.value}
-	생년월일: ${dateTypeInfo} ${birthdate.value}
-	출생시간: ${timeTypeInfo} ${timeInfo}
+		[내 정보]
+		이름: ${name.value}
+		생년월일: ${dateTypeInfo} ${birthdate.value}
+		출생시간: ${timeTypeInfo} ${timeInfo}
 
-  [멤버 정보]
-  ${memberInfo}
+		[멤버 정보]
+		${memberInfo}
 
-  1. 내 정보와 멤버정보를 바탕으로, 오늘 기준 나와 가장 궁합이 좋은 멤버를 알려줘.
-  2. 궁합이 좋은 멤버와의 점수가 100점만점 기준으로 몇점인지 알려줘.
-  3. 내 정보를 바탕으로 금전운과 애정운을 총합하여, 나의 덕질운세를 150자~180자로 알려줘. (멤버와의 내 정보의 궁합을 기반으로 해석한 풀이가 필요)
-  4. 내 정보를 바탕으로 나의 오늘 하루의 총 운세를 150자~180자로 알려줘. (멤버 정보와 관계없이 내 정보만을 기반으로 해석한 풀이가 필요)
-  
-  단, 출력형태는 아래와 같이 해줘.
-  
-  [멤버]***###멤버이름###***
-  [점수]***###점수###***
-  [덕질운세]***###내용(반드시 150자~180자로 작성할 것)###***
-  [총운세]***###내용(반드시 150자~180자로 작성할 것)###***
+		1. 내 정보와 멤버정보를 바탕으로, 오늘 기준 나와 가장 궁합이 좋은 멤버를 알려줘.
+		2. 궁합이 좋은 멤버와의 점수가 100점만점 기준으로 몇점인지 알려줘.
+		3. 내 정보를 바탕으로 금전운과 애정운을 총합하여, 나의 덕질운세를 150자~180자로 알려줘. (멤버와의 내 정보의 궁합을 기반으로 해석한 풀이가 필요)
+		4. 내 정보를 바탕으로 나의 오늘 하루의 총 운세를 150자~180자로 알려줘. (멤버 정보와 관계없이 내 정보만을 기반으로 해석한 풀이가 필요)
+		
+		단, 출력형태는 아래와 같이 해줘.
+		
+		[멤버]***###멤버이름###***
+		[점수]***###점수###***
+		[덕질운세]***###내용(반드시 150자~180자로 작성할 것)###***
+		[총운세]***###내용(반드시 150자~180자로 작성할 것)###***
 
-  예시) 덕질운세, 총운세는 단순 예시이며 결과에 맞게 그때 그때 새롭게 작성 필요/문장 끝의 *** 는 문단의 시작과 끝남을 알려주는 용도이므로 필수로 포함할 것.
-  [멤버]***영훈***
-  [점수]***88***
-  [덕질운세]***더비님과 영훈은 서로를 보완해주는 존재입니다. 더비님은 책임감이 강하고 현실적이며, 영훈은 창의적이고 감성적인 면을 보유하고 있습니다. 
-  함께하면 더욱 완벽한 결과물을 만들어낼 수 있는데, 이는 덕질을 하며 새로운 아이디어나 창의적인 방법을 발견하는 데 도움이 될 것입니다. 
-  서로를 이해하고 존중하는 관계를 유지하는 것이 중요합니다.*** 
-  [총운세]***오늘은 더비님에게 조금 새로운 도전이 기다리고 있을 것으로 예상됩니다. 현재의 상황에서 새로운 아이디어거나 시도를 통해 문제를 해결하는 것이 좋을 것입니다. 
-  갑작스럽고 예상치 못한 일이 생길 수 있으니 융통성을 가지고 대처하는 것이 중요합니다. 
-  긍정적인 마음가짐을 유지하고 자신의 재능을 믿으면 좋은 결과를 얻을 수 있을 것입니다. 지금은 변화와 도전의 기회를 잡는 것이 중요합니다.***
+		예시) 덕질운세, 총운세는 단순 예시이며 결과에 맞게 그때 그때 새롭게 작성 필요/문장 끝의 *** 는 문단의 시작과 끝남을 알려주는 용도이므로 필수로 포함할 것.
+		[멤버]***영훈***
+		[점수]***88***
+		[덕질운세]***더비님과 영훈은 서로를 보완해주는 존재입니다. 더비님은 책임감이 강하고 현실적이며, 영훈은 창의적이고 감성적인 면을 보유하고 있습니다. 
+		함께하면 더욱 완벽한 결과물을 만들어낼 수 있는데, 이는 덕질을 하며 새로운 아이디어나 창의적인 방법을 발견하는 데 도움이 될 것입니다. 
+		서로를 이해하고 존중하는 관계를 유지하는 것이 중요합니다.*** 
+		[총운세]***오늘은 더비님에게 조금 새로운 도전이 기다리고 있을 것으로 예상됩니다. 현재의 상황에서 새로운 아이디어거나 시도를 통해 문제를 해결하는 것이 좋을 것입니다. 
+		갑작스럽고 예상치 못한 일이 생길 수 있으니 융통성을 가지고 대처하는 것이 중요합니다. 
+		긍정적인 마음가짐을 유지하고 자신의 재능을 믿으면 좋은 결과를 얻을 수 있을 것입니다. 지금은 변화와 도전의 기회를 잡는 것이 중요합니다.***
 	`;
 
-	const response = await fetch('https://api.openai.com/v1/chat/completions', {
+	const response = await fetch(`${CONST.OPEN_AI_CHAT_URL}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -259,28 +263,38 @@ const btnGetFortune = async function() {
   
   //결과 
   const data = await response.json();
-  const result = data?.choices[0]?.message?.content || "";
-  resultInfo.value = result.split("***");
+	console.log(data);
 
-  console.log("=============================");
-  console.log(resultInfo.value[1]);
-  console.log(resultInfo.value[3]);
-  console.log(resultInfo.value[5]);
-  console.log(resultInfo.value[7]);
-  console.log("=============================");
+	//성공
+	if(data.created){
+		const result = data?.choices[0]?.message?.content || "";
+		resultInfo.value = result.split("***");
 
-  fortuneResultCnt.value++;
-  UTIL.setLocalStorageItem('fortuneResultDate', moment().format("YYYYMMDD"));
-  UTIL.setLocalStorageItem('fortuneResultCnt', String(fortuneResultCnt.value));
+		console.log("=============================");
+		console.log(resultInfo.value[1]);
+		console.log(resultInfo.value[3]);
+		console.log(resultInfo.value[5]);
+		console.log(resultInfo.value[7]);
+		console.log("=============================");
 
-  isLoading.value = false;
-  showResult.value = true;
+		fortuneResultCnt.value++;
+		UTIL.setLocalStorageItem('fortuneResultDate', moment().format("YYYYMMDD"));
+		UTIL.setLocalStorageItem('fortuneResultCnt', String(fortuneResultCnt.value));
 
-  await nextTick();
+		isLoading.value = false;
+		showResult.value = true;
 
-  if (fortuneResultTitleRef.value) {
-    fortuneResultTitleRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+		await nextTick();
+
+		//자동 포커싱
+		if (resultRef.value) {
+			resultRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+	}
+	//실패
+	else{
+		alert("에러가 발생했습니다. 다음에 다시 시도해주세요.")
+	}
 }
 
 //모름 버튼 
@@ -359,15 +373,14 @@ function isValidBirthtime(input: string): boolean {
 // 클립보드 복사 함수
 async function btnCopy() {
   try {
-    const textToCopy = `
-    [오늘의 운세 결과]\n\n
-    🍀 덕질 운세 🍀\n
-    ${resultInfo.value[5]}\n\n
-    🍀 총 운세 🍀\n
-    ${resultInfo.value[7]}\n\n
-    🍀 최고의 궁합 🍀\n
-    ${resultInfo.value[1]} ${resultInfo.value[3]}점\n
-    `;
+    const textToCopy = 
+`[오늘의 운세 결과]\n\n
+🍀덕질 운세🍀\n
+${resultInfo.value[5]}\n
+🍀총 운세🍀\n
+${resultInfo.value[7]}\n
+🍀최고의 궁합🍀\n
+${resultInfo.value[1]} ${resultInfo.value[3]}점\n`;
 
     await navigator.clipboard.writeText(textToCopy);
     alert('운세 결과가 클립보드에 복사되었습니다!');
@@ -682,8 +695,8 @@ label {
   gap: 15px; // 아이콘 사이 간격
 
   .share-icon-circle {
-    width: 50px;   // 원의 크기
-    height: 50px;  // 원의 크기
+    width: 35px;   // 원의 크기
+    height: 35px;  // 원의 크기
     border-radius: 50%; // 원형으로 만듦
     background-color: var(--background-color-1); // 원의 배경색
     display: flex;

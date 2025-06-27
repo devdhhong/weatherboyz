@@ -2,6 +2,7 @@
 const NOMINATIM_BASE_URL = 'https://nominatim.openstreetmap.org/';
 const NOW_FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 const NOW_AIRQUALITY_URL = "https://air-quality-api.open-meteo.com/v1/air-quality";
+const OPEN_AI_CHAT_URL = "https://api.openai.com/v1/chat/completions";
 
 /* WMO 기상 해석코드 (weather code) */
 const WEATHER_CODE = {
@@ -37,9 +38,66 @@ const WEATHER_CODE = {
     WEATHER_CODE_86: "강한 눈",
 };
 
+const MEMBER_NM_ENG_LONG: { [key: string]: string } = {
+	"상연" : "sangyeon",
+	"제이콥" : "jacob",
+	"영훈" : "younghoon",
+	"현재" : "hyunjae",
+	"주연" : "juyeon",
+	"케빈" : "kevin",
+	"뉴" : "new",
+	"큐" : "q",
+	"선우" : "sunwoo",
+	"에릭" : "eric",
+};
+
+const MEMBER_NM_ENG_SHORT: { [key: string]: string } = {
+	"상연" : "sy",
+	"제이콥" : "jc",
+	"영훈" : "yh",
+	"현재" : "hj",
+	"주연" : "jy",
+	"케빈" : "kv",
+	"뉴" : "nw",
+	"큐" : "q",
+	"선우" : "sw",
+	"에릭" : "er",
+};
+
+const MEMBER_NM_KOR_LONG: { [key: string]: string } = {
+	"sangyeon" : "상연",
+	"jacob" : "제이콥",
+	"younghoon" : "영훈",
+	"hyunjae" : "현재",
+	"juyeon" : "주연",
+	"kevin" : "케빈",
+	"new" : "뉴",
+	"q" : "큐",
+	"sunwoo" : "선우",
+	"eric" : "에릭",
+};
+
+const MEMBER_NM_KOR_SHORT: { [key: string]: string } = {
+	"sy" : "상연",
+	"jc" : "제이콥",
+	"yh" : "영훈",
+	"hj" : "현재",
+	"jy" : "주연",
+	"kv" : "케빈",
+	"nw" : "뉴",
+	"q" : "큐",
+	"sw" : "선우",
+	"er" : "에릭",
+};
+
 export {
-    NOMINATIM_BASE_URL,
-    NOW_FORECAST_URL,
-    NOW_AIRQUALITY_URL,
-    WEATHER_CODE,
+	NOMINATIM_BASE_URL,
+	NOW_FORECAST_URL,
+	NOW_AIRQUALITY_URL,
+	OPEN_AI_CHAT_URL,
+	WEATHER_CODE,
+	MEMBER_NM_ENG_LONG,
+	MEMBER_NM_ENG_SHORT,
+	MEMBER_NM_KOR_LONG,
+	MEMBER_NM_KOR_SHORT
 }
