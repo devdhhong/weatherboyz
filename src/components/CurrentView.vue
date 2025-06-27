@@ -22,7 +22,7 @@
     <div class="infoView" v-if="props.isGetSpotifyToken" @click="openSpotify">
       <div>{{ $t('오늘의 노래') }} 🎹</div>
       <div class="songCover">
-        <img :src="musicData.album.images[0].url" alt=""/>
+        <img :src="musicData?.album?.images[0].url" alt=""/>
       </div>
       <!-- <div class="songTitle">{{ todayMusicData?.musicTitle }}</div> -->
     </div>
@@ -38,7 +38,6 @@ import { watch, ref } from "vue";
 import * as UTIL from "@/utils/UTIL.js";
 import { onMounted } from "vue";
 import moment from "moment";
-import { createGesture } from "@ionic/vue";
 
 let weatherIcon = "";          //날씨 아이콘
 let temperature = 0;           //온도
