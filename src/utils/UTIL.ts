@@ -1,7 +1,6 @@
 import moment from "moment";
 import * as CONST from "@/utils/CONST";
 import axios from "axios";
-const kakao = (window as any).kakao;
 
 const getLocalStorageItem = function(key: string): string {
   const value = localStorage.getItem(key);
@@ -284,18 +283,16 @@ const getWeatherMain = function (code: number, member: string) {
 
 // 역지오코딩
 const getReverseGeocode = async function () {
-	console.log(111111111);
 
-	kakao.maps.load(() => {
-		const geocoder = new kakao.maps.services.Geocoder();
+	window.kakao.maps.load(() => {
+		const geocoder = new window.kakao.maps.services.Geocoder();
 
 		const lon = getLocalStorageItem('longitude')
 		const lat = getLocalStorageItem('latitude');
 
-		console.log(22222222222);
 		geocoder.coord2Address(lon, lat, (result: any, status: any) => {
 			
-			if (status === kakao.maps.services.Status.OK) {
+			if (status === window.kakao.maps.services.Status.OK) {
         //도로명주소  
         if(result[0].road_address){
           setLocalStorageItem("address", result[0].road_address); 
