@@ -5,6 +5,7 @@ declare global {
     BMCManager?: any; // window에 포함될 전역 변수 declare
     webkit?: any; // window에 포함될 전역 변수 declare
     MSStream?: any;
+		kakao?: any;
   }
   //----------------------------
   type Weather = {

@@ -606,7 +606,7 @@ label {
   }
 }
 
-//운세확인하기 버튼튼
+//운세확인하기 버튼
 .custom-button {
   width: 100%;
   background: var(--background-color-1);
@@ -620,14 +620,13 @@ label {
   font-size: 1rem;
   transition: all 0.3s ease;
 
-  &:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-  }
-
   &:active {
     transform: translateY(0);
   }
+
+	&:disabled {
+	  background: var(--background-color-1) !important;
+	}
 }
 
 //결과지
