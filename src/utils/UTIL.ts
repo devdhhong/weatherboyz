@@ -284,13 +284,17 @@ const getWeatherMain = function (code: number, member: string) {
 
 // 역지오코딩
 const getReverseGeocode = async function () {
+	console.log(111111111);
+
 	kakao.maps.load(() => {
 		const geocoder = new kakao.maps.services.Geocoder();
 
 		const lon = getLocalStorageItem('longitude')
 		const lat = getLocalStorageItem('latitude');
 
+		console.log(22222222222);
 		geocoder.coord2Address(lon, lat, (result: any, status: any) => {
+			
 			if (status === kakao.maps.services.Status.OK) {
         //도로명주소  
         if(result[0].road_address){
