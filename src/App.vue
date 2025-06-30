@@ -22,10 +22,16 @@ onMounted(() => {
 	//카카오 SDK 로드
   if (window.kakao && window.kakao.maps) return;
 
+	console.log(import.meta.env.VITE_KAKAO_API_KEY);
   const script = document.createElement('script');
   script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_API_KEY}&libraries=services&autoload=false`;
   script.async = true;
-  script.onload = () => console.log('✅ Kakao SDK loaded ✅');
+  // script.onload = () => console.log('✅ Kakao SDK loaded ✅');
+	script.onload = (res) => {
+		console.log(JSON.stringify(res));
+	}
+
+
   document.head.appendChild(script);
 });
 
