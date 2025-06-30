@@ -283,6 +283,22 @@ const getWeatherMain = function (code: number, member: string) {
 
 // 역지오코딩
 const getReverseGeocode = async function () {
+	//SDK 로드여부 체크
+	const waitingLoad = () => {
+		return new Promise<void>((resolve) => {
+			const isLoaded = function(){
+				if(window.kakao && window.kakao.maps){
+					resolve();
+				}
+				else{
+					setTimeout(isLoaded, 100);
+				}
+			}
+			isLoaded();
+		});
+	}
+	waitingLoad();
+
 
 	window.kakao.maps.load(() => {
 		const geocoder = new window.kakao.maps.services.Geocoder();
@@ -291,16 +307,15 @@ const getReverseGeocode = async function () {
 		const lat = getLocalStorageItem('latitude');
 
 		geocoder.coord2Address(lon, lat, (result: any, status: any) => {
-			
 			if (status === window.kakao.maps.services.Status.OK) {
-        //도로명주소  
-        if(result[0].road_address){
-          setLocalStorageItem("address", result[0].road_address); 
-        }
-        //구주소
-        else{
-          setLocalStorageItem("address", result[0].address); 
-        }
+				//도로명주소  
+				if(result[0].road_address){
+					setLocalStorageItem("address", result[0].road_address); 
+				}
+				//구주소
+				else{
+					setLocalStorageItem("address", result[0].address); 
+				}
 			} 
 			else {
 				//실패할 경우 가데이터 노출
@@ -321,7 +336,6 @@ const getReverseGeocode = async function () {
 			}
 		});
 	});
-
 };
 
 // 날씨정보 조회

@@ -71,8 +71,6 @@ async function fetchData() {
       console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
     }
 		isGetAirQuality.value = true;
-
-
   } 
 	catch (error) {
     // 최소한의 데이터라도 표시하기 위해 true로 설정
