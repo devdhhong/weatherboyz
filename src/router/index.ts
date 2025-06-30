@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import SETTING from "../views/SETTING.vue";
-import OOTD from "../views/OOTD.vue";
 import MAIN from "../views/MAIN.vue";
 import PLAY from "../views/PLAY.vue";
 import FORTUNE from "../views/FORTUNE.vue";
@@ -17,11 +16,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/SETTING",
     name: "SETTING",
     component: SETTING,
-  },
-  {
-    path: "/OOTD",
-    name: "OOTD",
-    component: OOTD,
   },
 	{
     path: "/PLAY",

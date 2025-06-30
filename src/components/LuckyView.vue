@@ -21,7 +21,6 @@
 
 <script setup lang="ts">
 import { onIonViewDidEnter } from "@ionic/vue";
-import OOTD from "@/assets/data/OOTD.js";
 
 let isFlipped1 = false;
 let isFlipped2 = false;
@@ -29,8 +28,6 @@ let luckyColor = "";
 let luckyItem = "";
 
 onIonViewDidEnter(() => {
-  let luckyColor = OOTD[0].luckyColor;
-  let luckyItem = OOTD[0].luckyItem;
 });
 
 function toggleClass1(){

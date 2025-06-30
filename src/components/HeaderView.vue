@@ -34,20 +34,6 @@
     </div>
     <!-- SETTING -->
 
-    <!-- OOTD -->
-    <div v-else-if="props.title == 'OOTBZ'">
-      <div class="btnClose" @click="btnClose" style="visibility: hidden;">
-        <i class="fa-solid fa-xmark fa-xl reverse"></i>
-      </div>
-      <div class="title">
-        <p>{{ props.title }}</p>
-      </div>
-      <div class="btnClose" @click="btnClose">
-        <i class="fa-solid fa-xmark fa-xl reverse"></i>
-      </div>
-    </div>
-    <!-- OOTD -->
-
 		<!-- 그 외 -->
 		<div v-else>
       <div class="btnClose" @click="btnClose" style="visibility: hidden;">
@@ -92,10 +78,6 @@ function initData(){
 
 function btnRefresh() {
   window.Android.writeLog("FROM JS", "CLICK btnRefresh");
-}
-
-function btnEvent() {
-  router.push("/OOTD");
 }
 
 function btnPlay() {

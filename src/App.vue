@@ -75,7 +75,6 @@ function setInit() {
 	else{
 		if (isAOS) {
 			window.Android.receiveLocation = function (latitude: Number, longitude: Number) {
-			// window.receiveLocation = function (latitude, longitude) {
 				//위치 정보 저장
 				if (latitude && longitude) {
 					UTIL.setLocalStorageItem("latitude", latitude);
@@ -117,16 +116,6 @@ function setInit() {
 			}
 		}
 	}
-
-  // //테스트용
-  // else {
-	// 	console.warn('테스트 주소값 노출 중');
-  //   UTIL.setLocalStorageItem("isAppYn", "N");
-  //   UTIL.setLocalStorageItem("isAosYn", "N");
-
-  //   UTIL.setLocalStorageItem("latitude", 37.5276364);
-  //   UTIL.setLocalStorageItem("longitude", 127.0344407);
-  // }
 
   // 뷰포트 높이를 CSS 변수에 할당
   document.documentElement.style.setProperty('--viewport-height', getViewportHeight() + 'px');
@@ -247,8 +236,7 @@ ion-app {
 }
 
 #MainView,
-#SettingView,
-#OOTDView {
+#SettingView {
   width: 100%;
   height: 100%;
   position: relative;
