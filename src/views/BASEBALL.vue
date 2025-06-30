@@ -163,8 +163,6 @@ function btnGameStart(){
   enteredNumberList.value = Array.from({ length: 10 }, () => "?/?/?/?"); 
 
   isStartGame.value = true;
-
-  console.log(answer.value);
 }
 
 //게임 다시시작 버튼

@@ -7,7 +7,7 @@
           <div class="button-container">
             <button class="custom-button" @click="btnFortune">🍀 오늘의 운세 🍀</button>
             <button class="custom-button" @click="btnBaseball">⚾ 숫자 야구 ⚾</button>
-            <button class="custom-button" @click="btnBaseball">🃏 포카 맞추기 🃏</button>
+            <button class="custom-button" @click="btnPhoca">🃏 포카 맞추기 🃏</button>
           </div>
         </div>
       </div>
@@ -27,6 +27,10 @@ function btnFortune() {
 
 function btnBaseball() {
   router.push("/BASEBALL")
+}
+
+function btnPhoca() {
+  router.push("/PHOCA")
 }
 
 </script>

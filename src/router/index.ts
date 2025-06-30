@@ -5,6 +5,7 @@ import MAIN from "../views/MAIN.vue";
 import PLAY from "../views/PLAY.vue";
 import FORTUNE from "../views/FORTUNE.vue";
 import BASEBALL from "../views/BASEBALL.vue";
+import PHOCA from "../views/PHOCA.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/BASEBALL",
     name: "BASEBALL",
     component: BASEBALL,
+  },
+  {
+    path: "/PHOCA",
+    name: "PHOCA",
+    component: PHOCA,
   },
   // 정의 되지 않은 화면에 접속 시도 시 자동으로 홈화면으로 리다이렉션
   {

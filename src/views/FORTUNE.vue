@@ -4,53 +4,66 @@
       <div id="container">
         <div id="FORTUNEView" class="scroll-area">
           <HeaderView :title="$t('오늘의 운세')" />
-          <div class="input-container">
-            <div class="input-group">
-              <label>{{ $t('이름') }}</label>
-              <input type="text" v-model="name" :placeholder="$t('노래하는펭귄')" class="custom-input">
-							<span class="error-message" v-if="nameError">{{ nameError }}</span>
+          <div class="fortune-init-area" v-if="isInit">
+            <div class="card-selection-container">
+              <img src="/images/FORTUNE/fortune_yellow.jpg" alt="Yellow fortune card" class="fortune-card-image">
+              <img src="/images/FORTUNE/fortune_red.jpg" alt="Red fortune card" class="fortune-card-image">
+              <img src="/images/FORTUNE/fortune_blue.jpg" alt="Blue fortune card" class="fortune-card-image">
+            </div>
+            <div class="button-container">
+              <button class="custom-button" @click="isInit = false;">{{ $t('시작하기') }}</button>
+            </div>
+          </div>
+
+          <template v-if="!isInit">
+            <div class="input-container">
+              <div class="input-group">
+                <label>{{ $t('이름') }}</label>
+                <input type="text" v-model="name" :placeholder="$t('노래하는펭귄')" class="custom-input">
+                <span class="error-message" v-if="nameError">{{ nameError }}</span>
+              </div>
+              
+              <div class="input-group birthdate-group">
+                <label>{{ $t('생년월일') }}</label>
+                <div class="birthdate-input-container">
+                  <input type="number" v-model="birthdate" placeholder="19980426" class="custom-input birthdate-input">
+                  <button class="calendar-button" :class="{ 'active': !isLunar }" @click="btnCalendar('lunarN')">{{ $t('양력') }}</button>
+                  <button class="calendar-button" :class="{ 'active': isLunar }" @click="btnCalendar('lunarY')">{{ $t('음력') }}</button>
+                </div>
+                <span class="info-message" v-if="isLunar && birthdateInfo">{{ birthdateInfo }}</span>
+                <span class="error-message" v-else-if="birthdateError">{{ birthdateError }}</span>
+              </div>
+              
+              <div class="input-group birthtime-group">
+                <label>{{ $t('출생시간') }}</label>
+                <div class="birthtime-input-container">
+                  <button class="time-button time-type-button" :class="{ 'active': isAM }" :disabled="isUnknown" @click="btnAMPM('AM')">AM</button>
+                  <button class="time-button time-type-button" :class="{ 'active': !isAM }" :disabled="isUnknown" @click="btnAMPM('PM')">PM</button>
+                  <input type="text" v-model="birthtime" :disabled="isUnknown" placeholder="0426" class="custom-input birthtime-input">
+                  <button class="time-button" :class="{ active : isUnknown }" @click="btnUnknown">{{ $t('모름') }}</button>
+                </div>
+                <span class="error-message" v-if="birthtimeError">{{ birthtimeError }}</span>
+              </div>
+
+              <div class="input-group">
+                <div class="remember-info">
+                  <input type="checkbox" id="rememberInfo" v-model="isRememberInfo" class="remember-checkbox">
+                  <label for="rememberInfo">{{ $t('지금 입력한 정보 기억하기') }}</label>
+                </div>
+              </div>
+
             </div>
             
-            <div class="input-group birthdate-group">
-              <label>{{ $t('생년월일') }}</label>
-							<div class="birthdate-input-container">
-								<input type="number" v-model="birthdate" placeholder="19980426" class="custom-input birthdate-input">
-								<button class="calendar-button" :class="{ 'active': !isLunar }" @click="btnCalendar('lunarN')">{{ $t('양력') }}</button>
-								<button class="calendar-button" :class="{ 'active': isLunar }" @click="btnCalendar('lunarY')">{{ $t('음력') }}</button>
-							</div>
-							<span class="info-message" v-if="isLunar && birthdateInfo">{{ birthdateInfo }}</span>
-							<span class="error-message" v-else-if="birthdateError">{{ birthdateError }}</span>
+            <div class="button-container">
+              <button class="custom-button loading" v-if="isLoading" disabled>
+                <div class="">
+                  <img class="type01" src="/images/loading_circle_small.gif" alt="">
+                </div>
+              </button>
+              <button class="custom-button" v-else-if="fortuneResultCnt < 3" @click="btnGetFortune" :disabled="isLoading">{{ $t('운세 확인하기') }} {{ fortuneResultCnt }}/3</button>
+              <button class="custom-button" v-else :disabled="isLoading">{{ $t('내일 다시 확인하기') }}</button>
             </div>
-            
-            <div class="input-group birthtime-group">
-              <label>{{ $t('출생시간') }}</label>
-							<div class="birthtime-input-container">
-								<button class="time-button time-type-button" :class="{ 'active': isAM }" :disabled="isUnknown" @click="btnAMPM('AM')">AM</button>
-								<button class="time-button time-type-button" :class="{ 'active': !isAM }" :disabled="isUnknown" @click="btnAMPM('PM')">PM</button>
-								<input type="text" v-model="birthtime" :disabled="isUnknown" placeholder="0426" class="custom-input birthtime-input">
-								<button class="time-button" :class="{ active : isUnknown }" @click="btnUnknown">{{ $t('모름') }}</button>
-							</div>
-							<span class="error-message" v-if="birthtimeError">{{ birthtimeError }}</span>
-            </div>
-
-						<div class="input-group">
-							<div class="remember-info">
-								<input type="checkbox" id="rememberInfo" v-model="isRememberInfo" class="remember-checkbox">
-								<label for="rememberInfo">{{ $t('지금 입력한 정보 기억하기') }}</label>
-							</div>
-						</div>
-
-          </div>
-					
-					<div class="button-container">
-						<button class="custom-button loading" v-if="isLoading" disabled>
-							<div class="">
-								<img class="type01" src="/images/loading_circle_small.gif" alt="">
-							</div>
-						</button>
-            <button class="custom-button" v-else-if="fortuneResultCnt < 3" @click="btnGetFortune" :disabled="isLoading">{{ $t('운세 확인하기') }} {{ fortuneResultCnt }}/3</button>
-						<button class="custom-button" v-else :disabled="isLoading">{{ $t('내일 다시 확인하기') }}</button>
-          </div>
+          </template>
 
           <!-- 결과지 영역 -->
           <div class="fortune-result" v-if="showResult">
@@ -93,12 +106,12 @@
 
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from "vue";
-import { useI18n } from "vue-i18n";
 import HeaderView from "@/components/HeaderView.vue";
 import * as UTIL from "@/utils/UTIL.js";
 import moment from "moment";
 import * as CONST from "@/utils/CONST";
 
+const isInit = ref(true);
 const name = ref("");
 const birthdate = ref("");
 const birthtime = ref("");
@@ -148,7 +161,6 @@ onMounted(() => {
 	}
 
 	//출생시간
-  console.log(fortuneInfo);
 	if(fortuneInfo.birthtime){
 		birthtime.value = fortuneInfo.birthtime;
 	}
@@ -439,8 +451,6 @@ function btnShareX() {
   window.open(twitterShareUrl, '_blank');
 }
 
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -453,6 +463,40 @@ function btnShareX() {
   height: $option_height;
   position: fixed;
   top: $header_height;
+  display: flex;
+  flex-direction: column;
+}
+
+.fortune-init-area {
+  @include c-center-c;
+  flex-grow: 1;
+  padding: 24px;
+  gap: 24px;
+
+  .card-selection-container {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+
+    .fortune-card-image {
+      width: 30%;
+      max-width: 120px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px var(--shadow-color-1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-10px) scale(1.05);
+      }
+    }
+  }
+
+  .button-container {
+    width: 100%;
+    padding: 0; // 초기 화면에서는 버튼 컨테이너 패딩 제거
+  }
 }
 
 .input-container, .button-container {
