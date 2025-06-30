@@ -19,10 +19,10 @@
         <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ pm2_5 }}</div>
       </div>
     </div>
-    <div class="infoView" v-if="props.isGetSpotifyToken" @click="openYoutubeMusic">
+    <div class="infoView" v-if="props.isGetSpotifyToken" @click="openSpotify">
       <div>{{ $t('오늘의 노래') }} 🎹</div>
       <div class="songCover">
-        <img :src="todayMusicData?.coverImgPath" alt=""/>
+        <img :src="musicData?.album?.images[0].url" alt=""/>
       </div>
       <!-- <div class="songTitle">{{ todayMusicData?.musicTitle }}</div> -->
     </div>
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch, ref } from "vue";
 import * as UTIL from "@/utils/UTIL.js";
 import { onMounted } from "vue";
 import moment from "moment";
@@ -45,9 +45,9 @@ let apparent_temperature = 0;  //체감온도
 let pm10 = "";                 //미세먼지
 let pm2_5 = "";                //초미세먼지
 let mainMsg = "";              //메인화면 메세지
-let todayMusicData: Music;
 let airQuality: AirQuality;
 let weather: Weather;
+const musicData = ref({});
 
 const props = defineProps(["isGetReverseGeocode", "isGetWeather", "isGetAirQuality", "isGetSpotifyToken"]);
 
@@ -60,7 +60,10 @@ watch(() => props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQua
 );
 
 onMounted(() => {
+  //데이터 초기화
   initData();
+
+  getPlaylist();
 });
 
 function initData(){
@@ -76,51 +79,49 @@ function initData(){
     pm10 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[0];
     pm2_5 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[1];
     
-    //오늘의 정보
-    todayMusicData = UTIL.getTodayMusic();
-    
     //메세지
     mainMsg = UTIL.getMainMsg();
   }
 }
 
 
-function openYoutubeMusic() {
+function openSpotify() {
   const isAppYn = localStorage.getItem("isAppYn");
   const isAosYn = localStorage.getItem("isAosYn");
 
   //안드로이드
   if (isAppYn == "Y" && isAosYn == "Y") {
-    window.Android.openOtherApp("youtube-music://song?id=" + todayMusicData.songId, "market://details?id=com.google.android.apps.youtube.music");
+    // window.Android.openOtherApp("youtube-music://song?id=" + todayMusicData.songId, "market://details?id=com.google.android.apps.youtube.music");
   }
   //웹
   else {
-    // const url = "https://music.youtube.com/watch?v=" + todayMusicData.songId;
-    const url = "https://music.youtube.com/playlist?list=PLvcGsnP29NrLGuHHAxggx9LY-5yRmSoBd&si=voyNvLpjjiN_H1Id"
+    const url = "https://open.spotify.com/playlist/7zSjrTEw9wkuIB24dr0I6V?si=hw6b_ZmlQUmoTBUaiyVCdQ";
     window.open(url, '_blank');
   }
 }
 
-async function getSpotifyAlbumCover(query: string): Promise<string | null> {
-	//저장된 토큰이 없다면, 재발급
+async function getPlaylist() {	
+  //저장된 토큰이 없다면, 재발급
 	//TODO 추후에 1시간에 한번 발급하도록 수정하여 불필요한 호출 방지할 것
-	if(!UTIL.getLocalStorageItem('access_token')){
+  if(!UTIL.getLocalStorageItem('access_token')){
 		await UTIL.getSpotifyToken();
 	}
 
-  const res = await fetch(
-    `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=1`,
+  const playlistId = "7zSjrTEw9wkuIB24dr0I6V";
+
+  const response = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
     {
       headers: {
-        Authorization: `Bearer ${UTIL.getLocalStorageItem('access_token')}`,
+        Authorization: `Bearer ${UTIL.getLocalStorageItem('access_token')}`, // 유효한 토큰
       },
     }
   );
 
-  const data = await res.json();
-  const image = data.tracks?.items?.[0]?.album?.images?.[0]?.url;
-  return image || null;
+  const data = await response.json();
+  musicData.value = data.items[0].track;
 }
+
 
 
 

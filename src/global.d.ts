@@ -7,7 +7,7 @@ declare global {
     MSStream?: any;
 		kakao?: any;
   }
-  //----------------------------
+
   type Weather = {
     current: {
       weather_code: number,
@@ -21,10 +21,6 @@ declare global {
     time: [key: string],
     temperature: [key: string],
     weather_code: [key: string],
-  };
-
-  type MusicList = {
-    [key: string]: Music[]; // 문자열 키에 MusicItem 배열 매핑
   };
 
   type Music = {
@@ -51,17 +47,21 @@ declare global {
   };
 
   type Address = {
-    address_name: string,
-    region_1depth_name: string
-    region_2depth_name: string
-    region_3depth_name: string
-    road_name: string
-    underground_yn: string
-    main_building_no: string
-    sub_building_no: string
-    building_name: string
-    zone_no: string
-  };
+    address_name?: string,
+    region_1depth_name?: string
+    region_2depth_name?: string
+    region_3depth_name?: string
+    road_name?: string
+    underground_yn?: string
+    main_building_no?: string
+    sub_building_no?: string
+    building_name?: string
+    zone_no?: string
+    mountain_yn?: string
+    main_address_no?: string
+    sub_address_no?: string
+    zip_code?: string
+  }
 }
 
 export {} 

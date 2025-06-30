@@ -7,6 +7,7 @@
           <div class="button-container">
             <button class="custom-button" @click="btnFortune">🍀 오늘의 운세 🍀</button>
             <button class="custom-button" @click="btnBaseball">⚾ 숫자 야구 ⚾</button>
+            <button class="custom-button" @click="btnBaseball">🃏 포카 맞추기 🃏</button>
           </div>
         </div>
       </div>
@@ -18,7 +19,7 @@
 import router from "@/router";
 import HeaderView from "@/components/HeaderView.vue";
 
-const title = "PLAY";
+const title = "미니 게임";
 
 function btnFortune() {
   router.push("/FORTUNE");

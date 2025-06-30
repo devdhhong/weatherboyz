@@ -15,7 +15,7 @@
 import HeaderView from "../components/HeaderView.vue";
 import OptionView from "../components/OptionView.vue";
 
-let title = "SETTING";
+const title = "설정";
 
 </script>
 
