@@ -62,6 +62,22 @@ declare global {
     sub_address_no?: string
     zip_code?: string
   }
+
+	type SpotifyMusic = {
+		album: {
+			images: Array<{
+				url: string;
+				height: number;
+				width: number;
+			}>;
+			name: string;
+		};
+		name: string;
+		id: string;
+		external_urls: {
+			spotify: string;
+		};
+	}
 }
 
 export {} 

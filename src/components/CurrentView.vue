@@ -47,8 +47,7 @@ let pm2_5 = "";                //초미세먼지
 let mainMsg = "";              //메인화면 메세지
 let airQuality: AirQuality;
 let weather: Weather;
-const musicData = ref({});
-
+const musicData = ref<SpotifyMusic | null>(null);
 const props = defineProps(["isGetReverseGeocode", "isGetWeather", "isGetAirQuality", "isGetSpotifyToken"]);
 
 watch(() => props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality && props.isGetSpotifyToken, (newValue) => {
