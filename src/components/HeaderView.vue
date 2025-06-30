@@ -2,12 +2,6 @@
   <div id="HeaderView">
     <!-- MAIN -->
     <div v-if="props.title == 'MAIN'">
-      <!-- <div class="btnLeft" @click="btnEvent">
-        <i class="fa-solid fa-shirt reverse"></i>
-      </div> -->
-      <!-- <div class="btnLeft" @click="btnRefresh">
-        <i class="fa-solid fa-arrows-rotate"></i>
-      </div> -->
 			<div class="btnLeft" @click="btnPlay">
 				<i class="fa-solid fa-puzzle-piece fa-xl reverse"></i>
       </div>

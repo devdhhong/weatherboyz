@@ -14,9 +14,9 @@
         <p>{{ temperature }}{{ $t('도') }}</p>
       </div>
       <div class="weatherInfo">
-        <div class="feelTemp">{{ $t('체감온도') }} : {{ apparent_temperature }}도</div>
-        <div class="fineDust">{{ $t('미세먼지') }}: {{ pm10 }}</div>
-        <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ pm2_5 }}</div>
+        <div class="feelTemp">{{ $t('체감온도') }} : {{ apparent_temperature }}{{ $t('도') }}</div>
+        <div class="fineDust">{{ $t('미세먼지') }}: {{ $t(pm10) }}</div>
+        <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ $t(pm2_5) }}</div>
       </div>
     </div>
     <div class="infoView" v-if="props.isGetSpotifyToken" @click="openSpotify">

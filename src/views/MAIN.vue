@@ -17,14 +17,12 @@ import HeaderView from "../components/HeaderView.vue";
 import CurrentView from "../components/CurrentView.vue";
 import ContentsView from "../components/ContentsView.vue";
 import TimelyView from "../components/TimelyView.vue";
-import ModalView from "../components/ModalView.vue";
 
 import * as UTIL from "@/utils/UTIL.js";
 
-import { onMounted, onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
-let title = "MAIN";
-let isHideModal = UTIL.getLocalStorageItem("isHideModal");
+const title = "MAIN";
 const isGetSpotifyToken = ref(false); // 데이터 패치 여부
 const isGetReverseGeocode = ref(false); // 데이터 패치 여부
 const isGetWeather = ref(false); // 데이터 패치 여부

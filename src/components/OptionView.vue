@@ -71,7 +71,7 @@
       </ul>
     </li>
     <li class="settingItem">
-      <div class="title" @click="isDownLicenseTab = !isDownLicenseTab">License<i class="fa-solid" :class="{ 'fa-caret-up' : !isDownLicenseTab, 'fa-caret-down' : isDownLicenseTab  }"></i></div>
+      <div class="title" @click="isDownLicenseTab = !isDownLicenseTab">{{ $t('라이센스') }}<i class="fa-solid" :class="{ 'fa-caret-up' : !isDownLicenseTab, 'fa-caret-down' : isDownLicenseTab  }"></i></div>
       <ul class="" v-show="isDownLicenseTab">
         <li>
           <a href="https://www.flaticon.com/kr/free-icons/" title="메시지 아이콘">메시지 아이콘 제작자: winnievinzence - Flaticon</a>

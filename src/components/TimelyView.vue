@@ -2,7 +2,7 @@
   <div id="TimelyView">
     <div class="scroll-area">
       <div class="timelyCard" v-for="(weather, index) in weatherTime" :key="index">
-        <p class="date">{{ getCurrentTime(weather) }}</p>
+        <p class="date">{{ getCurrentTime(weather) }}{{ $t('시') }}</p>
         <img :src="getWeatherIcon(weatherCode[index], moment(weather).format('HHmm'))" alt="" />
         <p class="temperature">{{ Math.round(weatherTemp[index]) }}°</p>
       </div>
@@ -27,7 +27,7 @@ function isSmallScreen() {
   return UTIL.getLocalStorageItem('isMobile') && isSmallScreen;
 }
 
-let props = defineProps(["isGetWeather"]);
+const props = defineProps(["isGetWeather"]);
 
 watch(() => props.isGetWeather, (newValue) => {
     //데이터 모두 받은 후에 파싱 처리
@@ -51,7 +51,7 @@ function initData(){
 }
 
 function getCurrentTime(weather: string){
-  return moment(weather).format("MM/DD HH시");
+  return moment(weather).format("MM/DD HH");
 }
 
 function getWeatherIcon(code: number, time: any){

@@ -9,11 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { IonApp } from '@ionic/vue';
 import * as UTIL from "@/utils/UTIL.js";
-// import ToastView from '@/components/ToastView.vue';
-// const isHideModal = UTIL.getLocalStorageItem('isHideModal') == "true";
 
 onMounted(() => {
   //초기화

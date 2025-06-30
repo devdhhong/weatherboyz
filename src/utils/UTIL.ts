@@ -251,7 +251,7 @@ const getMainMsg = function () {
 
 // 날씨 메인 이미지 경로 조회
 const getWeatherMain = function (code: number, member: string) {
-  let theme = getLocalStorageItem("theme") || "";
+  const theme = getLocalStorageItem("theme") || "";
 
   // //맑음
   // if ([0, 1].indexOf(code) > -1) {
