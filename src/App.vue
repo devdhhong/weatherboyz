@@ -23,7 +23,6 @@ onMounted(() => {
   const script = document.createElement('script');
   script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_API_KEY}&libraries=services&autoload=false`;
   script.async = true;
-  script.crossOrigin = "anonymous"; 
 	script.onload = (res) => {
 		console.log("KAKAO SDK LOADED !");
 	}
