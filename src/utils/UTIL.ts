@@ -304,6 +304,9 @@ const getReverseGeocode = async function () {
 		const lon = getLocalStorageItem('longitude')
 		const lat = getLocalStorageItem('latitude');
 
+    alert(lon)
+    alert(lat)
+
 		geocoder.coord2Address(lon, lat, (result: any, status: any) => {
 			if (status === window.kakao.maps.services.Status.OK) {
 				//도로명주소  
