@@ -65,6 +65,7 @@ onMounted(() => {
   getPlaylist();
 });
 
+//초기화
 function initData(){
   if(UTIL.getLocalStorageItem('weather') && UTIL.getLocalStorageItem('airQuality')){
     //날씨 정보
@@ -83,7 +84,7 @@ function initData(){
   }
 }
 
-
+//스포티파이 앱 실행
 function openSpotify() {
   const isAppYn = localStorage.getItem("isAppYn");
   const isAosYn = localStorage.getItem("isAosYn");
@@ -249,7 +250,7 @@ async function getPlaylist() {
   top: $header_height + $current_height;
 
   p {
-    @include text-style-3;
+    @include text-style-4;
     color: var(--text-color-1);
   }
 }

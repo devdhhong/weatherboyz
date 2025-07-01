@@ -299,10 +299,8 @@ const getReverseGeocode = async function () {
 	}
 	waitingLoad();
 
-
 	window.kakao.maps.load(() => {
 		const geocoder = new window.kakao.maps.services.Geocoder();
-
 		const lon = getLocalStorageItem('longitude')
 		const lat = getLocalStorageItem('latitude');
 

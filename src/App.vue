@@ -23,6 +23,7 @@ onMounted(() => {
   const script = document.createElement('script');
   script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_API_KEY}&libraries=services&autoload=false`;
   script.async = true;
+  script.crossOrigin = "anonymous"; 
 	script.onload = (res) => {
 		console.log("KAKAO SDK LOADED !");
 	}
@@ -32,7 +33,8 @@ onMounted(() => {
 function setInit() {
 	// 디바이스 정보
 	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-	const isAPP = !!window.BMCManager || (window.webkit ? (window.webkit.messageHandlers ? (window.webkit.messageHandlers.BMCManager ? true : false) : false) : false);
+  const isAPP = (/\bwv\b/.test(userAgent) && /Android/.test(userAgent)) ||  // Android WebView
+  (/iPhone|iPad|iPod/.test(userAgent) && !/Safari/.test(userAgent));  // iOS WebView 추정
 	const isAOS = /android/i.test(userAgent);
 	const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 	const isMobile = userAgent && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
@@ -41,38 +43,42 @@ function setInit() {
 	UTIL.setLocalStorageItem("isAosYn", isAOS ? "Y" : "N");
 	UTIL.setLocalStorageItem("isIosYn", isIOS ? "Y" : "N");
 	UTIL.setLocalStorageItem("isMobileYn", isMobile ? "Y" : "N");
-	
+ 
 	//웹
 	if(!isAPP){
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
-          console.log(position);
 					const lat = position.coords.latitude;
 					const lon = position.coords.longitude;
 
-          UTIL.setLocalStorageItem("latitude", lat);
-					UTIL.setLocalStorageItem("longitude", lon);
+          // 대한민국 위경도 범위: 위도 33~39, 경도 124~132
+          const isKorea = lat >= 33 && lat <= 39 && lon >= 124 && lon <= 132;
+          if (isKorea) {
+            UTIL.setLocalStorageItem("latitude", lat);
+            UTIL.setLocalStorageItem("longitude", lon);
+          } else {
+            //서울시청
+            UTIL.setLocalStorageItem("latitude", "37.5665");
+            UTIL.setLocalStorageItem("longitude", "126.9780");
+          }
 				},
 				(error) => {
           console.log(error);
-
-					//완주고등학교
-					UTIL.setLocalStorageItem("latitude", "35.9412417");
-					UTIL.setLocalStorageItem("longitude", "127.1672728");
 				}
 			);
 		} 
 		else {
 			console.error("⭐⭐⭐⭐⭐ 위치 정보 제공안함");
 
-			//완주고등학교
-      UTIL.setLocalStorageItem("latitude", "35.9412417");
-      UTIL.setLocalStorageItem("longitude", "127.1672728");
+      //서울시청
+      UTIL.setLocalStorageItem("latitude", "37.5665");
+      UTIL.setLocalStorageItem("longitude", "126.9780");
 		}
 	}
 	//앱
 	else{
+    //AOS
 		if (isAOS) {
 			window.Android.receiveLocation = function (latitude: Number, longitude: Number) {
 				//위치 정보 저장
@@ -89,6 +95,7 @@ function setInit() {
 				writeLog("Lat: " + latitude + "Lon: " + longitude); // Vue 인스턴스의 메서드를 호출
 			};
 		}
+    //IOS
 		else if (isIOS) {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(
@@ -96,23 +103,28 @@ function setInit() {
 						const lat = position.coords.latitude;
 						const lon = position.coords.longitude;
 
-            UTIL.setLocalStorageItem("latitude", lat);
-            UTIL.setLocalStorageItem("longitude", lon);
-					},
+            // 대한민국 위경도 범위: 위도 33~39, 경도 124~132
+            const isKorea = lat >= 33 && lat <= 39 && lon >= 124 && lon <= 132;
+            if (isKorea) {
+              UTIL.setLocalStorageItem("latitude", lat);
+              UTIL.setLocalStorageItem("longitude", lon);
+            } else {
+              //서울시청
+              UTIL.setLocalStorageItem("latitude", "37.5665");
+              UTIL.setLocalStorageItem("longitude", "126.9780");
+            }
+          },
 					(error) => {
             console.log(error);
-
-						//완주고등학교
-						UTIL.setLocalStorageItem("latitude", "35.9412417");
-            UTIL.setLocalStorageItem("longitude", "127.1672728");
           }
 				);
 			} 
 			else {
 				console.error("⭐⭐⭐⭐⭐ 위치 정보를 제공안함");
-				//완주고등학교
-        UTIL.setLocalStorageItem("latitude", "35.9412417");
-        UTIL.setLocalStorageItem("longitude", "127.1672728");
+        
+        //서울시청
+        UTIL.setLocalStorageItem("latitude", "37.5665");
+        UTIL.setLocalStorageItem("longitude", "126.9780");
 			}
 		}
 	}
@@ -141,15 +153,6 @@ function setInit() {
   document.documentElement.classList.add(setMember + '-mode');
   document.documentElement.classList.add(setTheme + '-mode');
 }
-
-// Android 인터페이스로 메세지 받기
-function showToastFromAndroid(message: string) {
-  window.Android.showToast(message); // Android 인터페이스 메서드 호출
-}
-
-// function showToast(message, type){
-//   $refs.toast.showToast(message, type);
-// }
 
 function writeLog(message : string) {
   window.Android.writeLog("FROM JS", message);

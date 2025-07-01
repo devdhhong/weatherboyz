@@ -21,7 +21,6 @@ import TimelyView from "../components/TimelyView.vue";
 import * as UTIL from "@/utils/UTIL.js";
 
 import { onBeforeMount, ref } from "vue";
-
 const title = "MAIN";
 const isGetSpotifyToken = ref(false); // 데이터 패치 여부
 const isGetReverseGeocode = ref(false); // 데이터 패치 여부
