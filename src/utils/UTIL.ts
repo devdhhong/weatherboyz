@@ -111,7 +111,7 @@ const getMainMsg = function () {
   const hhmm = moment().format("hhmm");
   // const hhmm24 = moment().format("HHmm");
 
-  const birthday = ["1104", "0530", "0808", "0917", "0115", "0223", "0426", "1105", "0309", "0412", "1222", "1206", "0403"];
+  const birthday = ["1104", "0530", "0808", "0917", "0115", "0223", "0426", "1105", "0412", "1222", "1206", "0403"];
   const weather = JSON.parse(getLocalStorageItem("weather"));
   const airQuality = JSON.parse(getLocalStorageItem("airQuality"));
 
@@ -346,7 +346,7 @@ const getWeather = async function () {
       params: {
         latitude: getLocalStorageItem('latitude'),
         longitude: getLocalStorageItem('longitude'),
-        hourly: "temperature,showers,rain,snowfall,weather_code",
+        hourly: "temperature,showers,rain,snowfall,weather_code,precipitation_probability",
         current: "rain,temperature,apparent_temperature,weather_code",
         daily: "sunrise,sunset,temperature_2m_max,temperature_2m_min",
         forecast_hours: "25",

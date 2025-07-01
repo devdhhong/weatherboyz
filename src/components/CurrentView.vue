@@ -158,7 +158,8 @@ async function getPlaylist() {
       height: 30%;
 
       img {
-        height: 100%;
+				width: 55px;
+        height: 55px;
       }
 
       p {

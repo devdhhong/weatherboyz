@@ -24,7 +24,7 @@ onMounted(() => {
   script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_API_KEY}&libraries=services&autoload=false`;
   script.async = true;
 	script.onload = (res) => {
-		console.log(JSON.stringify(res));
+		console.log("KAKAO SDK LOADED !");
 	}
   document.head.appendChild(script);
 });

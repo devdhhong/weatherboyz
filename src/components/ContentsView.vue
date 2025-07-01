@@ -61,7 +61,7 @@ function initData(){
   width: 100%;
   height: $contents_height;
   position: fixed;
-  top: $header_height + $current_height + $message_height;
+  top: $header_height + $current_height + $message_height + $timely_height;
 
   .contentsBox {
     @include center;
