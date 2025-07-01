@@ -21,13 +21,6 @@ let weather: Weather;
 let weatherTime = {};
 let weatherCode = {};
 let weatherTemp = {};
-// const timelyHeight = ref(isSmallScreen() ? '15%' : '15%');
-
-function isSmallScreen() {
-  // 화면 크기 체크
-  const isSmallScreen = window.innerWidth <= 768;
-  return UTIL.getLocalStorageItem('isMobile') && isSmallScreen;
-}
 
 const props = defineProps(["isGetWeather"]);
 
@@ -52,9 +45,8 @@ function initData(){
   }
 }
 
+//현재시간 
 function getCurrentTime(weather: string){
-	console.log(moment(weather).format('MMDDHH'));
-	console.log(moment().format('MMDDHH'));
 	//현재시간
 	if(moment(weather).format('MMDDHH') == moment().format('MMDDHH')){
 		return "지금";
