@@ -187,6 +187,7 @@ function getViewportHeight() {
   background-color: var(--background-color-2);
   position: relative;
   overflow: hidden;
+  padding: env(safe-area-inset-top) 0 0 0;
   // padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
