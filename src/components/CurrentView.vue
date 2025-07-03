@@ -1,14 +1,7 @@
 <template>
   <div id="CurrentView">
     <!-- 스켈레톤 UI -->
-    <div class="infoView loading" v-if="!(props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality)">
-      <img src="../../public/images/loading_circle_small.gif" alt="">
-    </div>
-    <div class="infoView loading" v-if="!props.isGetSpotifyToken">
-      <img src="../../public/images/loading_circle_small.gif" alt="">
-    </div>
-
-    <div class="infoView" v-if="props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality">
+    <div class="infoView" v-show="props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality">
       <div class="temperature">
         <img :src="weatherIcon" alt="" />
         <p>{{ temperature }}{{ $t('도') }}</p>
@@ -19,12 +12,19 @@
         <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ $t(pm2_5) }}</div>
       </div>
     </div>
-    <div class="infoView" v-if="props.isGetSpotifyToken" @click="openSpotify">
+    <div class="infoView loading" v-show="!(props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality)">
+      <img src="../../public/images/loading_circle_small.gif" alt="">
+    </div>
+
+    <div class="infoView" v-show="props.isGetSpotifyToken && isAlbumImageLoaded" @click="openSpotify">
       <div>{{ $t('오늘의 노래') }} 🎹</div>
       <div class="songCover">
-        <img :src="musicData?.album?.images[0].url" alt=""/>
+        <img :src="musicData?.album?.images[0].url" alt="" @load="albumImageLoaded"/>
       </div>
       <!-- <div class="songTitle">{{ todayMusicData?.musicTitle }}</div> -->
+    </div>
+    <div class="infoView loading" v-show="!props.isGetSpotifyToken || !isAlbumImageLoaded">
+      <img src="../../public/images/loading_circle_small.gif" alt="">
     </div>
   </div>
   <div id="MessageView">
@@ -48,6 +48,7 @@ let mainMsg = "";              //메인화면 메세지
 let airQuality: AirQuality;
 let weather: Weather;
 const musicData = ref<SpotifyMusic | null>(null);
+const isAlbumImageLoaded = ref(false); // 앨범 이미지 로드 상태
 const props = defineProps(["isGetReverseGeocode", "isGetWeather", "isGetAirQuality", "isGetSpotifyToken"]);
 
 watch(() => props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality && props.isGetSpotifyToken, (newValue) => {
@@ -122,8 +123,10 @@ async function getPlaylist() {
   musicData.value = data.items[0].track;
 }
 
-
-
+//이미지 로드 완료
+function albumImageLoaded(){
+  isAlbumImageLoaded.value = true;
+}
 
 </script>
 
@@ -152,7 +155,7 @@ async function getPlaylist() {
   }
 
   // 날씨
-  .infoView:nth-child(1) {
+  .infoView:not(.loading):nth-child(1) {
     .temperature {
       @include left;
       width: 100%;
@@ -183,7 +186,7 @@ async function getPlaylist() {
   }
 
   // 오늘의 추천곡
-  .infoView:nth-child(2) {
+  .infoView:not(.loading):nth-child(3) {
     margin-left: 0%;
 
     div {
