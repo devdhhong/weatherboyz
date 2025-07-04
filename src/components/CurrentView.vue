@@ -63,6 +63,7 @@ onMounted(() => {
   //데이터 초기화
   initData();
 
+	//플레이리스트 정보 조회
   getPlaylist();
 });
 
@@ -101,12 +102,10 @@ function openSpotify() {
   }
 }
 
+//플레이리스트 정보 조회
 async function getPlaylist() {	
-  //저장된 토큰이 없다면, 재발급
-	//TODO 추후에 1시간에 한번 발급하도록 수정하여 불필요한 호출 방지할 것
-  if(!UTIL.getLocalStorageItem('access_token')){
-		await UTIL.getSpotifyToken();
-	}
+	// 스포티파이 토큰발급 
+	await UTIL.getSpotifyToken();
 
   const playlistId = "7zSjrTEw9wkuIB24dr0I6V";
 

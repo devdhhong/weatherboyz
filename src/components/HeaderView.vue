@@ -3,7 +3,8 @@
     <!-- MAIN -->
     <div v-if="props.title == 'MAIN'">
 			<div class="btnLeft" @click="btnPlay">
-				<i class="fa-solid fa-puzzle-piece fa-xl reverse"></i>
+				<i class="fa-solid fa-dice fa-lg reverse"></i>
+				<!-- <i class="fa-solid fa-puzzle-piece fa-xl reverse"></i> -->
       </div>
       <div class="title">
         <p>{{ address?.region_2depth_name || address?.region_1depth_name }}</p>

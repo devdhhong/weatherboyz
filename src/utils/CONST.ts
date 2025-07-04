@@ -4,6 +4,7 @@ const NOW_FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 const NOW_AIRQUALITY_URL = "https://air-quality-api.open-meteo.com/v1/air-quality";
 const OPEN_AI_CHAT_URL = "https://api.openai.com/v1/chat/completions";
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
+const GODATA_WEATHER_URL = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
 
 /* WMO 기상 해석코드 (weather code) */
 const WEATHER_CODE = {
@@ -101,5 +102,6 @@ export {
 	MEMBER_NM_ENG_SHORT,
 	MEMBER_NM_KOR_LONG,
 	MEMBER_NM_KOR_SHORT,
-	SPOTIFY_TOKEN_URL
+	SPOTIFY_TOKEN_URL,
+	GODATA_WEATHER_URL
 }
