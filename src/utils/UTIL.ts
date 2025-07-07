@@ -454,7 +454,7 @@ export {
   getMainMsg,
   getWeatherMain,
   getReverseGeocode,
-  getWeather,
+  getWeatherNow,
   getAirQuality,
 	getSpotifyToken
 };
