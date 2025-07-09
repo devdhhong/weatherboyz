@@ -53,7 +53,7 @@ async function fetchData() {
 
     // 날씨정보 조회
     try {
-      await UTIL.getWeather();
+      await UTIL.getWeatherNow();
     } 
 		catch (error) {
       console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');

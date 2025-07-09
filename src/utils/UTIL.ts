@@ -363,9 +363,28 @@ const getWeatherNow = async function () {
 
 	console.log("------------------------------------------------------------------");
 	console.log(res);
-  // weather.value.tmp = items.find(i => i.category === 'TMP')?.fcstValue ?? '-'
-  // weather.value.pop = items.find(i => i.category === 'POP')?.fcstValue ?? '-'
+
+	const data = {
+		temperature: "", 
+		humidity: "",
+		precipType: "",
+		precipProbability: "",
+		skyCondition: "",
+		windSpeed: "",
+	};
+
+  data.temperature = items.find(i => i.category === 'T1H')?.obsrValue; //기온
+  data.humidity = items.find(i => i.category === 'REH')?.obsrValue; //습도
+  data.precipType = items.find(i => i.category === 'PTY')?.obsrValue; //강수 형태 (비/눈 등)
+  data.precipProbability = items.find(i => i.category === 'POP')?.obsrValue; //강수 확률 (%)
+  data.skyCondition = items.find(i => i.category === 'SKY')?.obsrValue; //하늘 상태 (맑음/흐림 등)
+  data.windSpeed = items.find(i => i.category === 'WSD')?.obsrValue; //	풍속 (m/s)
+
+console.log(data);
+	//데이터 저장
+	setLocalStorageItem("weatherNow", data); 
 	console.log("✅ 날씨 정보 조회 완료!");
+
 
   // try {
   //   // axios.get()는 Promise를 반환
