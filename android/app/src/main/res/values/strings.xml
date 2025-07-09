@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">weatherboyz</string>
+    <string name="title_activity_main">weatherboyz</string>
+    <string name="package_name">io.devdhhong.weatherboyz</string>
+    <string name="custom_url_scheme">io.devdhhong.weatherboyz</string>
+</resources>
