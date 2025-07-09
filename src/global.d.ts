@@ -68,6 +68,13 @@ declare global {
 			spotify: string;
 		};
 	}
+
+  type WeatherNow = {
+    humidity: string;
+    precipType: string;
+    temperature: string;
+    windSpeed: string;
+  }
 }
 
 export {} 

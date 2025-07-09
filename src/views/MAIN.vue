@@ -32,46 +32,21 @@ onBeforeMount(() => {
 });
 
 async function fetchData() {
-  try {
-		// 스포티파이 토큰발급 
-		try {
-      await UTIL.getSpotifyToken();
-    } 
-		catch (error) {
-      console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
-    }
-		isGetSpotifyToken.value = true;
+  // 스포티파이 토큰발급 
+  await UTIL.getSpotifyToken();
+  isGetSpotifyToken.value = true;
 
-    // 역지오코딩
-    try {
-      await UTIL.getReverseGeocode();
-    } 
-		catch (error) {
-      console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
-    }
-		isGetReverseGeocode.value = true;
+  // 역지오코딩
+  await UTIL.getReverseGeocode();
+  isGetReverseGeocode.value = true;
 
-    // 날씨정보 조회
-    try {
-      await UTIL.getWeatherNow();
-    } 
-		catch (error) {
-      console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
-    }
-		isGetWeather.value = true;
+  // 날씨정보 조회
+  await UTIL.getWeatherNow();
+  isGetWeather.value = true;
 
-    // 대기정보 조회
-    try {
-      await UTIL.getAirQuality();
-    } 
-		catch (error) {
-      console.warn('데이터를 불러오는 것에 실패했습니닿... 잠시만 기다려주세욯...');
-    }
-		isGetAirQuality.value = true;
-  } 
-	catch (error) {
-    // 최소한의 데이터라도 표시하기 위해 true로 설정
-  }
+  // 대기정보 조회
+  await UTIL.getAirQuality();
+  isGetAirQuality.value = true;
 }
 
 </script>

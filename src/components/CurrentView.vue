@@ -4,10 +4,11 @@
     <div class="infoView" v-show="props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality">
       <div class="temperature">
         <img :src="weatherIcon" alt="" />
-        <p>{{ temperature }}{{ $t('도') }}</p>
+        <p>{{ weatherNow?.temperature }}{{ $t('도') }}</p>
       </div>
       <div class="weatherInfo">
-        <div class="feelTemp">{{ $t('체감온도') }} : {{ apparent_temperature }}{{ $t('도') }}</div>
+        <!-- <div class="feelTemp">{{ $t('체감온도') }} : {{ apparent_temperature }}{{ $t('도') }}</div> -->
+        <div class="fineDust">{{ $t('습도') }}: {{ weatherNow?.humidity }}%</div>
         <div class="fineDust">{{ $t('미세먼지') }}: {{ $t(pm10) }}</div>
         <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ $t(pm2_5) }}</div>
       </div>
@@ -39,14 +40,14 @@ import * as UTIL from "@/utils/UTIL.js";
 import { onMounted } from "vue";
 import moment from "moment";
 
-let weatherIcon = "";          //날씨 아이콘
-let temperature = 0;           //온도
-let apparent_temperature = 0;  //체감온도
 let pm10 = "";                 //미세먼지
 let pm2_5 = "";                //초미세먼지
 let mainMsg = "";              //메인화면 메세지
 let airQuality: AirQuality;
 let weather: Weather;
+
+const weatherIcon = ref(""); //날씨 아이콘
+const weatherNow = ref<WeatherNow | null>(null);
 const musicData = ref<SpotifyMusic | null>(null);
 const isAlbumImageLoaded = ref(false); // 앨범 이미지 로드 상태
 const props = defineProps(["isGetReverseGeocode", "isGetWeather", "isGetAirQuality", "isGetSpotifyToken"]);
@@ -55,7 +56,7 @@ watch(() => props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQua
     //데이터 모두 받은 후에 파싱 처리
     if (newValue) {
       initData();
-   	}
+    }
   }
 );
 
@@ -69,21 +70,21 @@ onMounted(() => {
 
 //초기화
 function initData(){
-  if(UTIL.getLocalStorageItem('weather') && UTIL.getLocalStorageItem('airQuality')){
-    //날씨 정보
-    weather = JSON.parse(UTIL.getLocalStorageItem('weather'));
-    temperature = Math.round(weather.current.temperature);
-    apparent_temperature = Math.round(weather.current.apparent_temperature);
-    weatherIcon = UTIL.getWeatherIcon(weather.current.weather_code, moment(new Date()).format("HHmm"));
+  //날씨 정보
+  weatherNow.value = JSON.parse(UTIL.getLocalStorageItem('weatherNow'));
+  
+  weatherIcon.value = UTIL.getWeatherIcon();
+  // weatherIcon = UTIL.getWeatherIcon(weather.current.weather_code, moment(new Date()).format("HHmm"));
+  
+  // let airQuality = UTIL.getLocalStorageItem('airQuality');
 
-    //미세먼지 정보
-    airQuality = JSON.parse(UTIL.getLocalStorageItem('airQuality'));
-    pm10 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[0];
-    pm2_5 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[1];
-    
-    //메세지
-    mainMsg = UTIL.getMainMsg();
-  }
+  // //미세먼지 정보
+  // airQuality = JSON.parse(UTIL.getLocalStorageItem('airQuality'));
+  // pm10 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[0];
+  // pm2_5 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[1];
+  
+  //메세지
+  mainMsg = UTIL.getMainMsg();
 }
 
 //스포티파이 앱 실행

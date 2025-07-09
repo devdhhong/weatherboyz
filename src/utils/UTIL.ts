@@ -19,69 +19,54 @@ const setLocalStorageItem = function(key: string, value: any) {
 }
 
 // 날씨 아이콘 이미지 경로 조회
-const getWeatherIcon = function (code: number, time: string) {
-  const weather = JSON.parse(getLocalStorageItem("weather"));
-  const sunrise = Number(moment(weather.daily.sunrise[0]).format("HHmm")); //일출시간
-  const sunset = Number(moment(weather.daily.sunset[0]).format("HHmm")); //일몰시간
-  const hhmm = Number(time); //현재시간
+const getWeatherIcon = function () {
+  const weatherNow = JSON.parse(getLocalStorageItem("weatherNow"));
+  const sunrise = Number("0600"); //일출시간
+  const sunset = Number("1800"); //일몰시간
+  const HHmm = Number(moment().format("HHmm")); //현재시간
   
   let url = ""; //아이콘 이미지 경로
-  const pad = 0; //시간 허용 범위
 
-  //맑음
-  if ([0, 1].indexOf(code) > -1) {
-    if (hhmm < (sunrise - pad) || hhmm > (sunset + pad)) {
-      //밤
-      url = "SUNNY_NIGHT";
+  const precipType = weatherNow.precipType;
+  const skyCondition = weatherNow.skyCondition;
+
+  //비
+  if(precipType == '1'){
+    url = "rainy_normal";
+  }
+  // 눈비
+  else if(precipType == '2'){
+    url = "rainy_normal";
+  }
+  // 눈
+  else if(precipType == '3'){
+    url = "snowy_normal";
+  }
+  // 소나기
+  else if(precipType == '4'){
+    url = "rainy_normal";
+  }
+  // 맑음
+  else if(skyCondition == '1'){
+    //밤
+    if(HHmm > (sunset + 100) || HHmm < (sunrise - 100)){
+      url = "sunny_night";
     }
-    else if (Math.abs(sunrise - hhmm) < pad) {
-      //일출
-      url = "SUNNY_SUNRISE";
+    //일출
+    else if(HHmm > (sunrise - 100) && HHmm < (sunrise + 100)){
+      url = "sunny_sunrise";
     }
-    else if (Math.abs(sunset - hhmm) < pad) {
-      //일몰
-      url = "SUNNY_SUNSET";
+    //일몰
+    else if(HHmm > (sunset - 100) && HHmm < (sunset + 100)){
+      url = "sunny_sunset";
     }
+    //낮
     else {
-      //낮
-      url = "SUNNY_DAY";
+      url = "sunny_day";
     }
   }
-  //흐림
-  else if ([2, 3].indexOf(code) > -1) {
-    url = "CLOUDY";
-  }
-  //약한 비
-  else if ([51, 56, 61, 80].indexOf(code) > -1) {
-    url = "RAINY_LIHGT";
-  }
-  //보통 비
-  else if ([53, 63, 81].indexOf(code) > -1) {
-    url = "RAINY_NORMAL";
-  }
-  //강한 비
-  else if ([55, 57, 65, 67, 82].indexOf(code) > -1) {
-    url = "RAINY_HEAVY";
-  }
-  //천둥번개
-  else if ([95, 96, 99].indexOf(code) > -1) {
-    url = "THUNDER";
-  }
-  //눈
-  else if ([71, 73, 77, 85].indexOf(code) > -1) {
-    url = "SNOWY_LIGHT";
-  }
-  //폭설
-  else if ([75, 86].indexOf(code) > -1) {
-    url = "SNOW_HEAVY";
-  }
-  //안개
-  else if ([45, 48].indexOf(code) > -1) {
-    url = "FOGGY";
-  }
-  //그 외
   else {
-    url = "SUNNY_DAY";
+    url = "cloudy";
   }
 
   return "/images/WEATHER/"+ url + ".png";
@@ -339,30 +324,23 @@ const getReverseGeocode = async function () {
 
 // 실시간 날씨정보 조회
 const getWeatherNow = async function () {
-	const baseDate = moment().format("YYYYMMDD");
-	const baseTime = "0500";
-	// const baseTime = moment().format("HH") + "00";
+  const { base_date, base_time } = getKmaBaseDateTime();
 
 	// 서울 격자 좌표
   const nx = 60;
   const ny = 127;
 
+  //초단기실황조회 (기온, 습도 조회용)
   let url = `${CONST.GODATA_WEATHER_URL}`;
   url += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
   url += `&pageNo=1&numOfRows=10&dataType=JSON`;
-  url += `&base_date=${baseDate}`;
-  url += `&base_time=${baseTime}`;
+  url += `&base_date=${base_date}`;
+  url += `&base_time=${base_time}`;
   url += `&nx=${nx}`;
   url += `&ny=${ny}`;
 
-	console.log("------------------------------------------------------------------");
-
 	const res = await axios.get(url);
-
   const items = res.data.response.body.items.item;
-
-	console.log("------------------------------------------------------------------");
-	console.log(res);
 
 	const data = {
 		temperature: "", 
@@ -371,44 +349,23 @@ const getWeatherNow = async function () {
 		precipProbability: "",
 		skyCondition: "",
 		windSpeed: "",
+		minumumTemp: "",
+		maximumTemp: "",
 	};
 
-  data.temperature = items.find(i => i.category === 'T1H')?.obsrValue; //기온
-  data.humidity = items.find(i => i.category === 'REH')?.obsrValue; //습도
-  data.precipType = items.find(i => i.category === 'PTY')?.obsrValue; //강수 형태 (비/눈 등)
-  data.precipProbability = items.find(i => i.category === 'POP')?.obsrValue; //강수 확률 (%)
-  data.skyCondition = items.find(i => i.category === 'SKY')?.obsrValue; //하늘 상태 (맑음/흐림 등)
-  data.windSpeed = items.find(i => i.category === 'WSD')?.obsrValue; //	풍속 (m/s)
+  data.temperature = items.find((i: any) => i.category === 'TMP')?.fcstValue; //기온
+  data.humidity = items.find((i: any) => i.category === 'REH')?.fcstValue; //습도
+  data.precipType = items.find((i: any) => i.category === 'PTY')?.fcstValue; //강수 형태 (비/눈 등)
+  data.precipProbability = items.find((i: any) => i.category === 'POP')?.fcstValue; //강수 확률 (%)
+  data.skyCondition = items.find((i: any) => i.category === 'SKY')?.fcstValue; //하늘 상태 (맑음/흐림 등)
+  data.windSpeed = items.find((i: any) => i.category === 'WSD')?.fcstValue; //	풍속 (m/s)
+  data.minumumTemp = items.find((i: any) => i.category === 'TMN')?.fcstValue; //	일 최저기온
+  data.maximumTemp = items.find((i: any) => i.category === 'TMX')?.fcstValue; // 일 최대기온
 
-console.log(data);
+  console.log(data);
 	//데이터 저장
 	setLocalStorageItem("weatherNow", data); 
 	console.log("✅ 날씨 정보 조회 완료!");
-
-
-  // try {
-  //   // axios.get()는 Promise를 반환
-  //   const response = await axios.get(`${CONST.NOW_FORECAST_URL}`, {
-  //     params: {
-  //       latitude: getLocalStorageItem('latitude'),
-  //       longitude: getLocalStorageItem('longitude'),
-  //       hourly: "temperature,showers,rain,snowfall,weather_code,precipitation_probability",
-  //       current: "rain,temperature,apparent_temperature,weather_code",
-  //       daily: "sunrise,sunset,temperature_2m_max,temperature_2m_min",
-  //       forecast_hours: "25",
-  //       timezone: "auto"
-  //     }
-  //   });
-
-	// 	//데이터 저장
-  //   setLocalStorageItem("weather", response.data); 
-
-	// 	console.log("✅ 날씨 정보 조회 완료!");
-  // } 
-	// catch (error) {
-  //   console.error('[ERROR]', error);
-  //   throw error;
-  // }
 };
 
 // 대기정보 조회
@@ -465,6 +422,36 @@ const getSpotifyToken = async function () {
 	console.log("✅ 스포티파이 토근 발급 완료!");
 };
 
+const getKmaBaseDateTime = function() {
+  const now = new Date();
+
+  // 기상청 base_time 목록 (정해진 값만 가능)
+  const baseTimes = ["0200", "0500", "0800", "1100", "1400", "1700", "2000", "2300"];
+
+  // 현재 시각을 HHMM 형식으로
+  const currentHHMM = now.getHours().toString().padStart(2, '0') + 
+    now.getMinutes().toString().padStart(2, '0');
+
+  // base_time 중 현재 시각보다 작은 가장 마지막 값 찾기
+  let selectedTime = baseTimes.findLast(bt => bt <= currentHHMM);
+
+  // 자정 이후(00:00~01:59)엔 base_time = "2300", base_date는 전날로
+  if (!selectedTime) {
+    selectedTime = "2300";
+    now.setDate(now.getDate() - 1); // 전날로 이동
+  }
+
+  // base_date: YYYYMMDD 형식
+  const baseDate = now.getFullYear().toString() +
+    (now.getMonth() + 1).toString().padStart(2, '0') +
+    now.getDate().toString().padStart(2, '0');
+
+  return {
+    base_date: baseDate,
+    base_time: selectedTime
+  };
+}
+
 export {
   getLocalStorageItem,
   setLocalStorageItem,
@@ -475,5 +462,6 @@ export {
   getReverseGeocode,
   getWeatherNow,
   getAirQuality,
-	getSpotifyToken
+	getSpotifyToken,
+  getKmaBaseDateTime
 };
