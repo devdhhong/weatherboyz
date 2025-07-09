@@ -19,7 +19,7 @@
 import router from "@/router";
 import HeaderView from "@/components/HeaderView.vue";
 
-const title = "미니 게임";
+const title = "플레이";
 
 function btnFortune() {
   router.push("/FORTUNE");

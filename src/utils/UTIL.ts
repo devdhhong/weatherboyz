@@ -2,11 +2,13 @@ import moment from "moment";
 import * as CONST from "@/utils/CONST";
 import axios from "axios";
 
+//로컬스토리지 GET
 const getLocalStorageItem = function(key: string): string {
   const value = localStorage.getItem(key);
   return value !== null ? value : "";
 }
 
+//로컬스토리지 SET
 const setLocalStorageItem = function(key: string, value: any) {
   if(typeof value == "object"){
     localStorage.setItem(key, JSON.stringify(value) || ""); 
@@ -235,13 +237,13 @@ const getMainMsg = function () {
 		const diffDay = targetDate.diff(moment(), "days");
 
 		if(Number(diffDay) > 0){
-			msg = "🔥 〈THE BLAZE〉 WORLD TOUR in SEOUL D-" + diffDay + " 🔥";
+			msg = "🔥〈THE BLAZE WORLD TOUR in SEOUL D-" + diffDay + " 🔥";
 		}
 		else if(Number(diffDay) == 0){
-			msg = "🔥 〈THE BLAZE〉 WORLD TOUR in SEOUL D-DAY" + diffDay + " 🔥";
+			msg = "🔥〈THE BLAZE WORLD TOUR in SEOUL D-DAY" + diffDay + " 🔥";
 		} 
 		else{
-			msg = "🔥 〈THE BLAZE〉 WORLD TOUR in SEOUL D+" + diffDay + " 🔥";
+			msg = "🔥〈THE BLAZE〉WORLD TOUR in SEOUL D+" + diffDay + " 🔥";
 		}
     // msg = "🐶 🍐 🍞 🎁 🐱 🌙 🐧 🐿️ ☀️ 🦄";
   }
@@ -321,7 +323,6 @@ const getReverseGeocode = async function () {
 					"address_name": "",
 					"region_1depth_name": "",
 					"region_2depth_name": "위치조회 실패",
-					// "region_2depth_name": "중구",
 					"region_3depth_name": "",
 					"road_name": "",
 					"underground_yn": "",
@@ -336,28 +337,78 @@ const getReverseGeocode = async function () {
 	});
 };
 
-// 날씨정보 조회
-const getWeather = async function () {
-  try {
-    // axios.get()는 Promise를 반환
-    const response = await axios.get(`${CONST.NOW_FORECAST_URL}`, {
-      params: {
-        latitude: getLocalStorageItem('latitude'),
-        longitude: getLocalStorageItem('longitude'),
-        hourly: "temperature,showers,rain,snowfall,weather_code,precipitation_probability",
-        current: "rain,temperature,apparent_temperature,weather_code",
-        daily: "sunrise,sunset,temperature_2m_max,temperature_2m_min",
-        forecast_hours: "25",
-        timezone: "auto"
-      }
-    });
+// 실시간 날씨정보 조회
+const getWeatherNow = async function () {
+	const baseDate = moment().format("YYYYMMDD");
+	const baseTime = "0500";
+	// const baseTime = moment().format("HH") + "00";
 
-    setLocalStorageItem("weather", response.data); // 성공적으로 받아온 데이터 저장
+	// 서울 격자 좌표
+  const nx = 60;
+  const ny = 127;
 
-  } catch (error) {
-    console.error('Error occurred while fetching air quality:', error);
-    throw error; // 상위 호출부로 에러 전달
-  }
+  let url = `${CONST.GODATA_WEATHER_URL}`;
+  url += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
+  url += `&pageNo=1&numOfRows=10&dataType=JSON`;
+  url += `&base_date=${baseDate}`;
+  url += `&base_time=${baseTime}`;
+  url += `&nx=${nx}`;
+  url += `&ny=${ny}`;
+
+	console.log("------------------------------------------------------------------");
+
+	const res = await axios.get(url);
+
+  const items = res.data.response.body.items.item;
+
+	console.log("------------------------------------------------------------------");
+	console.log(res);
+
+	const data = {
+		temperature: "", 
+		humidity: "",
+		precipType: "",
+		precipProbability: "",
+		skyCondition: "",
+		windSpeed: "",
+	};
+
+  data.temperature = items.find(i => i.category === 'T1H')?.obsrValue; //기온
+  data.humidity = items.find(i => i.category === 'REH')?.obsrValue; //습도
+  data.precipType = items.find(i => i.category === 'PTY')?.obsrValue; //강수 형태 (비/눈 등)
+  data.precipProbability = items.find(i => i.category === 'POP')?.obsrValue; //강수 확률 (%)
+  data.skyCondition = items.find(i => i.category === 'SKY')?.obsrValue; //하늘 상태 (맑음/흐림 등)
+  data.windSpeed = items.find(i => i.category === 'WSD')?.obsrValue; //	풍속 (m/s)
+
+console.log(data);
+	//데이터 저장
+	setLocalStorageItem("weatherNow", data); 
+	console.log("✅ 날씨 정보 조회 완료!");
+
+
+  // try {
+  //   // axios.get()는 Promise를 반환
+  //   const response = await axios.get(`${CONST.NOW_FORECAST_URL}`, {
+  //     params: {
+  //       latitude: getLocalStorageItem('latitude'),
+  //       longitude: getLocalStorageItem('longitude'),
+  //       hourly: "temperature,showers,rain,snowfall,weather_code,precipitation_probability",
+  //       current: "rain,temperature,apparent_temperature,weather_code",
+  //       daily: "sunrise,sunset,temperature_2m_max,temperature_2m_min",
+  //       forecast_hours: "25",
+  //       timezone: "auto"
+  //     }
+  //   });
+
+	// 	//데이터 저장
+  //   setLocalStorageItem("weather", response.data); 
+
+	// 	console.log("✅ 날씨 정보 조회 완료!");
+  // } 
+	// catch (error) {
+  //   console.error('[ERROR]', error);
+  //   throw error;
+  // }
 };
 
 // 대기정보 조회
@@ -372,16 +423,29 @@ const getAirQuality = async function () {
       }
     });
 
+		//데이터 저장
     setLocalStorageItem("airQuality", response.data); // 성공적으로 받아온 데이터 저장
 
-  } catch (error) {
-    console.error('Error occurred while fetching air quality:', error);
-    throw error; // 상위 호출부로 에러 전달
+		console.log("✅ 대기 정보 조회 완료!");
+  } 
+	catch (error) {
+    console.error('[ERROR]', error);
+    throw error; 
   }
 };
 
 // 스포티파이 토큰 발급
 const getSpotifyToken = async function () {
+	const now = Number(moment().format("YYYYMMDDHHmm"));
+	const token_expires_in = Number(getLocalStorageItem('token_expires_in') || "");
+	const access_token = Number(getLocalStorageItem('access_token') || "");
+
+	//저장된 토큰이 없거나 만료된 경우에만, 재발급
+	//50분에 한번 발급하도록해서 불필요한 호출 방지
+  if(access_token && token_expires_in && (token_expires_in > now)){
+		return;
+	}
+
   const result = await fetch(`${CONST.SPOTIFY_TOKEN_URL}`, {
     method: "POST",
     headers: {
@@ -393,7 +457,12 @@ const getSpotifyToken = async function () {
   });
 
   const data = await result.json();
+	
+	//토근값은 1시간 동안만 유효
+	setLocalStorageItem("token_expires_in", moment().add(50, "minutes").format("YYYYMMDDHHmm"));
 	setLocalStorageItem("access_token", data.access_token); 
+
+	console.log("✅ 스포티파이 토근 발급 완료!");
 };
 
 export {
@@ -404,7 +473,7 @@ export {
   getMainMsg,
   getWeatherMain,
   getReverseGeocode,
-  getWeather,
+  getWeatherNow,
   getAirQuality,
 	getSpotifyToken
 };

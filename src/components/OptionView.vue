@@ -79,6 +79,15 @@
         <li>
           <a href="https://www.flaticon.com/kr/free-icons/" title="메시지 아이콘">메시지 아이콘 제작자: Freepik - Flaticon</a>
         </li>
+				<li>
+					<a href="https://fontawesome.com">Icons provided by Font Awesome, licensed under CC BY 4.0.</a>
+				</li>
+				<li>
+					<a href="https://developer.spotify.com">Data provided by Spotify © Spotify Ltd.</a>
+				</li>
+				<!-- <li>
+					<a href="">지도 데이터 ⓒ Kakao, © OpenStreetMap contributors</a>
+				</li> -->
         <li>
           <a href="http://osm.org/copyright">Data © OpenStreetMap contributors, ODbL 1.0.</a>
         </li>
