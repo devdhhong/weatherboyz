@@ -12,6 +12,7 @@
 import { onMounted } from "vue";
 import { IonApp } from '@ionic/vue';
 import * as UTIL from "@/utils/UTIL.js";
+import proj4 from "proj4";
 
 onMounted(() => {
   //초기화

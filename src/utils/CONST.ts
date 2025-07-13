@@ -6,6 +6,8 @@ const OPEN_AI_CHAT_URL = "https://api.openai.com/v1/chat/completions";
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
 const GODATA_USN_WEATHER_URL = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
 const GODATA_WEATHER_URL = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+const GODATA_AIRQUALITY_URL = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty";
+const GODATA_NEARSTATION_URL = "http://apis.data.go.kr/B552584/MsrstnInfoInqireSvc/getNearbyMsrstnList";
 
 /* WMO 기상 해석코드 (weather code) */
 const WEATHER_CODE = {
@@ -105,5 +107,7 @@ export {
 	MEMBER_NM_KOR_SHORT,
 	SPOTIFY_TOKEN_URL,
 	GODATA_USN_WEATHER_URL,
-	GODATA_WEATHER_URL
+	GODATA_WEATHER_URL,
+	GODATA_AIRQUALITY_URL,
+	GODATA_NEARSTATION_URL
 }

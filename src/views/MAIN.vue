@@ -32,6 +32,9 @@ onBeforeMount(() => {
 });
 
 async function fetchData() {
+  //가까훈 측정소 조회
+  await UTIL.getNearStation();
+
   // 스포티파이 토큰발급 
   await UTIL.getSpotifyToken();
   isGetSpotifyToken.value = true;

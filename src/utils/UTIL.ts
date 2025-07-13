@@ -1,6 +1,7 @@
 import moment from "moment";
 import * as CONST from "@/utils/CONST";
 import axios from "axios";
+import proj4 from "proj4";
 
 //로컬스토리지 GET
 const getLocalStorageItem = function(key: string): string {
@@ -331,16 +332,28 @@ const getWeatherNow = async function () {
   const ny = 127;
 
   //초단기실황조회 (기온, 습도 조회용)
-  let url = `${CONST.GODATA_WEATHER_URL}`;
-  url += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
-  url += `&pageNo=1&numOfRows=10&dataType=JSON`;
-  url += `&base_date=${base_date}`;
-  url += `&base_time=${base_time}`;
-  url += `&nx=${nx}`;
-  url += `&ny=${ny}`;
+  let url1 = `${CONST.GODATA_WEATHER_URL}`;
+  url1 += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
+  url1 += `&pageNo=1&numOfRows=10&dataType=JSON`;
+  url1 += `&base_date=${base_date}`;
+  url1 += `&base_time=${base_time}`;
+  url1 += `&nx=${nx}`;
+  url1 += `&ny=${ny}`;
+  
+	const res1 = await axios.get(url1);
+  const items1 = res1.data.response.body.items.item;
 
-	const res = await axios.get(url);
-  const items = res.data.response.body.items.item;
+  //초단기실황조회 (기온, 습도 조회용)
+  let url2 = `${CONST.GODATA_USN_WEATHER_URL}`;
+  url2 += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
+  url2 += `&pageNo=1&numOfRows=10&dataType=JSON`;
+  url2 += `&base_date=${base_date}`;
+  url2 += `&base_time=${base_time}`;
+  url2 += `&nx=${nx}`;
+  url2 += `&ny=${ny}`;
+
+	const res2 = await axios.get(url2);
+  const items2 = res2.data.response.body.items.item;
 
 	const data = {
 		temperature: "", 
@@ -353,42 +366,78 @@ const getWeatherNow = async function () {
 		maximumTemp: "",
 	};
 
-  data.temperature = items.find((i: any) => i.category === 'TMP')?.fcstValue; //기온
-  data.humidity = items.find((i: any) => i.category === 'REH')?.fcstValue; //습도
-  data.precipType = items.find((i: any) => i.category === 'PTY')?.fcstValue; //강수 형태 (비/눈 등)
-  data.precipProbability = items.find((i: any) => i.category === 'POP')?.fcstValue; //강수 확률 (%)
-  data.skyCondition = items.find((i: any) => i.category === 'SKY')?.fcstValue; //하늘 상태 (맑음/흐림 등)
-  data.windSpeed = items.find((i: any) => i.category === 'WSD')?.fcstValue; //	풍속 (m/s)
-  data.minumumTemp = items.find((i: any) => i.category === 'TMN')?.fcstValue; //	일 최저기온
-  data.maximumTemp = items.find((i: any) => i.category === 'TMX')?.fcstValue; // 일 최대기온
+  data.temperature = items1.find((i: any) => i.category === 'TMP')?.fcstValue; //기온
+  data.precipType = items1.find((i: any) => i.category === 'PTY')?.fcstValue; //강수 형태 (비/눈 등)
+  data.precipProbability = items1.find((i: any) => i.category === 'POP')?.fcstValue; //강수 확률 (%)
+  data.skyCondition = items1.find((i: any) => i.category === 'SKY')?.fcstValue; //하늘 상태 (맑음/흐림 등)
+  data.windSpeed = items1.find((i: any) => i.category === 'WSD')?.fcstValue; //	풍속 (m/s)
+  data.minumumTemp = items1.find((i: any) => i.category === 'TMN')?.fcstValue; //	일 최저기온
+  data.maximumTemp = items1.find((i: any) => i.category === 'TMX')?.fcstValue; // 일 최대기온
+  
+  data.humidity = items2.find((i: any) => i.category === 'REH')?.obsrValue; //습도
 
-  console.log(data);
 	//데이터 저장
 	setLocalStorageItem("weatherNow", data); 
 	console.log("✅ 날씨 정보 조회 완료!");
 };
 
+//가까훈 측정소 조회
+const getNearStation = async function () {
+  const latitude = Number(localStorage.getItem("latitude"));
+  const longitude = Number(localStorage.getItem("longitude"));
+  const tm = wgs84ToTM(latitude, longitude);
+
+  let url = `${CONST.GODATA_NEARSTATION_URL}`;
+  url += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
+  url += `&returnType=JSON`;
+  url += `&tmX=${tm.tmX}`;
+  url += `&tmY=${tm.tmY}`;
+
+	const res = await axios.get(url);
+  //데이터 저장
+  setLocalStorageItem("nearStation", res.data.response.body.items[0]); // 성공적으로 받아온 데이터 저장
+	console.log("✅ 측정소 정보 조회 완료!");
+}
+
 // 대기정보 조회
 const getAirQuality = async function () {
-  try {
-    // axios.get()는 Promise를 반환
-    const response = await axios.get(`${CONST.NOW_AIRQUALITY_URL}`, {
-      params: {
-        latitude: getLocalStorageItem('latitude'),
-        longitude: getLocalStorageItem('longitude'),
-        current: "pm10,pm2_5,uv_index"
-      }
-    });
+  const stationName = JSON.parse(getLocalStorageItem("nearStation")).stationName;
 
-		//데이터 저장
-    setLocalStorageItem("airQuality", response.data); // 성공적으로 받아온 데이터 저장
+  console.log(stationName);
+  let url = `${CONST.GODATA_AIRQUALITY_URL}`;
+  url += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
+  url += `&pageNo=1&numOfRows=10&returnType=JSON`;
+  url += `&stationName=${stationName}`;
+  url += `&dataTerm=DAILY`;
 
-		console.log("✅ 대기 정보 조회 완료!");
-  } 
-	catch (error) {
-    console.error('[ERROR]', error);
-    throw error; 
-  }
+	const res = await axios.get(url);
+  const item = res.data.response.body.items[0];
+
+  const data = {
+		temperature: "", 
+		humidity: "",
+		precipType: "",
+		precipProbability: "",
+		skyCondition: "",
+		windSpeed: "",
+		minumumTemp: "",
+		maximumTemp: "",
+	};
+
+  data.temperature = items1.find((i: any) => i.category === 'TMP')?.fcstValue; //기온
+  data.precipType = items1.find((i: any) => i.category === 'PTY')?.fcstValue; //강수 형태 (비/눈 등)
+  data.precipProbability = items1.find((i: any) => i.category === 'POP')?.fcstValue; //강수 확률 (%)
+  data.skyCondition = items1.find((i: any) => i.category === 'SKY')?.fcstValue; //하늘 상태 (맑음/흐림 등)
+  data.windSpeed = items1.find((i: any) => i.category === 'WSD')?.fcstValue; //	풍속 (m/s)
+  data.minumumTemp = items1.find((i: any) => i.category === 'TMN')?.fcstValue; //	일 최저기온
+  data.maximumTemp = items1.find((i: any) => i.category === 'TMX')?.fcstValue; // 일 최대기온
+  
+  data.humidity = items2.find((i: any) => i.category === 'REH')?.obsrValue; //습도
+
+  //데이터 저장
+  setLocalStorageItem("airQuality", response.data); // 성공적으로 받아온 데이터 저장
+
+  console.log("✅ 대기 정보 조회 완료!");
 };
 
 // 스포티파이 토큰 발급
@@ -422,6 +471,7 @@ const getSpotifyToken = async function () {
 	console.log("✅ 스포티파이 토근 발급 완료!");
 };
 
+//가장 근사한 측정시간 추출
 const getKmaBaseDateTime = function() {
   const now = new Date();
 
@@ -452,6 +502,37 @@ const getKmaBaseDateTime = function() {
   };
 }
 
+//위경도 -> TM 변환 
+const wgs84ToTM = function(lat: number, lon: number) {
+
+  // WGS84 정의 명시적으로 등록
+  const src = {
+    projName: "longlat",
+    datum: "WGS84"
+  };
+
+  const dst = {
+    projName: "tmerc",
+    lat0: 38,
+    long0: 127.5,
+    k0: 1,
+    x0: 400000,
+    y0: 600000,
+    ellps: "GRS80",
+    units: "m",
+    no_defs: true
+  };
+
+  // 위경도 → TM 직접 변환
+  const [tmX, tmY] = proj4(
+    src, dst,
+    [lon, lat]
+  );
+
+  return { tmX, tmY };
+}
+
+
 export {
   getLocalStorageItem,
   setLocalStorageItem,
@@ -463,5 +544,7 @@ export {
   getWeatherNow,
   getAirQuality,
 	getSpotifyToken,
-  getKmaBaseDateTime
+  getKmaBaseDateTime,
+  wgs84ToTM,
+  getNearStation
 };
