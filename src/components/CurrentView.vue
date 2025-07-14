@@ -9,8 +9,8 @@
       <div class="weatherInfo">
         <!-- <div class="feelTemp">{{ $t('체감온도') }} : {{ apparent_temperature }}{{ $t('도') }}</div> -->
         <div class="fineDust">{{ $t('습도') }}: {{ weatherNow?.humidity }}%</div>
-        <div class="fineDust">{{ $t('미세먼지') }}: {{ $t(pm10) }}</div>
-        <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ $t(pm2_5) }}</div>
+        <div class="fineDust">{{ $t('미세먼지') }}: {{ pm10Grade }}</div>
+        <!-- <div class="ultraFineDust">{{ $t('초미세먼지') }}: {{ $t(pm2_5) }}</div> -->
       </div>
     </div>
     <div class="infoView loading" v-show="!(props.isGetReverseGeocode && props.isGetWeather && props.isGetAirQuality)">
@@ -40,14 +40,11 @@ import * as UTIL from "@/utils/UTIL.js";
 import { onMounted } from "vue";
 import moment from "moment";
 
-let pm10 = "";                 //미세먼지
-let pm2_5 = "";                //초미세먼지
-let mainMsg = "";              //메인화면 메세지
-let airQuality: AirQuality;
-let weather: Weather;
-
 const weatherIcon = ref(""); //날씨 아이콘
 const weatherNow = ref<WeatherNow | null>(null);
+const airQuality = ref<AirQuality | null>(null);
+const pm10Grade = ref(""); 
+
 const musicData = ref<SpotifyMusic | null>(null);
 const isAlbumImageLoaded = ref(false); // 앨범 이미지 로드 상태
 const props = defineProps(["isGetReverseGeocode", "isGetWeather", "isGetAirQuality", "isGetSpotifyToken"]);
@@ -71,20 +68,17 @@ onMounted(() => {
 //초기화
 function initData(){
   //날씨 정보
-  weatherNow.value = JSON.parse(UTIL.getLocalStorageItem('weatherNow'));
+  weatherNow.value = JSON.parse(UTIL.getLocalStorageItem('weatherNow')) || {};
   
   weatherIcon.value = UTIL.getWeatherIcon();
-  // weatherIcon = UTIL.getWeatherIcon(weather.current.weather_code, moment(new Date()).format("HHmm"));
   
-  // let airQuality = UTIL.getLocalStorageItem('airQuality');
+  //대기 정보
+  airQuality.value = JSON.parse(UTIL.getLocalStorageItem('airQuality')) || {};
 
-  // //미세먼지 정보
-  // airQuality = JSON.parse(UTIL.getLocalStorageItem('airQuality'));
-  // pm10 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[0];
-  // pm2_5 = UTIL.getAirQualityStatus(airQuality.current.pm10, airQuality.current.pm2_5)[1];
-  
+  pm10Grade.value = UTIL.getAirQualityStatus();
+
   //메세지
-  mainMsg = UTIL.getMainMsg();
+  // mainMsg = UTIL.getMainMsg();
 }
 
 //스포티파이 앱 실행

@@ -74,22 +74,25 @@ const getWeatherIcon = function () {
 };
 
 //미세먼지 상태 조회 
-const getAirQualityStatus = function (degree1: number, degree2: number) {
-  let pm10 = ""; //미세먼지
-  let pm2_5 = ""; //초미세먼지
+const getAirQualityStatus = function () {
+  const airQuality = JSON.parse(getLocalStorageItem("airQuality"));
+  let pm10Grade = ""; //미세먼지
 
   //대한민국 기준
-  if (degree1 <= 30) { pm10 = "좋음"; }
-  else if (degree1 <= 80) { pm10 = "보통"; }
-  else if (degree1 <= 150) { pm10 = "나쁨"; }
-  else { pm10 = "매우나쁨"; }
+  if (airQuality.pm10Grade == "1") { 
+    pm10Grade = "좋음"; 
+  }
+  else if (airQuality.pm10Grade == "2") {
+    pm10Grade = "보통"; 
+  }
+  else if (airQuality.pm10Grade == "3") {
+    pm10Grade = "나쁨"; 
+  }
+  else { 
+    pm10Grade = "매우나쁨"; 
+  }
 
-  if (degree2 <= 15) { pm2_5 = "좋음"; }
-  else if (degree2 <= 35) { pm2_5 = "보통"; }
-  else if (degree2 <= 75) { pm2_5 = "나쁨"; }
-  else { pm2_5 = "매우나쁨"; }
-
-  return [pm10, pm2_5];
+  return pm10Grade;
 };
 
 //메인화면 메세지 조회
@@ -334,7 +337,7 @@ const getWeatherNow = async function () {
   //초단기실황조회 (기온, 습도 조회용)
   let url1 = `${CONST.GODATA_WEATHER_URL}`;
   url1 += `?serviceKey=${import.meta.env.VITE_GODATA_API_KEY}`;
-  url1 += `&pageNo=1&numOfRows=10&dataType=JSON`;
+  url1 += `&pageNo=1&numOfRows=100&dataType=JSON`;
   url1 += `&base_date=${base_date}`;
   url1 += `&base_time=${base_time}`;
   url1 += `&nx=${nx}`;
@@ -373,12 +376,63 @@ const getWeatherNow = async function () {
   data.windSpeed = items1.find((i: any) => i.category === 'WSD')?.fcstValue; //	풍속 (m/s)
   data.minumumTemp = items1.find((i: any) => i.category === 'TMN')?.fcstValue; //	일 최저기온
   data.maximumTemp = items1.find((i: any) => i.category === 'TMX')?.fcstValue; // 일 최대기온
-  
   data.humidity = items2.find((i: any) => i.category === 'REH')?.obsrValue; //습도
 
 	//데이터 저장
 	setLocalStorageItem("weatherNow", data); 
 	console.log("✅ 날씨 정보 조회 완료!");
+
+  let fixedData: WeatherList = {};
+  // let tempObj = {
+  //   temperature: "", 
+  //   humidity: "",
+  //   precipType: "",
+  //   precipProbability: "",
+  //   skyCondition: "",
+  //   windSpeed: "",
+  //   minumumTemp: "",
+  //   maximumTemp: "",
+  // };
+
+  for(let i=0; i<items1.length; i++){
+    console.log(items1[i]);
+
+
+    const baseDate = fixedData[items1[i].baseDate];
+
+    // if(!fixedData[baseDate]){
+    //   fixedData
+    //   const baseTime = baseDate[items1[i].baseTime];
+
+    //   if(!baseTime){
+    //     fixedData[items1[i].baseTime] = Object.assign({}, ...{ [baseTime.category] : baseTime.fcstValue });
+    //     // baseTime = Object.assign({}, ...{ [baseTime.category] : baseTime.fcstValue });
+    //   }
+    //   // else{
+
+    //   // }
+    // }
+    // else{
+    //   const baseTime = baseDate[items1[i].baseTime];
+
+    //   if(!baseTime){
+    //     fixedData[items1[i].baseTime] = Object.assign({}, ...{ [baseTime.category] : baseTime.fcstValue });
+    //     // baseTime = Object.assign({}, ...{ [baseTime.category] : baseTime.fcstValue });
+    //   }
+    //   else{
+
+    //   }
+    // }
+
+    console.log(fixedData);
+
+
+  }
+
+
+
+
+
 };
 
 //가까훈 측정소 조회
@@ -413,29 +467,8 @@ const getAirQuality = async function () {
 	const res = await axios.get(url);
   const item = res.data.response.body.items[0];
 
-  const data = {
-		temperature: "", 
-		humidity: "",
-		precipType: "",
-		precipProbability: "",
-		skyCondition: "",
-		windSpeed: "",
-		minumumTemp: "",
-		maximumTemp: "",
-	};
-
-  data.temperature = items1.find((i: any) => i.category === 'TMP')?.fcstValue; //기온
-  data.precipType = items1.find((i: any) => i.category === 'PTY')?.fcstValue; //강수 형태 (비/눈 등)
-  data.precipProbability = items1.find((i: any) => i.category === 'POP')?.fcstValue; //강수 확률 (%)
-  data.skyCondition = items1.find((i: any) => i.category === 'SKY')?.fcstValue; //하늘 상태 (맑음/흐림 등)
-  data.windSpeed = items1.find((i: any) => i.category === 'WSD')?.fcstValue; //	풍속 (m/s)
-  data.minumumTemp = items1.find((i: any) => i.category === 'TMN')?.fcstValue; //	일 최저기온
-  data.maximumTemp = items1.find((i: any) => i.category === 'TMX')?.fcstValue; // 일 최대기온
-  
-  data.humidity = items2.find((i: any) => i.category === 'REH')?.obsrValue; //습도
-
   //데이터 저장
-  setLocalStorageItem("airQuality", response.data); // 성공적으로 받아온 데이터 저장
+  setLocalStorageItem("airQuality", item); // 성공적으로 받아온 데이터 저장
 
   console.log("✅ 대기 정보 조회 완료!");
 };

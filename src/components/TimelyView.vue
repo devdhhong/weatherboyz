@@ -47,6 +47,7 @@ function initData(){
 
 //현재시간 
 function getCurrentTime(weather: string){
+  // console.log(moment(weather).format('MMDDHH')+ " / "+moment().format('MMDDHH'));
 	//현재시간
 	if(moment(weather).format('MMDDHH') == moment().format('MMDDHH')){
 		return "지금";

@@ -29,13 +29,6 @@ declare global {
     songId: string,
   };
 
-  type AirQuality = {
-    current: {
-      pm10: number,
-      pm2_5: number,
-    },
-  };
-
   type Address = {
     address_name?: string,
     region_1depth_name?: string
@@ -75,6 +68,30 @@ declare global {
     temperature: string;
     windSpeed: string;
   }
+
+  type AirQuality = {
+    pm10Grade: string;
+  }
+
+  type WeatherItem = {
+    baseDate: string;
+    baseTime: string;
+    temperature?: string;
+    humidity?: string;
+    precipType?: string;
+    precipProbability?: string;
+    skyCondition?: string;
+    windSpeed?: string;
+    minumumTemp?: string;
+    maximumTemp?: string;
+  };
+  
+  type WeatherList = {
+    [fcstDate: string]: {
+      [fcstTime: string]: ForecastItem;
+    };
+  };
+  
 }
 
 export {} 
